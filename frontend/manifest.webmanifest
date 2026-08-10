@@ -1,0 +1,11 @@
+{
+  "name": "Solfedjio, 1-sinf",
+  "short_name": "Solfedjio",
+  "description": "Bolalar musiqa va san’at maktablari uchun solfedjio kursi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f5f2",
+  "theme_color": "#2f3c7e",
+  "lang": "uz",
+  "icons": []
+}

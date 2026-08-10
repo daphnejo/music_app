@@ -1,0 +1,28 @@
+# Bog'liqliklar
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Muhit o'zgaruvchilari — sirlarni hech qachon git'ga qo'shma
+.env
+.env.local
+.env.*.local
+backend/.env
+
+# Loglar
+npm-debug.log*
+*.log
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Build/typecheck
+*.tsbuildinfo
+dist/
+coverage/
+
+# Vercel lokal papkasi
+.vercel/
+frontend/.vercel/

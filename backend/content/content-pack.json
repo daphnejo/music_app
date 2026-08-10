@@ -1,0 +1,2326 @@
+{
+  "generatedAt": "2026-08-10T10:19:01.247Z",
+  "source": "SOLFEDJIO_1_SINF_pptx2_pptm1_pptm_aprel.pptm",
+  "slideCount": 69,
+  "course": {
+    "code": "solfedjio-1",
+    "title": "Solfedjio, 1-sinf",
+    "subtitle": "Bolalar musiqa va san’at maktablari uchun",
+    "language": "uz"
+  },
+  "lessons": [
+    {
+      "order": 1,
+      "declaredNumber": 0,
+      "title": "Kirish",
+      "slides": [
+        1
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 1,
+          "type": "theory",
+          "title": "Bolalar musiqa va san’at maktablari uchun",
+          "body": [
+            "1-SINF",
+            "Solfedjio"
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image2.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "declaredNumber": 1,
+      "title": "SOLFEDJIO.",
+      "slides": [
+        2,
+        3
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 2,
+          "type": "theory",
+          "title": "1-DARS. SOLFEDJIO.",
+          "body": [],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image3.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 3,
+          "type": "theory",
+          "title": "Bu qiziq!",
+          "body": [
+            "Solfedjioning fan sifatida shakllanishi 9 asrda yashab ijod qilgan italiyalik musiqashunos Gvido de Aresso nomi bilan bog’liq. Aynan u nota tizimini yaratib notalarni nomlaydi.",
+            "Solfedjio – bu musiqada qo’llaniladigan atama bo’lib, italyancha “Solfeggio” ya’ni “sol” va “fa” notalari nomidan kelib chiqadi. U notaga qarab kuylash ma’nosini anglatadi.",
+            "1-DARS. SOLFEDJIO."
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image4.jpg",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "declaredNumber": 2,
+      "title": "Registr.Musiqiy tovushlar yangrashiga ko’ra baland va past bo’lishi mumkin",
+      "slides": [
+        4
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 4,
+          "type": "practice_acknowledgement",
+          "title": "2-DARS.Registr.Musiqiy tovushlar yangrashiga ko’ra baland va past bo’lishi mumkin. Balandligiga ko’ra bir biriga yaqi…",
+          "body": [],
+          "audio": [
+            "audio1.wav",
+            "audio2.wav",
+            "audio3.wav"
+          ],
+          "video": [],
+          "images": [
+            "image5.png",
+            "image6.jpg",
+            "image7.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "declaredNumber": 3,
+      "title": "Klaviatura – musiqa cholgʻu sozlarida maʼlum tartibda joylashgan oq va qora k…",
+      "slides": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 5,
+          "type": "practice_acknowledgement",
+          "title": "3-DARS. Klaviatura – musiqa cholgʻu sozlarida maʼlum tartibda joylashgan oq va qora klavishlar majmui.",
+          "body": [
+            "Do",
+            "Re",
+            "Sol",
+            "Fa",
+            "Mi",
+            "Lya",
+            "Si",
+            "Fa",
+            "Mi",
+            "Re",
+            "Do",
+            "Sol",
+            "Lya",
+            "Si"
+          ],
+          "audio": [
+            "audio10.wav",
+            "audio4.wav",
+            "audio5.wav",
+            "audio6.wav",
+            "audio7.wav",
+            "audio8.wav",
+            "audio9.wav"
+          ],
+          "video": [],
+          "images": [
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 6,
+          "type": "practice_acknowledgement",
+          "title": "Kuy - bu turli balandlikdagi tovushlarning maʼlum bir ritm va lad bilan uygʻunlashgan holati.",
+          "body": [
+            "Sub kontr",
+            "Kontr oktava",
+            "Katta oktava",
+            "Kichik oktava",
+            "Birinchi oktava",
+            "Ikkinchi oktava",
+            "Uchinchi oktava",
+            "To’rtinchi oktava"
+          ],
+          "audio": [
+            "audio11.wav",
+            "audio12.wav",
+            "audio13.wav"
+          ],
+          "video": [],
+          "images": [
+            "image5.png",
+            "image8.png",
+            "image9.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 7,
+          "type": "single_choice",
+          "title": "Test",
+          "body": [
+            "1 oktava notalari qaysi registrga kiradi?"
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image10.png"
+          ],
+          "needsMethodistReview": true,
+          "reviewNote": "Ключ ответа извлечён из VBA-привязки фигур исходной презентации. Требуется подтверждение методиста перед публикацией.",
+          "question": {
+            "prompt": "1 oktava notalari qaysi registrga kiradi?",
+            "options": [
+              {
+                "ordinal": 0,
+                "text": "a) O’rta registr",
+                "image": null,
+                "isCorrect": true,
+                "sourceAction": "Right"
+              },
+              {
+                "ordinal": 1,
+                "text": "b) Yuqori registr",
+                "image": null,
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              },
+              {
+                "ordinal": 2,
+                "text": "c) Pastki registr",
+                "image": null,
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              }
+            ]
+          }
+        },
+        {
+          "sourceSlide": 8,
+          "type": "single_choice",
+          "title": "Test",
+          "body": [
+            "Solfedjio bu - ?"
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image10.png"
+          ],
+          "needsMethodistReview": true,
+          "reviewNote": "Ключ ответа извлечён из VBA-привязки фигур исходной презентации. Требуется подтверждение методиста перед публикацией.",
+          "question": {
+            "prompt": "Solfedjio bu - ?",
+            "options": [
+              {
+                "ordinal": 0,
+                "text": "a) Oq va qora klavishlar ketma-ketligi",
+                "image": null,
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              },
+              {
+                "ordinal": 1,
+                "text": "b) Notadan kuylash",
+                "image": null,
+                "isCorrect": true,
+                "sourceAction": "Right"
+              },
+              {
+                "ordinal": 2,
+                "text": "c) Kuyni yoddan aytish",
+                "image": null,
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              }
+            ]
+          }
+        },
+        {
+          "sourceSlide": 9,
+          "type": "audio_single_choice",
+          "title": "Test",
+          "body": [
+            "Kuy qaysi registrda yangradi?"
+          ],
+          "audio": [
+            "audio12.wav"
+          ],
+          "video": [],
+          "images": [
+            "image10.png",
+            "image9.png"
+          ],
+          "needsMethodistReview": true,
+          "reviewNote": "Ключ ответа извлечён из VBA-привязки фигур исходной презентации. Требуется подтверждение методиста перед публикацией.",
+          "question": {
+            "prompt": "Kuy qaysi registrda yangradi?",
+            "options": [
+              {
+                "ordinal": 0,
+                "text": "a) Pastki registr",
+                "image": null,
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              },
+              {
+                "ordinal": 1,
+                "text": "b) Yuqori registr",
+                "image": null,
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              },
+              {
+                "ordinal": 2,
+                "text": "c) O’rta registr",
+                "image": null,
+                "isCorrect": true,
+                "sourceAction": "Right"
+              }
+            ]
+          }
+        },
+        {
+          "sourceSlide": 10,
+          "type": "single_choice",
+          "title": "Test",
+          "body": [
+            "Qushlar sayrashini qaysi registrda ifoda etsa bo’ladi?"
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image10.png"
+          ],
+          "needsMethodistReview": true,
+          "reviewNote": "Ключ ответа извлечён из VBA-привязки фигур исходной презентации. Требуется подтверждение методиста перед публикацией.",
+          "question": {
+            "prompt": "Qushlar sayrashini qaysi registrda ifoda etsa bo’ladi?",
+            "options": [
+              {
+                "ordinal": 0,
+                "text": "a) O’rta registr",
+                "image": null,
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              },
+              {
+                "ordinal": 1,
+                "text": "b) Yuqori registr",
+                "image": null,
+                "isCorrect": true,
+                "sourceAction": "Right"
+              },
+              {
+                "ordinal": 2,
+                "text": "c) Pastki registr",
+                "image": null,
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              }
+            ]
+          }
+        },
+        {
+          "sourceSlide": 11,
+          "type": "audio_single_choice",
+          "title": "Test",
+          "body": [
+            "Kuy qaysi registrda ijro etildi?"
+          ],
+          "audio": [
+            "audio11.wav",
+            "audio14.wav"
+          ],
+          "video": [],
+          "images": [
+            "image10.png",
+            "image9.png"
+          ],
+          "needsMethodistReview": true,
+          "reviewNote": "Ключ ответа извлечён из VBA-привязки фигур исходной презентации. Требуется подтверждение методиста перед публикацией.",
+          "question": {
+            "prompt": "Kuy qaysi registrda ijro etildi?",
+            "options": [
+              {
+                "ordinal": 0,
+                "text": "a) O’rta registr",
+                "image": null,
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              },
+              {
+                "ordinal": 1,
+                "text": "b) Yuqori registr",
+                "image": null,
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              },
+              {
+                "ordinal": 2,
+                "text": "c) Pastki registr",
+                "image": null,
+                "isCorrect": true,
+                "sourceAction": "RightLast"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "declaredNumber": 4,
+      "title": "Nota yo’li",
+      "slides": [
+        12,
+        13
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 12,
+          "type": "practice_acknowledgement",
+          "title": "4-Dars. Nota yo’li.",
+          "body": [
+            "Notalar musiqa yozuvida 5 ta chiziqdan iborat nota yo’liga yoziladi:"
+          ],
+          "audio": [
+            "audio15.wav",
+            "audio16.wav"
+          ],
+          "video": [],
+          "images": [
+            "image11.png",
+            "image5.png",
+            "image7.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 13,
+          "type": "theory",
+          "title": "Shuningdek notalar qo’shimcha chiziqlarda ham yoziladi.",
+          "body": [],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image12.png",
+            "image13.png",
+            "image14.png",
+            "image15.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "declaredNumber": 5,
+      "title": "Skripka kaliti",
+      "slides": [
+        14,
+        15
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 14,
+          "type": "theory",
+          "title": "Nota yo’liga notalarni yozishdan avval musiqa kaliti qo’yiladi. Musiqada ular bir nechta. Ulardan biri skripka yoki “…",
+          "body": [
+            "5-Dars. Skripka kaliti"
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image16.png",
+            "image17.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 15,
+          "type": "theory",
+          "title": "Skripka kalitini yozishni mashq qiling!",
+          "body": [],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image18.png",
+            "image19.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "declaredNumber": 6,
+      "title": "Tovush qator",
+      "slides": [
+        16
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 16,
+          "type": "practice_acknowledgement",
+          "title": "6-Dars. Tovush qator.",
+          "body": [
+            "Musiqaviy tovushqator - barcha musiqaviy tovushlarning balandlik tartibi bo'yicha joylashishi",
+            "Do",
+            "re",
+            "mi",
+            "fa",
+            "sol",
+            "lya",
+            "si"
+          ],
+          "audio": [
+            "audio17.wav",
+            "audio18.wav",
+            "audio19.wav",
+            "audio20.wav",
+            "audio21.wav",
+            "audio22.wav",
+            "audio23.wav",
+            "audio24.wav",
+            "audio25.wav",
+            "audio26.wav",
+            "audio27.wav",
+            "audio28.wav"
+          ],
+          "video": [],
+          "images": [
+            "image20.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "declaredNumber": 7,
+      "title": "Oktava",
+      "slides": [
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 17,
+          "type": "practice_acknowledgement",
+          "title": "7-Dars. Oktava.",
+          "body": [
+            "Bir xil nomdagi tovushlar oraligʻidagi eng yaqin masofa oktava deyiladi. Tovushqatorning asosiy yetti pogʻonasini oʻz ichiga olgan har bir qismi oktavalar deb aytiladi. Masalan, do, re, mi, fa, sol, lya, si tovushlari oktavani hosil qiladi. Si notasidan keyin yana do notasi yuqoriroq registrda takrorlanadi.",
+            "Do",
+            "re",
+            "mi",
+            "fa",
+            "sol",
+            "lya",
+            "si",
+            "Do",
+            "Re",
+            "Mi",
+            "Fa",
+            "Sol",
+            "Lya",
+            "Si",
+            "Do",
+            "re",
+            "mi",
+            "Do"
+          ],
+          "audio": [
+            "audio17.wav",
+            "audio18.wav",
+            "audio19.wav",
+            "audio20.wav",
+            "audio21.wav",
+            "audio22.wav",
+            "audio23.wav",
+            "audio24.wav",
+            "audio25.wav",
+            "audio26.wav",
+            "audio27.wav",
+            "audio28.wav",
+            "audio29.wav"
+          ],
+          "video": [],
+          "images": [
+            "image20.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 18,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun mashqlar. Notalar do, re, mi.",
+          "body": [
+            "Ayiq",
+            "Bolalar qo’shig’i",
+            "1."
+          ],
+          "audio": [
+            "audio30.wav",
+            "audio31.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image22.png",
+            "image23.png",
+            "image24.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 19,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun mashqlar. Notalar do, re, mi.",
+          "body": [
+            "Quyosh",
+            "Bolalar qo’shig’i",
+            "2."
+          ],
+          "audio": [
+            "audio31.wav",
+            "audio32.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image22.png",
+            "image23.png",
+            "image25.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 20,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun mashqlar. Notalar do, re, mi.",
+          "body": [
+            "3."
+          ],
+          "audio": [
+            "audio33.wav",
+            "audio34.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image22.png",
+            "image23.png",
+            "image26.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 21,
+          "type": "practice_acknowledgement",
+          "title": "Merto-ritmik mashqlar",
+          "body": [
+            "1. Mashqni misoldagi ijroni kuzatib, taktma takt takrorlagan holda bajaring."
+          ],
+          "audio": [],
+          "video": [
+            "media1.mp4"
+          ],
+          "images": [
+            "image27.png",
+            "image28.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 22,
+          "type": "practice_acknowledgement",
+          "title": "Merto-ritmik mashqlar",
+          "body": [
+            "1. Mashqni misoldagi ijroni kuzatib, taktma takt takrorlagan holda bajaring."
+          ],
+          "audio": [],
+          "video": [
+            "media2.mp4"
+          ],
+          "images": [
+            "image27.png",
+            "image29.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 23,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun mashqlar. Notalar fa, sol, lya,si.",
+          "body": [
+            "Lolalar",
+            "Bolalar qo’shig’i",
+            "4."
+          ],
+          "audio": [
+            "audio35.wav",
+            "audio36.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image22.png",
+            "image23.png",
+            "image30.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 24,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun mashqlar. Notalar fa, sol, lya,si.",
+          "body": [
+            "Bo’tako’z",
+            "Bolalar qo’shig’i",
+            "5."
+          ],
+          "audio": [
+            "audio37.wav",
+            "audio38.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image22.png",
+            "image23.png",
+            "image31.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 25,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun mashqlar. Notalar fa, sol, lya,si.",
+          "body": [
+            "Karimaning mushugi",
+            "Bolalar qo’shig’i",
+            "6."
+          ],
+          "audio": [
+            "audio39.wav",
+            "audio40.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image22.png",
+            "image23.png",
+            "image32.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 26,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun mashqlar. Notalar fa, sol, lya,si.",
+          "body": [
+            "Maktab pianinosi",
+            "J. Najmiddinov musiqasi",
+            "M. Zayniddinov she’ri",
+            "7."
+          ],
+          "audio": [
+            "audio39.wav",
+            "audio41.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image22.png",
+            "image23.png",
+            "image33.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 27,
+          "type": "audio_single_choice",
+          "title": "Musiqiy diktant.",
+          "body": [
+            "1. Kuyni tinglang va unga mos nota matnini javoblar orasidan tanlang."
+          ],
+          "audio": [
+            "audio42.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image34.png",
+            "image35.png",
+            "image36.png"
+          ],
+          "needsMethodistReview": true,
+          "reviewNote": "Ключ ответа извлечён из VBA-привязки фигур исходной презентации. Требуется подтверждение методиста перед публикацией.",
+          "question": {
+            "prompt": "1. Kuyni tinglang va unga mos nota matnini javoblar orasidan tanlang.",
+            "options": [
+              {
+                "ordinal": 0,
+                "text": "a)",
+                "image": "image34.png",
+                "isCorrect": true,
+                "sourceAction": "Right"
+              },
+              {
+                "ordinal": 1,
+                "text": "b)",
+                "image": "image35.png",
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              },
+              {
+                "ordinal": 2,
+                "text": "c)",
+                "image": "image36.png",
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              }
+            ]
+          }
+        },
+        {
+          "sourceSlide": 28,
+          "type": "audio_single_choice",
+          "title": "Musiqiy diktant.",
+          "body": [
+            "1. Kuyni tinglang va tushirib qoldirilgan taktni belgilang."
+          ],
+          "audio": [
+            "audio43.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image37.png",
+            "image38.png",
+            "image39.png",
+            "image40.png"
+          ],
+          "needsMethodistReview": true,
+          "reviewNote": "Ключ ответа извлечён из VBA-привязки фигур исходной презентации. Требуется подтверждение методиста перед публикацией.",
+          "question": {
+            "prompt": "1. Kuyni tinglang va tushirib qoldirilgan taktni belgilang.",
+            "options": [
+              {
+                "ordinal": 0,
+                "text": "a)",
+                "image": "image38.png",
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              },
+              {
+                "ordinal": 1,
+                "text": "b)",
+                "image": "image39.png",
+                "isCorrect": false,
+                "sourceAction": "Wrong"
+              },
+              {
+                "ordinal": 2,
+                "text": "c)",
+                "image": "image40.png",
+                "isCorrect": true,
+                "sourceAction": "Right"
+              }
+            ]
+          }
+        },
+        {
+          "sourceSlide": 29,
+          "type": "practice_acknowledgement",
+          "title": "Musiqiy diktant.",
+          "body": [
+            "1. Kuyni tinglang va taktlarni to’g’ri ketma ketlikda joylashtiring.",
+            "Tekshirish"
+          ],
+          "audio": [
+            "audio44.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image41.png",
+            "image42.png",
+            "image43.png",
+            "image44.png",
+            "image45.png"
+          ],
+          "needsMethodistReview": true,
+          "reviewNote": "Слайд с механикой drag-and-drop (упорядочивание тактов). Правильный порядок не восстанавливается однозначно из VBA-привязок — требуется TODO(methodist).",
+          "unresolvedOptions": [
+            {
+              "ordinal": 0,
+              "text": "a)",
+              "image": "image42.png",
+              "sourceAction": "draganddrop"
+            },
+            {
+              "ordinal": 1,
+              "text": "b)",
+              "image": "image41.png",
+              "sourceAction": "Wrong"
+            },
+            {
+              "ordinal": 2,
+              "text": "d)",
+              "image": "image44.png",
+              "sourceAction": "Right"
+            },
+            {
+              "ordinal": 3,
+              "text": "c)",
+              "image": "image43.png",
+              "sourceAction": "Right"
+            },
+            {
+              "ordinal": 4,
+              "text": "Variant 5",
+              "image": "image45.png",
+              "sourceAction": "Wrong"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "declaredNumber": 8,
+      "title": "Notalar cho’zimlari Butun nota Yarim nota Chorak nota Nimchorak nota O’n olti…",
+      "slides": [
+        30,
+        31,
+        32
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 30,
+          "type": "practice_acknowledgement",
+          "title": "8-Dars. Notalar cho’zimlari",
+          "body": [
+            "Butun nota",
+            "Yarim nota",
+            "Chorak nota",
+            "Nimchorak nota",
+            "O’n oltitalik nota"
+          ],
+          "audio": [
+            "audio45.wav",
+            "audio46.wav",
+            "audio47.wav",
+            "audio48.wav",
+            "audio49.wav"
+          ],
+          "video": [],
+          "images": [
+            "image46.png",
+            "image47.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 31,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun mashqlar",
+          "body": [
+            "Kuyni tinglang, notalarni aytgan holda kuylang.",
+            "Berilgan she’lardan kuyga mosini tanlang va so’zlar bilan kuylang",
+            "Olmahon, olmaxon",
+            "Yong’oqlar terdi,",
+            "Shoxlarda yugurib",
+            "Iniga eltdi.",
+            "Ayiq polvon o’rmonda,",
+            "gurs gurs qadam bosadi.",
+            "Savatiga to’ldirib",
+            "Qulupnaylar teradi.",
+            "8."
+          ],
+          "audio": [
+            "audio36.wav",
+            "audio37.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image22.png",
+            "image23.png",
+            "image48.png",
+            "image49.png",
+            "image50.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 32,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun mashqlar",
+          "body": [
+            "Kuyni tinglang, notalarni aytgan holda kuylang.",
+            "Berilgan she’lardan kuyga mosini tanlang va so’zlar bilan kuylang",
+            "Baxtiyor erkatoy",
+            "Yaxshi ko’rar kulchatoy.",
+            "Buvusini erkasi,",
+            "Kulib turar chehrasi",
+            "Mening tilla baliqcham",
+            "Yaltiraydi tovlanib,",
+            "Uyini ichiga",
+            "Olaverar joylashib.",
+            "9."
+          ],
+          "audio": [
+            "audio37.wav",
+            "audio50.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image22.png",
+            "image23.png",
+            "image50.png",
+            "image51.png",
+            "image52.png",
+            "image53.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "declaredNumber": 9,
+      "title": "o’lchovi. Takt.",
+      "slides": [
+        33,
+        34,
+        35,
+        36
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 33,
+          "type": "theory",
+          "title": "o’lchovi. Takt.",
+          "body": [
+            "Musiqada o’lchov hissalar sonini belgilaydi. Har bir taktni tashkil qiladigan hissalar soni va ularning",
+            "cho’zimi nota yozuvida raqamlar bilan yoziladi :",
+            "O’lchovning ustki raqami taktdagi hissalar sonini, pastki raqami esa har bir hissaning cho’zimini ko’rsatadi. o’lchovi ikkita hissaga ega: birinchisi kuchli, ikkinchisi kuchsiz.",
+            "Ikkita kuchli hissaning oralig’iga takt deyiladi. Nota yozuvida taktlar takt chizig’i bilan ajratiladi. Kuy yakunida esa ikkita yonma-yon takt chizig’i qo’yiladi.",
+            "9-Dars."
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image5.png",
+            "image54.png",
+            "image55.png",
+            "image56.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 34,
+          "type": "theory",
+          "title": "o’lchovi. Takt.",
+          "body": [
+            "O’lchovida har bir takt 1i 2i deb sanaladi. Dirijorlik qilish harakati:",
+            "1 i",
+            "2 i",
+            "1 i",
+            "2 i"
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image5.png",
+            "image54.png",
+            "image57.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 35,
+          "type": "practice_acknowledgement",
+          "title": "o’lchovi.",
+          "body": [
+            "O’lchovida ritmik mashqlarni tinglang va qaytaring"
+          ],
+          "audio": [],
+          "video": [
+            "media3.mp4",
+            "media4.mp4",
+            "media5.mp4"
+          ],
+          "images": [
+            "image5.png",
+            "image54.png",
+            "image58.png",
+            "image59.png",
+            "image60.png",
+            "image61.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 36,
+          "type": "practice_acknowledgement",
+          "title": "o’lchovi.",
+          "body": [
+            "O’lchovida dirijorlik qilib kuylang",
+            "11.",
+            "12.",
+            "13."
+          ],
+          "audio": [],
+          "video": [
+            "media6.mp4",
+            "media7.mp4",
+            "media8.mp4"
+          ],
+          "images": [
+            "image5.png",
+            "image54.png",
+            "image62.png",
+            "image63.png",
+            "image64.png",
+            "image65.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "declaredNumber": 10,
+      "title": "o’lchovi.",
+      "slides": [
+        37,
+        38,
+        39
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 37,
+          "type": "theory",
+          "title": "o’lchovi.",
+          "body": [
+            "O’lchovi 3 ta hissaga ega. Bir takt ichida 1i, 2i,3i deb sanaladi.",
+            "1 i",
+            "2 i",
+            "3 i",
+            "10-DARS. .."
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image5.png",
+            "image57.png",
+            "image66.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 38,
+          "type": "practice_acknowledgement",
+          "title": "o’lchovi.",
+          "body": [],
+          "audio": [],
+          "video": [
+            "media10.mp4",
+            "media11.mp4",
+            "media9.mp4"
+          ],
+          "images": [
+            "image5.png",
+            "image66.png",
+            "image67.png",
+            "image68.png",
+            "image69.png",
+            "image70.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 39,
+          "type": "practice_acknowledgement",
+          "title": "o’lchovi.",
+          "body": [
+            "14",
+            "15.",
+            "16."
+          ],
+          "audio": [],
+          "video": [
+            "media12.mp4",
+            "media13.mp4",
+            "media14.mp4"
+          ],
+          "images": [
+            "image22.png",
+            "image23.png",
+            "image64.png",
+            "image66.png",
+            "image71.png",
+            "image72.png",
+            "image73.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "declaredNumber": 11,
+      "title": "Bas kaliti notalari",
+      "slides": [
+        40,
+        41,
+        42
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 40,
+          "type": "practice_acknowledgement",
+          "title": "11- Dars.Bas kaliti notalari.",
+          "body": [
+            "Musiqada yana bir kalit bu – “fa” yoki bas kalitidir. U pastki registr notalarini belgilash uchun qo’llaniladi."
+          ],
+          "audio": [],
+          "video": [
+            "media15.mp4"
+          ],
+          "images": [
+            "image5.png",
+            "image74.svg",
+            "image75.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 41,
+          "type": "practice_acknowledgement",
+          "title": "Bas kaliti notalari.",
+          "body": [
+            "Musiqada yana bir kalit bu – “fa” yoki bas kalitidir. U pastki registr notalarini belgilash uchun qo’llaniladi."
+          ],
+          "audio": [],
+          "video": [
+            "media15.mp4",
+            "media16.mp4"
+          ],
+          "images": [
+            "image5.png",
+            "image75.png",
+            "image76.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 42,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun mashqlar",
+          "body": [
+            "Do do re re mi re do do mi fa sol fa mi re do do",
+            "Do re mi fa sol lya si do si lya sol sol sol fa sol mi mi mi re fa mi re do do",
+            "Do re mi fa sol do re mi fa sol sol fa mi fa mi mi re do"
+          ],
+          "audio": [
+            "audio36.wav",
+            "audio37.wav"
+          ],
+          "video": [],
+          "images": [
+            "image21.png",
+            "image22.png",
+            "image23.png",
+            "image64.png",
+            "image77.svg",
+            "image78.svg",
+            "image79.svg"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "declaredNumber": 12,
+      "title": "Repriza Repriza bu – qaytarish belgisi",
+      "slides": [
+        43,
+        44
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 43,
+          "type": "practice_acknowledgement",
+          "title": "12-dars.Repriza",
+          "body": [
+            "Repriza bu – qaytarish belgisi.",
+            "Yozilishi",
+            "Yozilishi",
+            "Ijro etilishi",
+            "Ijro etilishi"
+          ],
+          "audio": [],
+          "video": [
+            "media17.mp4",
+            "media18.mp4"
+          ],
+          "images": [
+            "image5.png",
+            "image80.svg",
+            "image81.png",
+            "image82.svg",
+            "image83.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 44,
+          "type": "practice_acknowledgement",
+          "title": "19.",
+          "body": [
+            "18",
+            "17."
+          ],
+          "audio": [
+            "media21.wav"
+          ],
+          "video": [
+            "media19.mp4",
+            "media20.mp4",
+            "media22.mp4"
+          ],
+          "images": [
+            "image22.png",
+            "image23.png",
+            "image64.png",
+            "image84.png",
+            "image85.png",
+            "image86.png",
+            "image87.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "declaredNumber": 13,
+      "title": "Gamma",
+      "slides": [
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 45,
+          "type": "practice_acknowledgement",
+          "title": "13-Dars.Gamma.",
+          "body": [
+            "Gamma bu- bir notani ikkinchi marta oktava yuqorida yoki pastda qaytarilishigacha bo’lgan tovushlar ketma ketligidir.",
+            "Gammada notalar qadami pog’onalar deyiladi va rim raqamlari bilan belgilanadi.",
+            "Do",
+            "re",
+            "mi",
+            "fa",
+            "sol",
+            "lya",
+            "si",
+            "Do",
+            "re",
+            "mi"
+          ],
+          "audio": [
+            "audio17.wav",
+            "audio18.wav",
+            "audio19.wav",
+            "audio20.wav",
+            "audio21.wav",
+            "audio22.wav",
+            "audio23.wav",
+            "audio24.wav",
+            "audio25.wav",
+            "audio26.wav",
+            "audio27.wav",
+            "audio28.wav",
+            "audio29.wav"
+          ],
+          "video": [],
+          "images": [
+            "image20.png",
+            "image23.png",
+            "image5.png",
+            "image88.svg"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 46,
+          "type": "practice_acknowledgement",
+          "title": "Mashqlarni kuylang.",
+          "body": [
+            "Mashqlarni dirijorlik qilib kuylang. Notalar tagiga bosqichlarni yozing.",
+            "I II III IV V VI VII I I VII VI V IV III II I",
+            "I II III IV V V VI VII I I I VII VI V V IV III II I I"
+          ],
+          "audio": [],
+          "video": [
+            "media23.mp4",
+            "media24.mp4"
+          ],
+          "images": [
+            "image22.png",
+            "image23.png",
+            "image64.png",
+            "image89.png",
+            "image90.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 47,
+          "type": "practice_acknowledgement",
+          "title": "O’lchovida yarimtalik nota.",
+          "body": [
+            "13-Dars.",
+            "Ritmik mashqlarni bajaring."
+          ],
+          "audio": [],
+          "video": [
+            "media25.mp4",
+            "media26.mp4",
+            "media27.mp4"
+          ],
+          "images": [
+            "image22.png",
+            "image54.png",
+            "image91.png",
+            "image92.png",
+            "image93.png",
+            "image94.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 48,
+          "type": "practice_acknowledgement",
+          "title": "O’lchovida yarimtalik nota.",
+          "body": [
+            "20.",
+            "21.",
+            "22.",
+            "13-Dars."
+          ],
+          "audio": [
+            "media29.wav"
+          ],
+          "video": [
+            "media28.mp4",
+            "media30.mp4",
+            "media31.mp4"
+          ],
+          "images": [
+            "image22.png",
+            "image23.png",
+            "image54.png",
+            "image64.png",
+            "image86.png",
+            "image95.png",
+            "image96.png",
+            "image97.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 49,
+          "type": "practice_acknowledgement",
+          "title": "O’lchovida yarimtalik nota.",
+          "body": [
+            "23.",
+            "24.",
+            "25.",
+            "13-Dars."
+          ],
+          "audio": [
+            "media35.wav"
+          ],
+          "video": [
+            "media32.mp4",
+            "media33.mp4",
+            "media34.mp4"
+          ],
+          "images": [
+            "image100.png",
+            "image22.png",
+            "image23.png",
+            "image64.png",
+            "image66.png",
+            "image86.png",
+            "image98.png",
+            "image99.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "declaredNumber": 15,
+      "title": "Kuyda motiv, jumla, tonika",
+      "slides": [
+        50,
+        51
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 50,
+          "type": "practice_acknowledgement",
+          "title": "15-Dars. Kuyda motiv, jumla, tonika.",
+          "body": [
+            "She’r matni misralar, misralar esa so’zlardan tashkil topadi. Musiqada ham kuy jumla, ibora, motivdan tashkil topadi. Kuyning eng kichik bo’lagi motivdir. Motivlar iborani, iboralar esa jumlani hosil qiladi.",
+            "Tonika-bu ladning I pog’onasi.",
+            "Kuyni tinglang.",
+            "Motiv, ibora, jumla va kuy tonikasini aniqlang.",
+            "Kuylang."
+          ],
+          "audio": [],
+          "video": [
+            "media36.mp4"
+          ],
+          "images": [
+            "image101.png",
+            "image5.png",
+            "image64.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 51,
+          "type": "practice_acknowledgement",
+          "title": "26.",
+          "body": [
+            "27.",
+            "28.",
+            "Kuylash uchun misollar.",
+            "Kuylang.",
+            "Kuyda motiv, ibora, jumla va tonikani aniqlang."
+          ],
+          "audio": [
+            "media35.wav"
+          ],
+          "video": [
+            "media37.mp4",
+            "media38.mp4",
+            "media39.mp4"
+          ],
+          "images": [
+            "image102.png",
+            "image103.png",
+            "image104.png",
+            "image22.png",
+            "image23.png",
+            "image64.png",
+            "image86.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "declaredNumber": 16,
+      "title": "Major va minor ladlari",
+      "slides": [
+        52
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 52,
+          "type": "practice_acknowledgement",
+          "title": "16-Dars.Major va minor ladlari.",
+          "body": [
+            "Major va minor bu – musiqiy asar kayfiyatini ifodalovchi ikkita asosiy laddir. Major ladida kuylar asosan yorqin va quvnoq yangraydi. Minor ladida esa kuy bosiq, g’amginroq yangrashi mumkin."
+          ],
+          "audio": [
+            "audio51.wav",
+            "audio52.wav",
+            "audio53.wav",
+            "audio54.wav"
+          ],
+          "video": [],
+          "images": [
+            "image105.png",
+            "image106.png",
+            "image21.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "declaredNumber": 17,
+      "title": "Do major tonalligi",
+      "slides": [
+        53
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 53,
+          "type": "theory",
+          "title": "17-Dars. Do major tonalligi.",
+          "body": [
+            "Do notasidan keying do notasigacha bo’lgan oq klavishli notalar Do major tonalligi deb ataymiz. Do major gammasida 7 ta pog’ona bor. I pog’ona Do notasi markaziy asosiy hisoblanib, Tonika deyiladi."
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image107.svg",
+            "image108.png",
+            "image23.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "declaredNumber": 18,
+      "title": "Ladning turg’un va noturg’un pog’onalari",
+      "slides": [
+        54,
+        55,
+        56,
+        57
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 54,
+          "type": "practice_acknowledgement",
+          "title": "18-Dars. Ladning turg’un va noturg’un pog’onalari.",
+          "body": [
+            "Turg’un pog’onalari – I, III, V.",
+            "Noturg’un pog’onalar – II, IV, VI, VII.",
+            "Noturg’un pog’onalar doim turg’un pog’onalarga intiladi.",
+            "I",
+            "VI",
+            "II",
+            "III",
+            "IV",
+            "V",
+            "VII",
+            "I"
+          ],
+          "audio": [
+            "audio55.wav",
+            "audio56.wav",
+            "audio57.wav",
+            "audio58.wav",
+            "audio59.wav",
+            "audio60.wav",
+            "audio61.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image109.svg",
+            "image110.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 55,
+          "type": "practice_acknowledgement",
+          "title": "18-Dars. Ladning turg’un va noturg’un pog’onalari.",
+          "body": [
+            "Turg’un pog’onalari – I, III, V.",
+            "Noturg’un pog’onalar – II, IV, VI, VII.",
+            "Noturg’un pog’onalar doim turg’un pog’onalarga intiladi.",
+            "I",
+            "VI",
+            "II",
+            "III",
+            "IV",
+            "V",
+            "VII",
+            "I"
+          ],
+          "audio": [
+            "audio55.wav",
+            "audio56.wav",
+            "audio57.wav",
+            "audio58.wav",
+            "audio59.wav",
+            "audio60.wav",
+            "audio61.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image109.svg",
+            "image110.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 56,
+          "type": "practice_acknowledgement",
+          "title": "18-Dars. Ladning turg’un va noturg’un pog’onalari.",
+          "body": [
+            "Yetakchi pog’onalar bu – tonika atrofidagi VII va II pog’onalardir. Ularning ikkisi ham I pog’onaga kuchli intiladi.",
+            "I",
+            "II",
+            "VII"
+          ],
+          "audio": [
+            "audio55.wav",
+            "audio57.wav",
+            "audio61.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image109.svg",
+            "image110.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 57,
+          "type": "practice_acknowledgement",
+          "title": "Mashqlarni kuylang.",
+          "body": [
+            "Berilgan bosqichlarni Do majorda kuylang.",
+            "a)",
+            "I",
+            "III",
+            "V",
+            "III",
+            "I",
+            "Tekshiring",
+            "b)",
+            "IV",
+            "VI",
+            "II",
+            "I",
+            "I",
+            "I",
+            "III",
+            "V",
+            "V",
+            "I",
+            "c)",
+            "I",
+            "III",
+            "V",
+            "III",
+            "I"
+          ],
+          "audio": [
+            "audio55.wav",
+            "audio56.wav",
+            "audio57.wav",
+            "audio58.wav",
+            "audio59.wav",
+            "audio60.wav"
+          ],
+          "video": [],
+          "images": [
+            "image111.svg",
+            "image112.svg",
+            "image113.svg",
+            "image22.png",
+            "image64.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "declaredNumber": 19,
+      "title": "Volta",
+      "slides": [
+        58,
+        59
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 58,
+          "type": "practice_acknowledgement",
+          "title": "19-Dars. Volta.",
+          "body": [
+            "Ijro etiladi:",
+            "Yoziladi:"
+          ],
+          "audio": [],
+          "video": [
+            "media40.mp4"
+          ],
+          "images": [
+            "image108.png",
+            "image114.svg",
+            "image115.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 59,
+          "type": "practice_acknowledgement",
+          "title": "Mashqlarni bajaring.",
+          "body": [
+            "Kuylang.",
+            "Repriza va volta belgisini qo’ying."
+          ],
+          "audio": [],
+          "video": [
+            "media41.mp4",
+            "media42.mp4"
+          ],
+          "images": [
+            "image108.png",
+            "image116.svg",
+            "image117.png",
+            "image118.svg",
+            "image119.png",
+            "image23.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "declaredNumber": 20,
+      "title": "Pauzalar",
+      "slides": [
+        60,
+        61
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 60,
+          "type": "theory",
+          "title": "20-Dars. Pauzalar.",
+          "body": [
+            "Tovush yangrashining vaqtinchalik to’xtalishi pauza deyiladi. Notalarning cho’zimi kabi pauzalar ham butun, yarimtalik, chorak, nimchorak pauzalarga bo’linadi.",
+            "Butun pauza",
+            "Yarimtalik pauza",
+            "Chorak pauza",
+            "Nimchorak yoki sakkiztalik pauza"
+          ],
+          "audio": [],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image120.svg",
+            "image121.svg",
+            "image122.svg",
+            "image123.svg",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 61,
+          "type": "practice_acknowledgement",
+          "title": "Kuylash uchun misollar.",
+          "body": [
+            "Berilgan mashqlarni avval chapak chalib, so’ng dirijorlik qilib kuylang.",
+            "a)",
+            "c)",
+            "b)",
+            "d)"
+          ],
+          "audio": [],
+          "video": [
+            "media43.mp4",
+            "media44.mp4",
+            "media45.mp4",
+            "media46.mp4"
+          ],
+          "images": [
+            "image124.png",
+            "image125.png",
+            "image126.png",
+            "image127.png",
+            "image128.png",
+            "image22.png",
+            "image64.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "declaredNumber": 21,
+      "title": "Major gammasining tuzilishi",
+      "slides": [
+        62,
+        63,
+        64,
+        65
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 62,
+          "type": "practice_acknowledgement",
+          "title": "21-Dars. Major gammasining tuzilishi. Alteratsiya belgilari",
+          "body": [
+            "Klaviaturaning ikkita yonma-yon tovushlari orasidagi eng kichik ton bu yarim ton.",
+            "Do",
+            "re",
+            "mi",
+            "fa",
+            "sol",
+            "lya",
+            "si",
+            "Do",
+            "re",
+            "mi",
+            "0,5 t",
+            "0,5 t",
+            "1 t"
+          ],
+          "audio": [
+            "audio17.wav",
+            "audio18.wav",
+            "audio19.wav",
+            "audio20.wav",
+            "audio21.wav",
+            "audio22.wav",
+            "audio23.wav",
+            "audio24.wav",
+            "audio25.wav",
+            "audio26.wav",
+            "audio27.wav",
+            "audio28.wav",
+            "audio29.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image20.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 63,
+          "type": "practice_acknowledgement",
+          "title": "Major gammasining tuzilishi.",
+          "body": [
+            "Major gammasi :",
+            "I",
+            "VI",
+            "II",
+            "III",
+            "IV",
+            "V",
+            "VII",
+            "I",
+            "I II III IV V VI VII I",
+            "1t 1t 0,5t 1t 1t 1t 0,5t"
+          ],
+          "audio": [
+            "audio55.wav",
+            "audio56.wav",
+            "audio57.wav",
+            "audio58.wav",
+            "audio59.wav",
+            "audio60.wav",
+            "audio61.wav",
+            "audio62.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image109.svg",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 64,
+          "type": "practice_acknowledgement",
+          "title": "Alteratsiya belgilari",
+          "body": [
+            "Alteratsiya belgilari tovushni yarim tonga ko’taruvchi yoki pasaytiruvchi belgilardir.",
+            "Diyez – tovushni yarim tonga ko’taradi.",
+            "Bemol – tovushni yarim tonga pasaytiradi.",
+            "Bekar – diyez yoki bemolni bekor qiladi.",
+            "Do",
+            "re",
+            "mi",
+            "fa",
+            "sol",
+            "lya",
+            "si",
+            "Do",
+            "Re",
+            "Mi",
+            "Fa",
+            "Sol",
+            "Lya",
+            "Si",
+            "Do",
+            "re",
+            "mi",
+            "Do"
+          ],
+          "audio": [
+            "audio17.wav",
+            "audio18.wav",
+            "audio19.wav",
+            "audio20.wav",
+            "audio21.wav",
+            "audio22.wav",
+            "audio23.wav",
+            "audio24.wav",
+            "audio25.wav",
+            "audio26.wav",
+            "audio27.wav",
+            "audio28.wav",
+            "audio29.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image129.png",
+            "image130.png",
+            "image131.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 65,
+          "type": "practice_acknowledgement",
+          "title": "Major gammasining tuzilishi.",
+          "body": [
+            "Major gammasi :",
+            "I",
+            "VI",
+            "II",
+            "III",
+            "IV",
+            "V",
+            "VII",
+            "I",
+            "I II III IV V VI VII I",
+            "1t 1t 0,5t 1t 1t 1t 0,5t"
+          ],
+          "audio": [
+            "audio55.wav",
+            "audio56.wav",
+            "audio57.wav",
+            "audio58.wav",
+            "audio59.wav",
+            "audio60.wav",
+            "audio61.wav",
+            "audio62.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image109.svg",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "declaredNumber": 23,
+      "title": "Re major gammasi",
+      "slides": [
+        66,
+        67,
+        68,
+        69
+      ],
+      "blocks": [
+        {
+          "sourceSlide": 66,
+          "type": "practice_acknowledgement",
+          "title": "23-Dars. Re major gammasi.",
+          "body": [
+            "Major gammasi :",
+            "I",
+            "VI",
+            "II",
+            "III",
+            "IV",
+            "V",
+            "VII",
+            "I",
+            "I II III IV V VI VII I",
+            "1t 1t 0,5t 1t 1t 1t 0,5t"
+          ],
+          "audio": [
+            "audio55.wav",
+            "audio56.wav",
+            "audio57.wav",
+            "audio58.wav",
+            "audio59.wav",
+            "audio60.wav",
+            "audio61.wav",
+            "audio62.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image109.svg",
+            "image129.png",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 67,
+          "type": "practice_acknowledgement",
+          "title": "Major gammasining tuzilishi.",
+          "body": [
+            "Major gammasi :",
+            "I",
+            "VI",
+            "II",
+            "III",
+            "IV",
+            "V",
+            "VII",
+            "I",
+            "I II III IV V VI VII I",
+            "1t 1t 0,5t 1t 1t 1t 0,5t"
+          ],
+          "audio": [
+            "audio55.wav",
+            "audio56.wav",
+            "audio57.wav",
+            "audio58.wav",
+            "audio59.wav",
+            "audio60.wav",
+            "audio61.wav",
+            "audio62.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image109.svg",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 68,
+          "type": "practice_acknowledgement",
+          "title": "Major gammasining tuzilishi.",
+          "body": [
+            "Major gammasi :",
+            "I",
+            "VI",
+            "II",
+            "III",
+            "IV",
+            "V",
+            "VII",
+            "I",
+            "I II III IV V VI VII I",
+            "1t 1t 0,5t 1t 1t 1t 0,5t"
+          ],
+          "audio": [
+            "audio55.wav",
+            "audio56.wav",
+            "audio57.wav",
+            "audio58.wav",
+            "audio59.wav",
+            "audio60.wav",
+            "audio61.wav",
+            "audio62.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image109.svg",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        },
+        {
+          "sourceSlide": 69,
+          "type": "practice_acknowledgement",
+          "title": "Major gammasining tuzilishi.",
+          "body": [
+            "Major gammasi :",
+            "I",
+            "VI",
+            "II",
+            "III",
+            "IV",
+            "V",
+            "VII",
+            "I",
+            "I II III IV V VI VII I",
+            "1t 1t 0,5t 1t 1t 1t 0,5t"
+          ],
+          "audio": [
+            "audio55.wav",
+            "audio56.wav",
+            "audio57.wav",
+            "audio58.wav",
+            "audio59.wav",
+            "audio60.wav",
+            "audio61.wav",
+            "audio62.wav"
+          ],
+          "video": [],
+          "images": [
+            "image108.png",
+            "image109.svg",
+            "image5.png"
+          ],
+          "needsMethodistReview": false,
+          "reviewNote": null
+        }
+      ]
+    }
+  ],
+  "numberingIssues": [
+    {
+      "slide": 50,
+      "kind": "gap_in_numbering",
+      "detail": "слайд 50 объявляет 15-Dars, предыдущий урок — 13-Dars"
+    },
+    {
+      "slide": 66,
+      "kind": "gap_in_numbering",
+      "detail": "слайд 66 объявляет 23-Dars, предыдущий урок — 21-Dars"
+    }
+  ],
+  "methodistTodos": [
+    "Слайд 37 подписан 10-DARS, но продолжает тему 9-Dars — подтвердить нумерацию.",
+    "Слайды 47–49 подписаны 13-Dars, хотя 13-Dars уже занят слайдом 45 (Gamma) — вероятно 14-Dars.",
+    "Номер 22-Dars отсутствует: после 21-Dars (слайд 62) следующий явный — 23-Dars (слайд 66).",
+    "Слайды 67–69 дают идентичный текст со слайдом 63/65 — возможно незаполненные шаблон-дубли.",
+    "Слайд 57 содержит «Tekshirish», но ключа ответа в файле нет — механика проверки не определена.",
+    "Права на музыку/тексты песен и на 65 WAV + 43 MP4 не подтверждены (явная атрибуция только на слайде 26)."
+  ]
+}
