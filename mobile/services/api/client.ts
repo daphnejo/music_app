@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = 'https://solfedjio-backend.onrender.com';
+const DEFAULT_API_BASE_URL = 'https://solfedjio-backend-mlfe.onrender.com';
 export const API_BASE_URL = (process.env.EXPO_PUBLIC_API_BASE_URL?.trim() || DEFAULT_API_BASE_URL).replace(/\/$/, '');
 
 export class ApiError extends Error {
