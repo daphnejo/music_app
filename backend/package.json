@@ -5,14 +5,19 @@
   "description": "Solfedjio, 1-sinf — backend (Express + MongoDB Atlas + JWT), Render uchun",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.6.0 <25.0.0"
   },
   "scripts": {
     "start": "node --experimental-strip-types src/server.ts",
     "dev": "node --watch --experimental-strip-types src/server.ts",
     "seed": "node --experimental-strip-types src/seed.ts",
+    "content:check": "node --experimental-strip-types src/tools/validate-content.ts",
+    "content:reset": "node --experimental-strip-types src/tools/reset-content.ts",
     "content:import": "node --experimental-strip-types src/tools/import-content.ts",
+    "content:replace": "npm run content:check && npm run content:reset && npm run content:import",
     "media:upload": "node tools/upload-media-to-r2.mjs",
+    "media:check": "node --experimental-strip-types src/tools/check-media.ts",
+    "media:smoke": "node --experimental-strip-types src/tools/smoke-media.ts",
     "test": "node --experimental-strip-types --test \"tests/*.test.ts\""
   },
   "dependencies": {
@@ -30,7 +35,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/cors": "^2.8.17",
     "@types/cookie-parser": "^1.4.7",
-    "@types/node": "^20.14.0",
+    "@types/node": "^22.10.0",
     "typescript": "^5.5.0"
   }
 }

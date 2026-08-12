@@ -27,12 +27,13 @@ const attemptSchema = new Schema(
   },
   { timestamps: { createdAt: true, updatedAt: false } },
 );
-attemptSchema.index({ userId: 1, blockId: 1 });
+// Submitted attempts are efficiently covered by this compound index as well,
+// while the partial index below enforces a single draft per user/block.
 attemptSchema.index(
   { userId: 1, blockId: 1, idempotencyKey: 1 },
   { unique: true, partialFilterExpression: { idempotencyKey: { $type: 'string' } } },
 );
-// Foydalanuvchida blok uchun faqat bitta qoralama bo'lishi mumkin
+// Foydalanuvchida blok uchun faqat bitta qoralama bo'lishi mumkin.
 attemptSchema.index(
   { userId: 1, blockId: 1 },
   { unique: true, partialFilterExpression: { status: 'draft' } },

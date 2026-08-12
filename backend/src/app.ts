@@ -27,11 +27,15 @@ export function createApp() {
 
   app.use('/api', miscRouter);
   app.use('/api/auth', authRouter);
+
+  // Native Image/Audio/Video signed media URL'ni Authorization headersiz ochadi.
+  // contentRouter global requireAuth ishlatgani uchun media route undan oldin mount qilinishi shart.
+  app.use('/api/media', mediaRouter);
+
   app.use('/api', contentRouter);
   app.use('/api', assessmentRouter);
   app.use('/api/teacher', teacherRouter);
   app.use('/api/admin', adminRouter);
-  app.use('/api/media', mediaRouter);
   app.use('/api/analytics', analyticsRouter);
 
   app.use((_req, res) => {
