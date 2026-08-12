@@ -5,7 +5,7 @@
   "description": "Solfedjio, 1-sinf — backend (Express + MongoDB Atlas + JWT), Render uchun",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.6.0"
   },
   "scripts": {
     "start": "node --experimental-strip-types src/server.ts",
@@ -33,7 +33,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/cors": "^2.8.17",
     "@types/cookie-parser": "^1.4.7",
-    "@types/node": "^20.14.0",
+    "@types/node": "^22.10.0",
     "typescript": "^5.5.0"
   }
 }
