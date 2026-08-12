@@ -16,6 +16,7 @@
     "content:import": "node --experimental-strip-types src/tools/import-content.ts",
     "content:replace": "npm run content:check && npm run content:reset && npm run content:import",
     "media:upload": "node tools/upload-media-to-r2.mjs",
+    "media:check": "node --experimental-strip-types src/tools/check-media.ts",
     "test": "node --experimental-strip-types --test \"tests/*.test.ts\""
   },
   "dependencies": {
