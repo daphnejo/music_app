@@ -3,8 +3,14 @@ import { Platform } from 'react-native';
 
 const REFRESH_TOKEN_KEY = 'solfedjio.refreshToken.v1';
 
-function webStorage() {
-  return (globalThis as { localStorage?: Storage }).localStorage;
+type WebStorage = {
+  getItem: (key: string) => string | null;
+  setItem: (key: string, value: string) => void;
+  removeItem: (key: string) => void;
+};
+
+function webStorage(): WebStorage | undefined {
+  return (globalThis as unknown as { localStorage?: WebStorage }).localStorage;
 }
 
 export async function getStoredRefreshToken(): Promise<string | null> {
@@ -31,9 +37,6 @@ export async function setStoredRefreshToken(token: string | null): Promise<void>
     return;
   }
 
-  if (token) {
-    await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, token);
-  } else {
-    await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
-  }
+  if (token) await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, token);
+  else await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
 }
