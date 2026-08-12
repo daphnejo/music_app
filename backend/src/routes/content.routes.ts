@@ -36,6 +36,11 @@ export async function accessibleVersionId(user: AuthUser): Promise<Types.ObjectI
   return cv?._id ?? null;
 }
 
+function mediaUrl(assetId: string, userId: string): string {
+  const { token } = signMediaToken(assetId, userId);
+  return `/api/media/${assetId}?uid=${encodeURIComponent(userId)}&token=${encodeURIComponent(token)}`;
+}
+
 async function assetsForBlock(blockId: Types.ObjectId, userId: string) {
   const links = await BlockAsset.find({ blockId }).sort({ role: 1, orderIndex: 1 }).populate('assetId');
   return links
@@ -59,8 +64,8 @@ async function assetsForBlock(blockId: Types.ObjectId, userId: string) {
         caption: a.caption,
         transcript: a.transcript,
         rightsStatus: a.rightsStatus,
-        // Muddatli imzolangan havola — media fayllarga to'g'ridan-to'g'ri kirish yopiq
-        url: `/api/media/${a._id}?token=${signMediaToken(String(a._id), userId).token}`,
+        // Native Image/Audio/Video Authorization header yubormaydi; HMAC token userId bilan bog'langan.
+        url: mediaUrl(String(a._id), userId),
       };
     });
 }
@@ -139,7 +144,7 @@ contentRouter.get(
         id: String(o._id),
         ordinal: o.ordinal,
         text: o.text,
-        imageUrl: o.imageAssetId ? `/api/media/${o.imageAssetId}?token=${signMediaToken(String(o.imageAssetId), user.id).token}` : null,
+        imageUrl: o.imageAssetId ? mediaUrl(String(o.imageAssetId), user.id) : null,
       })) ?? [];
 
     const draftAttempt = await Attempt.findOne({ userId: user.id, blockId: block._id, status: 'draft' });
@@ -149,8 +154,6 @@ contentRouter.get(
 
     const best = await Progress.findOne({ userId: user.id, courseVersionId: cvId, blockId: block._id });
 
-    const allBlocks = await Block.find({ lessonId: { $in: (await Lesson.find({ courseVersionId: cvId }).sort({ orderIndex: 1 })).map((l) => l._id) } });
-    // Yuqoridagi so'rov tartibini saqlash uchun to'g'ri yo'l — darslar bo'yicha alohida tartiblanadi:
     const lessonsOrdered = await Lesson.find({ courseVersionId: cvId }).sort({ orderIndex: 1 });
     const neighbours: string[] = [];
     for (const l of lessonsOrdered) {
