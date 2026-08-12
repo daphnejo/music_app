@@ -1,8 +1,11 @@
 import { Router } from 'express';
 import type { Types } from 'mongoose';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { h, forbidden, notFound } from '../errors.ts';
 import { requireAuth } from '../middleware/auth.middleware.ts';
-import { classIdsForUser, signMediaToken, type AuthUser } from '../auth.ts';
+import { classIdsForUser, type AuthUser } from '../auth.ts';
+import { config } from '../config.ts';
 import {
   CourseVersion,
   Lesson,
@@ -21,6 +24,21 @@ import {
 export const contentRouter = Router();
 contentRouter.use(requireAuth);
 
+const r2 = new S3Client({
+  region: 'auto',
+  endpoint: config.r2.endpoint,
+  credentials: { accessKeyId: config.r2.accessKeyId, secretAccessKey: config.r2.secretAccessKey },
+});
+
+async function directMediaUrl(file: string): Promise<string> {
+  return getSignedUrl(r2, new GetObjectCommand({ Bucket: config.r2.bucket, Key: file }), { expiresIn: 300 });
+}
+
+async function mediaUrlByAssetId(assetId: string): Promise<string | null> {
+  const asset = await Asset.findById(assetId).select('file');
+  return asset ? directMediaUrl(asset.file) : null;
+}
+
 /** Foydalanuvchiga ochiq (o'z sinfiga tayinlangan va nashr qilingan) kurs versiyasi */
 export async function accessibleVersionId(user: AuthUser): Promise<Types.ObjectId | null> {
   if (user.role === 'admin' || user.role === 'content_editor') {
@@ -36,38 +54,35 @@ export async function accessibleVersionId(user: AuthUser): Promise<Types.ObjectI
   return cv?._id ?? null;
 }
 
-function mediaUrl(assetId: string, userId: string): string {
-  const { token } = signMediaToken(assetId, userId);
-  return `/api/media/${assetId}?uid=${encodeURIComponent(userId)}&token=${encodeURIComponent(token)}`;
-}
-
-async function assetsForBlock(blockId: Types.ObjectId, userId: string) {
+async function assetsForBlock(blockId: Types.ObjectId) {
   const links = await BlockAsset.find({ blockId }).sort({ role: 1, orderIndex: 1 }).populate('assetId');
-  return links
-    .filter((l) => l.assetId)
-    .map((l) => {
-      const a = l.assetId as unknown as {
-        _id: Types.ObjectId;
-        file: string;
-        kind: string;
-        mime: string;
-        caption: string | null;
-        transcript: string | null;
-        rightsStatus: string;
-      };
-      return {
-        id: String(a._id),
-        file: a.file,
-        kind: a.kind,
-        mime: a.mime,
-        role: l.role,
-        caption: a.caption,
-        transcript: a.transcript,
-        rightsStatus: a.rightsStatus,
-        // Native Image/Audio/Video Authorization header yubormaydi; HMAC token userId bilan bog'langan.
-        url: mediaUrl(String(a._id), userId),
-      };
-    });
+  return Promise.all(
+    links
+      .filter((l) => l.assetId)
+      .map(async (l) => {
+        const a = l.assetId as unknown as {
+          _id: Types.ObjectId;
+          file: string;
+          kind: string;
+          mime: string;
+          caption: string | null;
+          transcript: string | null;
+          rightsStatus: string;
+        };
+        return {
+          id: String(a._id),
+          file: a.file,
+          kind: a.kind,
+          mime: a.mime,
+          role: l.role,
+          caption: a.caption,
+          transcript: a.transcript,
+          rightsStatus: a.rightsStatus,
+          // Native media local HTTP redirectdan o'tmaydi; R2 private qoladi, URL 5 daqiqada eskiradi.
+          url: await directMediaUrl(a.file),
+        };
+      }),
+  );
 }
 
 /** GET /api/course — kurs xaritasi + progress */
@@ -139,13 +154,16 @@ contentRouter.get(
 
     // is_correct maydoni schema darajasida select:false — clientga hech qachon ketmaydi
     const question = await Question.findOne({ blockId: block._id }).select('type prompt options');
-    const options =
-      question?.options.map((o) => ({
-        id: String(o._id),
-        ordinal: o.ordinal,
-        text: o.text,
-        imageUrl: o.imageAssetId ? mediaUrl(String(o.imageAssetId), user.id) : null,
-      })) ?? [];
+    const options = question
+      ? await Promise.all(
+          question.options.map(async (o) => ({
+            id: String(o._id),
+            ordinal: o.ordinal,
+            text: o.text,
+            imageUrl: o.imageAssetId ? await mediaUrlByAssetId(String(o.imageAssetId)) : null,
+          })),
+        )
+      : [];
 
     const draftAttempt = await Attempt.findOne({ userId: user.id, blockId: block._id, status: 'draft' });
     const draftAnswer = draftAttempt
@@ -187,7 +205,7 @@ contentRouter.get(
         reviewNote: block.reviewNote,
         lesson: { id: String(lesson._id), title: lesson.title, order: lesson.orderIndex },
       },
-      assets: await assetsForBlock(block._id, user.id),
+      assets: await assetsForBlock(block._id),
       question: question ? { id: String(question._id), type: question.type, prompt: question.prompt, options } : null,
       draftPayload: draftAnswer?.payload ?? null,
       progress: { state: best?.state ?? 'in_progress', bestScore: best?.bestScore ?? null },
