@@ -76,16 +76,25 @@ async function main() {
   console.log(`[media:smoke] block: ${selected.block?.title ?? '(nomi yo‘q)'}`);
   console.log(`[media:smoke] asset: kind=${asset.kind} file=${asset.file}`);
 
-  const mediaResponse = await fetch(`${base}${asset.url}`, { redirect: 'manual' });
-  console.log(`[media:smoke] media route: HTTP ${mediaResponse.status}`);
-  const location = mediaResponse.headers.get('location');
-  if (mediaResponse.status !== 302 || !location) {
-    const text = await mediaResponse.text();
-    throw new Error(`Media route R2'ga redirect qilmadi. HTTP ${mediaResponse.status}: ${text.slice(0, 300)}`);
-  }
-  console.log('[media:smoke] R2 redirect: YES');
+  const isDirectHttps = /^https:\/\//i.test(asset.url);
+  console.log(`[media:smoke] media URL: ${isDirectHttps ? 'direct HTTPS R2' : 'backend route'}`);
 
-  const r2Response = await fetch(location, { headers: { Range: 'bytes=0-0' } });
+  let r2Response: Response;
+  if (isDirectHttps) {
+    r2Response = await fetch(asset.url, { headers: { Range: 'bytes=0-0' } });
+  } else {
+    const mediaUrl = /^https?:\/\//i.test(asset.url) ? asset.url : `${base}${asset.url}`;
+    const mediaResponse = await fetch(mediaUrl, { redirect: 'manual' });
+    console.log(`[media:smoke] media route: HTTP ${mediaResponse.status}`);
+    const location = mediaResponse.headers.get('location');
+    if (mediaResponse.status !== 302 || !location) {
+      const text = await mediaResponse.text();
+      throw new Error(`Media route R2'ga redirect qilmadi. HTTP ${mediaResponse.status}: ${text.slice(0, 300)}`);
+    }
+    console.log('[media:smoke] R2 redirect: YES');
+    r2Response = await fetch(location, { headers: { Range: 'bytes=0-0' } });
+  }
+
   console.log(`[media:smoke] R2 file: HTTP ${r2Response.status}`);
   console.log(`[media:smoke] content-type: ${r2Response.headers.get('content-type') ?? 'unknown'}`);
 
@@ -94,7 +103,7 @@ async function main() {
     throw new Error(`R2 faylni bermadi. HTTP ${r2Response.status}: ${text.slice(0, 300)}`);
   }
 
-  console.log('[media:smoke] OK — API → signed media route → R2 zanjiri ishlayapti.');
+  console.log('[media:smoke] OK — API → private R2 media zanjiri ishlayapti.');
 }
 
 main().catch((err) => {
