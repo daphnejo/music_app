@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Solfedjio",
+    "slug": "solfedjio-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "solfedjio",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": { "supportsTablet": true, "bundleIdentifier": "uz.artclub.solfedjio" },
+    "android": { "package": "uz.artclub.solfedjio", "edgeToEdgeEnabled": true },
+    "plugins": ["expo-router"],
+    "experiments": { "typedRoutes": true }
+  }
+}
