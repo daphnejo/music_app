@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { BrandMark } from '@/components/brand/BrandMark';
 import { useAuth } from '@/context/AuthContext';
 import { ApiError } from '@/services/api/client';
 import { colors } from '@/theme/colors';
@@ -31,11 +31,7 @@ export default function Login() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={styles.brand}>
-        <View style={styles.logo}><Ionicons name="musical-notes" size={30} color="#fff" /></View>
-        <Text style={styles.brandText}>Solfedjio</Text>
-        <Text style={styles.tagline}>Musiqani tingla. O‘rgan. His qil.</Text>
-      </View>
+      <BrandMark size={86} subtitle="Musiqani tingla. O‘rgan. His qil." />
 
       <View style={styles.form}>
         <Text style={styles.title}>Xush kelibsiz 👋</Text>
@@ -83,11 +79,7 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, padding: 20, justifyContent: 'center', gap: 36, backgroundColor: colors.background },
-  brand: { alignItems: 'center', gap: 7 },
-  logo: { width: 64, height: 64, borderRadius: 22, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
-  brandText: { fontSize: 28, fontWeight: '900', color: colors.text },
-  tagline: { color: colors.muted },
+  safe: { flex: 1, padding: 20, justifyContent: 'center', gap: 34, backgroundColor: colors.background },
   form: { gap: 14 },
   title: { fontSize: 27, fontWeight: '900', color: colors.text },
   subtitle: { color: colors.muted, marginBottom: 6 },
