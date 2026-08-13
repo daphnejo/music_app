@@ -148,7 +148,26 @@ authRouter.get(
   '/me',
   requireAuth,
   h(async (req, res) => {
-    res.json({ user: req.auth });
+    const user = await User.findOne({ _id: req.auth!.id, deletedAt: null });
+    if (!user) throw unauthorized('Akkaunt topilmadi');
+    res.json({ user: toAuthUser(user) });
+  }),
+);
+
+authRouter.patch(
+  '/me',
+  requireAuth,
+  h(async (req, res) => {
+    const fullName = String(req.body?.fullName ?? '').trim();
+    if (fullName.length < 2 || fullName.length > 120) throw badRequest('Ism-familiyani to‘g‘ri kiriting');
+
+    const user = await User.findOne({ _id: req.auth!.id, deletedAt: null });
+    if (!user) throw unauthorized('Akkaunt topilmadi');
+
+    user.fullName = fullName;
+    await user.save();
+    await audit(user._id, 'auth.profile.update', 'user', user._id);
+    res.json({ user: toAuthUser(user) });
   }),
 );
 
