@@ -44,8 +44,6 @@ authRouter.post(
     const exists = await User.findOne({ emailLower, deletedAt: null }).select('_id');
     if (exists) throw conflict('Bu email bilan akkaunt allaqachon mavjud');
 
-    // Public ro‘yxatdan o‘tgan o‘quvchini joriy published kurs biriktirilgan sinfga qo‘shamiz.
-    // Bu statik demo userga bog‘liqlikni yo‘qotadi va yangi account darhol kursni ko‘ra oladi.
     const published = await CourseVersion.findOne({ status: 'published' }).sort({ version: -1 });
     if (!published) throw conflict('Ro‘yxatdan o‘tish vaqtincha yopiq: faol kurs topilmadi');
 
@@ -84,12 +82,7 @@ authRouter.post(
     const refreshToken = await issueRefreshToken(user._id, req.headers['user-agent']);
     await audit(user._id, 'auth.register', 'user', user._id, { classId: String(cls._id) });
 
-    res.status(201).json({
-      user: authUser,
-      accessToken,
-      refreshToken,
-      expiresIn: 15 * 60,
-    });
+    res.status(201).json({ user: authUser, accessToken, refreshToken, expiresIn: 15 * 60 });
   }),
 );
 
@@ -105,8 +98,6 @@ authRouter.post(
     await noteLoginAttempt(rateKey);
 
     const user = await User.findOne({ emailLower: email.toLowerCase(), deletedAt: null });
-
-    // Noma'lum email va noto'g'ri parol uchun bir xil javob — akkaunt mavjudligini oshkor qilmaymiz
     if (!user || !verifyPassword(password, user.passwordHash)) {
       await logLogin(user?._id ?? null, false);
       throw unauthorized('Email yoki parol noto‘g‘ri');
@@ -118,12 +109,7 @@ authRouter.post(
     const refreshToken = await issueRefreshToken(user._id, req.headers['user-agent']);
     await logLogin(user._id, true);
 
-    res.json({
-      user: authUser,
-      accessToken,
-      refreshToken,
-      expiresIn: 15 * 60,
-    });
+    res.json({ user: authUser, accessToken, refreshToken, expiresIn: 15 * 60 });
   }),
 );
 
@@ -135,12 +121,7 @@ authRouter.post(
     const result = await rotateRefreshToken(refreshToken);
     if (!result) throw unauthorized('Refresh token yaroqsiz yoki muddati o‘tgan');
     const accessToken = signAccessToken(result.user);
-    res.json({
-      user: result.user,
-      accessToken,
-      refreshToken: result.newRefreshToken,
-      expiresIn: 15 * 60,
-    });
+    res.json({ user: result.user, accessToken, refreshToken: result.newRefreshToken, expiresIn: 15 * 60 });
   }),
 );
 
@@ -154,7 +135,6 @@ authRouter.post(
   }),
 );
 
-/** Barcha qurilmalardan chiqish (parolni almashtirgandan keyin ham chaqiriladi) */
 authRouter.post(
   '/logout-all',
   requireAuth,
@@ -173,6 +153,28 @@ authRouter.get(
 );
 
 authRouter.post(
+  '/change-password',
+  requireAuth,
+  h(async (req, res) => {
+    const currentPassword = String(req.body?.currentPassword ?? '');
+    const newPassword = String(req.body?.newPassword ?? '');
+    if (!currentPassword) throw badRequest('Joriy parolni kiriting');
+    if (newPassword.length < 8) throw badRequest('Yangi parol kamida 8 belgidan iborat bo‘lishi kerak');
+    if (currentPassword === newPassword) throw badRequest('Yangi parol joriy paroldan farq qilishi kerak');
+
+    const user = await User.findOne({ _id: req.auth!.id, deletedAt: null });
+    if (!user) throw unauthorized('Akkaunt topilmadi');
+    if (!verifyPassword(currentPassword, user.passwordHash)) throw unauthorized('Joriy parol noto‘g‘ri');
+
+    user.passwordHash = hashPassword(newPassword);
+    await user.save();
+    await revokeAllRefreshTokens(user._id);
+    await audit(user._id, 'auth.password.change', 'user', user._id);
+    res.json({ ok: true, reloginRequired: true });
+  }),
+);
+
+authRouter.post(
   '/password-reset/request',
   h(async (req, res) => {
     const email = String(req.body?.email ?? '').trim();
@@ -184,16 +186,11 @@ authRouter.post(
     if (user) {
       const token = randomBytes(24).toString('hex');
       const tokenHash = createHash('sha256').update(token).digest('hex');
-      await PasswordReset.create({
-        userId: user._id,
-        tokenHash,
-        expiresAt: new Date(Date.now() + 3600_000),
-      });
+      await PasswordReset.create({ userId: user._id, tokenHash, expiresAt: new Date(Date.now() + 3600_000) });
       await audit(user._id, 'auth.password_reset.requested', 'user', user._id);
       if (process.env.NODE_ENV !== 'production') devToken = token;
     }
 
-    // Javob foydalanuvchi mavjudligidan qat'i nazar bir xil
     res.json({ ok: true, message: "Agar bunday email mavjud bo'lsa, ko'rsatma yuborildi", devToken });
   }),
 );
@@ -203,9 +200,8 @@ authRouter.post(
   h(async (req, res) => {
     const token = String(req.body?.token ?? '');
     const password = String(req.body?.password ?? '');
-    if (token.length < 10 || password.length < 8) {
-      throw badRequest('Yaroqli token va kamida 8 belgili parol kerak');
-    }
+    if (token.length < 10 || password.length < 8) throw badRequest('Yaroqli token va kamida 8 belgili parol kerak');
+
     const tokenHash = createHash('sha256').update(token).digest('hex');
     const row = await PasswordReset.findOne({ tokenHash, usedAt: null, expiresAt: { $gt: new Date() } });
     if (!row) throw badRequest('Token yaroqsiz yoki muddati o‘tgan');
