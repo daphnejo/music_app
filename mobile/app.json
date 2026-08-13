@@ -10,10 +10,35 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "uz.artclub.solfedjio",
-      "config": { "usesNonExemptEncryption": false }
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
-    "android": { "package": "uz.artclub.solfedjio", "edgeToEdgeEnabled": true },
-    "plugins": ["expo-router", "expo-secure-store", "expo-audio", "expo-video"],
-    "experiments": { "typedRoutes": true }
+    "android": {
+      "package": "uz.artclub.solfedjio",
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-audio",
+      "expo-video",
+      "expo-font",
+      "expo-asset"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d35794d4-5fb0-4bdf-995b-48476c26afc9"
+      }
+    },
+    "owner": "anvar_1802"
   }
 }
