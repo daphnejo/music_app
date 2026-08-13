@@ -1,5 +1,5 @@
 import { randomBytes, scryptSync, timingSafeEqual, createHash, createHmac } from 'node:crypto';
-import jwt from 'jsonwebtoken';
+import jwt, { type SignOptions } from 'jsonwebtoken';
 import type { Types } from 'mongoose';
 import { config } from './config.ts';
 import { forbidden, tooMany, unauthorized } from './errors.ts';
@@ -53,7 +53,7 @@ type AccessTokenPayload = { sub: string; role: Role; orgId: string | null };
 
 export function signAccessToken(user: AuthUser): string {
   const payload: AccessTokenPayload = { sub: user.id, role: user.role, orgId: user.orgId };
-  return jwt.sign(payload, config.jwtSecret, { expiresIn: config.jwtAccessTtl });
+  return jwt.sign(payload, config.jwtSecret, { expiresIn: config.jwtAccessTtl as SignOptions['expiresIn'] });
 }
 
 export function verifyAccessToken(token: string): AccessTokenPayload {
