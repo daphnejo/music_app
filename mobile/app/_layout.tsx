@@ -30,6 +30,7 @@ function RootNavigator() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="lessons/[id]" />
         <Stack.Screen name="blocks/[id]" />
+        <Stack.Screen name="piano" />
       </Stack.Protected>
     </Stack>
   );
@@ -48,6 +49,4 @@ export default function RootLayout() {
   );
 }
 
-const styles = StyleSheet.create({
-  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background },
-});
+const styles = StyleSheet.create({ loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background } });
