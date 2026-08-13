@@ -1,19 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Screen } from '@/components/ui/Screen';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { useAuth } from '@/context/AuthContext';
 import { colors } from '@/theme/colors';
 
-const items = [
-  ['person-circle-outline', 'Profil ma’lumotlari'],
-  ['language-outline', 'Til'],
-  ['notifications-outline', 'Bildirishnomalar'],
-  ['download-outline', 'Yuklab olingan darslar'],
-  ['help-circle-outline', 'Yordam'],
-  ['information-circle-outline', 'Ilova haqida'],
-] as const;
+const items: Array<[keyof typeof Ionicons.glyphMap, string, Href]> = [
+  ['person-circle-outline', 'Profil ma’lumotlari', '/profile-info'],
+  ['key-outline', 'Parolni almashtirish', '/change-password'],
+  ['language-outline', 'Til', '/language'],
+  ['notifications-outline', 'Bildirishnomalar', '/notifications'],
+  ['help-circle-outline', 'Yordam', '/help'],
+  ['information-circle-outline', 'Ilova haqida', '/about'],
+];
 
 const roleLabels = {
   student: 'O‘quvchi',
@@ -38,19 +38,19 @@ export default function ProfileScreen() {
         <View style={styles.avatar}><Text style={styles.avatarText}>{initials}</Text></View>
         <View style={{ flex: 1 }}>
           <Text style={styles.name}>{user?.fullName ?? 'Foydalanuvchi'}</Text>
-          <Text style={styles.meta}>{user ? `${roleLabels[user.role]} · ${user.email}` : 'Solfedjio · 1-sinf'}</Text>
+          <Text style={styles.meta}>{user ? `${roleLabels[user.role]} · ${user.email}` : 'Solfedjio'}</Text>
         </View>
       </View>
       <View style={styles.menu}>
-        {items.map(([icon, label]) => (
-          <Pressable key={label} style={styles.item}>
+        {items.map(([icon, label, href], index) => (
+          <Pressable key={label} onPress={() => router.push(href)} style={[styles.item, index === items.length - 1 && styles.itemLast]}>
             <Ionicons name={icon} size={22} color={colors.primary} />
             <Text style={styles.itemText}>{label}</Text>
             <Ionicons name="chevron-forward" size={18} color={colors.muted} />
           </Pressable>
         ))}
       </View>
-      <Pressable style={styles.logout} onPress={handleLogout}>
+      <Pressable style={styles.logout} onPress={() => void handleLogout()}>
         <Ionicons name="log-out-outline" size={20} color="#C2415D" />
         <Text style={styles.logoutText}>Chiqish</Text>
       </Pressable>
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   meta: { marginTop: 4, color: colors.muted, fontSize: 13 },
   menu: { backgroundColor: colors.surface, borderRadius: 22, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   item: { minHeight: 58, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },
+  itemLast: { borderBottomWidth: 0 },
   itemText: { flex: 1, fontSize: 14, fontWeight: '700', color: colors.text },
   logout: { height: 54, borderRadius: 18, backgroundColor: '#FFF0F4', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
   logoutText: { color: '#C2415D', fontWeight: '800' },
