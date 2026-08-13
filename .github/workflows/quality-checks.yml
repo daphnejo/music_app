@@ -6,6 +6,7 @@ on:
       - agent/mobile-foundation
       - agent/piano-interactions
       - agent/app-polish-auth
+      - agent/fix-brand-assets
   pull_request:
     branches:
       - main
@@ -23,6 +24,7 @@ jobs:
           node-version: 22
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
+      - run: npx expo prebuild --platform android --clean --no-install
       - run: npx expo export --platform android --output-dir /tmp/expo-dist
 
   backend-content-check:
