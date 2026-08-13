@@ -1,5 +1,5 @@
 import { createContext, type PropsWithChildren, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { ApiError, publicApiRequest, setApiAccessToken, setApiRefreshHandler } from '@/services/api/client';
+import { ApiError, apiRequest, publicApiRequest, setApiAccessToken, setApiRefreshHandler } from '@/services/api/client';
 import { getStoredRefreshToken, setStoredRefreshToken } from '@/services/auth/storage';
 
 export type UserRole = 'student' | 'teacher' | 'content_editor' | 'admin';
@@ -24,6 +24,7 @@ type AuthContextValue = {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (fullName: string, email: string, password: string) => Promise<void>;
+  updateProfile: (fullName: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshSession: () => Promise<string | null>;
 };
@@ -112,6 +113,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
     await applySession(session);
   }, [applySession]);
 
+  const updateProfile = useCallback(async (fullName: string) => {
+    const result = await apiRequest<{ user: AuthUser }>('/api/auth/me', {
+      method: 'PATCH',
+      body: { fullName: fullName.trim() },
+    });
+    setUser(result.user);
+  }, []);
+
   const logout = useCallback(async () => {
     const refreshToken = refreshTokenRef.current;
     try {
@@ -130,8 +139,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }, [clearSession]);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ user, isLoading, login, register, logout, refreshSession }),
-    [user, isLoading, login, register, logout, refreshSession],
+    () => ({ user, isLoading, login, register, updateProfile, logout, refreshSession }),
+    [user, isLoading, login, register, updateProfile, logout, refreshSession],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
