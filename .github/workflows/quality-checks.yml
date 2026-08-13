@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - agent/mobile-foundation
+      - agent/piano-interactions
   pull_request:
     branches:
       - main
@@ -21,6 +22,7 @@ jobs:
           node-version: 22
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
+      - run: npx expo export --platform android --output-dir /tmp/expo-dist
 
   backend-content-check:
     runs-on: ubuntu-latest
@@ -33,4 +35,5 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
+      - run: npm run typecheck
       - run: npm run content:check

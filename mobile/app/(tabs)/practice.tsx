@@ -32,6 +32,25 @@ export default function PracticeScreen() {
   return (
     <Screen>
       <SectionHeader title="Mashqlar" caption="Solfedjio materialidagi haqiqiy topshiriqlar." />
+
+      <Pressable onPress={() => router.push('/piano')} style={styles.pianoCard}>
+        <View style={styles.pianoTop}>
+          <View style={styles.pianoIcon}>
+            <Ionicons name="musical-notes" size={25} color="#FFFFFF" />
+          </View>
+          <View style={styles.pianoBody}>
+            <Text style={styles.pianoEyebrow}>INTERAKTIV ASBOB</Text>
+            <Text style={styles.pianoTitle}>Pianino</Text>
+            <Text style={styles.pianoCaption}>Klavishlarni bosib notalarni real vaqtda eshiting.</Text>
+          </View>
+          <Ionicons name="arrow-forward-circle" size={30} color="#FFFFFF" />
+        </View>
+        <View style={styles.miniKeyboard}>
+          {[0, 1, 2, 3, 4, 5, 6].map((key) => <View key={key} style={styles.miniWhiteKey} />)}
+          {[0, 1, 3, 4, 5].map((key) => <View key={key} style={[styles.miniBlackKey, { left: (key + 1) * 24 - 7 }]} />)}
+        </View>
+      </Pressable>
+
       {!exercises.length ? <ErrorState message="Materialda mashqlar topilmadi." /> : null}
       <View style={styles.list}>
         {exercises.map(({ block, lesson }) => {
@@ -62,6 +81,16 @@ export default function PracticeScreen() {
 }
 
 const styles = StyleSheet.create({
+  pianoCard: { backgroundColor: '#17172A', borderRadius: 24, padding: 16, gap: 14, overflow: 'hidden' },
+  pianoTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  pianoIcon: { width: 46, height: 46, borderRadius: 15, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
+  pianoBody: { flex: 1 },
+  pianoEyebrow: { color: '#A5B4FC', fontSize: 9, fontWeight: '900', letterSpacing: .8 },
+  pianoTitle: { color: '#FFFFFF', fontSize: 20, fontWeight: '900', marginTop: 1 },
+  pianoCaption: { color: '#BFC0CF', fontSize: 11, lineHeight: 15, marginTop: 2 },
+  miniKeyboard: { position: 'relative', height: 46, width: 168, flexDirection: 'row', alignSelf: 'center' },
+  miniWhiteKey: { width: 24, height: 46, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#DADAE3', borderBottomLeftRadius: 4, borderBottomRightRadius: 4 },
+  miniBlackKey: { position: 'absolute', top: 0, zIndex: 2, width: 14, height: 28, backgroundColor: '#242431', borderBottomLeftRadius: 3, borderBottomRightRadius: 3 },
   list: { gap: 11 },
   card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: colors.surface, borderRadius: 20, padding: 14, borderWidth: 1, borderColor: colors.border },
   icon: { width: 46, height: 46, borderRadius: 15, backgroundColor: '#EEF2FF', alignItems: 'center', justifyContent: 'center' },
