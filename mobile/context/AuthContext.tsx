@@ -22,11 +22,13 @@ type SessionResponse = {
 type AuthContextValue = {
   user: AuthUser | null;
   isLoading: boolean;
+  sessionRestoreError: string | null;
   login: (email: string, password: string) => Promise<void>;
   register: (fullName: string, email: string, password: string) => Promise<void>;
   updateProfile: (fullName: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshSession: () => Promise<string | null>;
+  retrySessionRestore: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -34,6 +36,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [sessionRestoreError, setSessionRestoreError] = useState<string | null>(null);
   const refreshTokenRef = useRef<string | null>(null);
   const accessTokenRef = useRef<string | null>(null);
 
@@ -42,6 +45,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     accessTokenRef.current = session.accessToken;
     setApiAccessToken(session.accessToken);
     setUser(session.user);
+    setSessionRestoreError(null);
     await setStoredRefreshToken(session.refreshToken);
   }, []);
 
@@ -50,6 +54,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     accessTokenRef.current = null;
     setApiAccessToken(null);
     setUser(null);
+    setSessionRestoreError(null);
     await setStoredRefreshToken(null);
   }, []);
 
@@ -73,29 +78,26 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
   }, [applySession, clearSession]);
 
+  const restoreStoredSession = useCallback(async () => {
+    setIsLoading(true);
+    setSessionRestoreError(null);
+    try {
+      const stored = await getStoredRefreshToken();
+      if (!stored) return;
+      refreshTokenRef.current = stored;
+      await refreshSession();
+    } catch (error) {
+      setSessionRestoreError(error instanceof ApiError ? error.message : 'Saqlangan sessiyani tiklab bo‘lmadi. Internetni tekshiring.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [refreshSession]);
+
   useEffect(() => {
     setApiRefreshHandler(refreshSession);
-    let mounted = true;
-
-    (async () => {
-      try {
-        const stored = await getStoredRefreshToken();
-        if (stored) {
-          refreshTokenRef.current = stored;
-          await refreshSession();
-        }
-      } catch {
-        // Network failure should not destroy a still-valid refresh token.
-      } finally {
-        if (mounted) setIsLoading(false);
-      }
-    })();
-
-    return () => {
-      mounted = false;
-      setApiRefreshHandler(null);
-    };
-  }, [refreshSession]);
+    void restoreStoredSession();
+    return () => setApiRefreshHandler(null);
+  }, [refreshSession, restoreStoredSession]);
 
   const login = useCallback(async (email: string, password: string) => {
     const session = await publicApiRequest<SessionResponse>('/api/auth/login', {
@@ -139,8 +141,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }, [clearSession]);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ user, isLoading, login, register, updateProfile, logout, refreshSession }),
-    [user, isLoading, login, register, updateProfile, logout, refreshSession],
+    () => ({ user, isLoading, sessionRestoreError, login, register, updateProfile, logout, refreshSession, retrySessionRestore: restoreStoredSession }),
+    [user, isLoading, sessionRestoreError, login, register, updateProfile, logout, refreshSession, restoreStoredSession],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
