@@ -67,10 +67,16 @@ export default function Login() {
 
         {error ? <Text style={styles.error}>{error}</Text> : null}
 
-        <Pressable><Text style={styles.forgot}>Parolni unutdingizmi?</Text></Pressable>
         <Pressable disabled={!ready} onPress={handleLogin} style={[styles.button, !ready && styles.disabled]}>
           {submitting ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Kirish</Text>}
         </Pressable>
+
+        <View style={styles.registerRow}>
+          <Text style={styles.registerText}>Yangi foydalanuvchimisiz?</Text>
+          <Pressable onPress={() => router.push('/register')}>
+            <Text style={styles.registerLink}>Ro‘yxatdan o‘tish</Text>
+          </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -87,8 +93,10 @@ const styles = StyleSheet.create({
   subtitle: { color: colors.muted, marginBottom: 6 },
   input: { height: 54, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, borderRadius: 16, paddingHorizontal: 16, fontSize: 15, color: colors.text },
   error: { color: '#B4233F', backgroundColor: '#FFF0F4', borderRadius: 14, paddingHorizontal: 14, paddingVertical: 11, lineHeight: 19 },
-  forgot: { color: colors.primary, alignSelf: 'flex-end', fontWeight: '700' },
   button: { height: 56, borderRadius: 18, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
   disabled: { opacity: 0.45 },
   buttonText: { color: '#fff', fontWeight: '800', fontSize: 16 },
+  registerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 2 },
+  registerText: { color: colors.muted, fontSize: 13 },
+  registerLink: { color: colors.primary, fontWeight: '800', fontSize: 13 },
 });
