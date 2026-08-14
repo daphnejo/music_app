@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
-import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
+import { BrandMark } from '@/components/brand/BrandMark';
 import { BackHeader } from '@/components/ui/BackHeader';
 import { Screen } from '@/components/ui/Screen';
 import { colors } from '@/theme/colors';
@@ -11,9 +11,7 @@ export default function AboutScreen() {
     <Screen>
       <BackHeader title="Ilova haqida" />
       <View style={styles.hero}>
-        <View style={styles.logo}><Ionicons name="musical-notes" size={36} color="#fff" /></View>
-        <Text style={styles.name}>Solfedjio</Text>
-        <Text style={styles.version}>Versiya {version}</Text>
+        <BrandMark size={86} subtitle={`Versiya ${version}`} />
       </View>
       <View style={styles.card}>
         <Text style={styles.text}>Solfedjio — mobil o‘quv ilovasi. Darslar, topshiriqlar, natijalar va interaktiv pianino bitta joyda ishlaydi.</Text>
@@ -32,10 +30,7 @@ function Row({ label, value, last = false }: { label: string; value: string; las
 }
 
 const styles = StyleSheet.create({
-  hero: { alignItems: 'center', paddingVertical: 16, gap: 6 },
-  logo: { width: 78, height: 78, borderRadius: 25, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
-  name: { color: colors.text, fontSize: 24, fontWeight: '900' },
-  version: { color: colors.muted, fontSize: 12, fontWeight: '700' },
+  hero: { alignItems: 'center', paddingVertical: 16 },
   card: { backgroundColor: colors.surface, borderRadius: 22, borderWidth: 1, borderColor: colors.border, paddingHorizontal: 16 },
   text: { color: colors.muted, lineHeight: 21, paddingVertical: 16, fontSize: 13 },
   row: { flexDirection: 'row', justifyContent: 'space-between', gap: 16, paddingVertical: 15, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },

@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router, type Href } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Screen } from '@/components/ui/Screen';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { useAuth } from '@/context/AuthContext';
@@ -31,6 +31,17 @@ export default function ProfileScreen() {
     router.replace('/login');
   }
 
+  function confirmLogout() {
+    Alert.alert(
+      'Akkauntdan chiqish',
+      'Haqiqatan ham akkauntingizdan chiqmoqchimisiz?',
+      [
+        { text: 'Bekor qilish', style: 'cancel' },
+        { text: 'Chiqish', style: 'destructive', onPress: () => void handleLogout() },
+      ],
+    );
+  }
+
   return (
     <Screen>
       <SectionHeader title="Profil" />
@@ -50,7 +61,7 @@ export default function ProfileScreen() {
           </Pressable>
         ))}
       </View>
-      <Pressable style={styles.logout} onPress={() => void handleLogout()}>
+      <Pressable style={styles.logout} onPress={confirmLogout}>
         <Ionicons name="log-out-outline" size={20} color="#C2415D" />
         <Text style={styles.logoutText}>Chiqish</Text>
       </Pressable>

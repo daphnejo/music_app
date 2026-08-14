@@ -14,14 +14,16 @@ const CourseContext = createContext<CourseContextValue | null>(null);
 
 export function CourseProvider({ children }: PropsWithChildren) {
   const { user } = useAuth();
+  const userId = user?.id ?? null;
   const [data, setData] = useState<CourseMapResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const reload = useCallback(async () => {
-    if (!user) {
+    if (!userId) {
       setData(null);
       setError(null);
+      setIsLoading(false);
       return;
     }
 
@@ -34,11 +36,14 @@ export function CourseProvider({ children }: PropsWithChildren) {
     } finally {
       setIsLoading(false);
     }
-  }, [user]);
+  }, [userId]);
 
   useEffect(() => {
+    // Never display course/progress cached in memory from a different account.
+    setData(null);
+    setError(null);
     void reload();
-  }, [reload]);
+  }, [userId, reload]);
 
   const value = useMemo(() => ({ data, isLoading, error, reload }), [data, isLoading, error, reload]);
   return <CourseContext.Provider value={value}>{children}</CourseContext.Provider>;
