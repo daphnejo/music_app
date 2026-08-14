@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Redirect, type Href } from 'expo-router';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { BrandMark } from '@/components/brand/BrandMark';
 import { useAuth } from '@/context/AuthContext';
 import { hasSeenOnboarding } from '@/services/app/preferences';
 import { colors } from '@/theme/colors';
@@ -32,7 +33,7 @@ export default function Index() {
   if (!destination) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator color={colors.primary} />
+        <BrandMark size={84} subtitle="Solfedjio yuklanmoqda…" />
       </View>
     );
   }
@@ -41,5 +42,5 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background },
+  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background, paddingHorizontal: 28 },
 });
