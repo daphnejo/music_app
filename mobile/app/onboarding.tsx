@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { BrandMark } from '@/components/brand/BrandMark';
 import { markOnboardingSeen } from '@/services/app/preferences';
 import { colors } from '@/theme/colors';
 
@@ -25,15 +26,25 @@ export default function Onboarding() {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.top}>
-        <Text style={styles.brand}>Solfedjio</Text>
-        <Pressable onPress={() => void finish()}><Text style={styles.skip}>O‘tkazib yuborish</Text></Pressable>
+        <BrandMark size={42} showName={false} style={styles.brand} />
+        <Text style={styles.brandName}>Solfedjio</Text>
+        <View style={styles.spacer} />
+        <Pressable onPress={() => void finish()} hitSlop={10}>
+          <Text style={styles.skip}>O‘tkazib yuborish</Text>
+        </Pressable>
       </View>
+
       <View style={styles.hero}>
-        <View style={styles.icon}><Ionicons name={icon} size={54} color={colors.primary} /></View>
+        <View style={styles.icon}>
+          <Ionicons name={icon} size={54} color={colors.primary} />
+        </View>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.text}>{text}</Text>
-        <View style={styles.dots}>{slides.map((_, i) => <View key={i} style={[styles.dot, i === index && styles.dotActive]} />)}</View>
+        <View style={styles.dots}>
+          {slides.map((_, i) => <View key={i} style={[styles.dot, i === index && styles.dotActive]} />)}
+        </View>
       </View>
+
       <Pressable style={styles.button} onPress={() => last ? void finish() : setIndex(index + 1)}>
         <Text style={styles.buttonText}>{last ? 'Boshlash' : 'Keyingi'}</Text>
         <Ionicons name="arrow-forward" size={18} color="#fff" />
@@ -44,8 +55,10 @@ export default function Onboarding() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background, padding: 20, justifyContent: 'space-between' },
-  top: { flexDirection: 'row', justifyContent: 'space-between' },
-  brand: { color: colors.primary, fontWeight: '900', fontSize: 20 },
+  top: { flexDirection: 'row', alignItems: 'center' },
+  brand: { marginRight: 8 },
+  brandName: { color: colors.text, fontWeight: '900', fontSize: 20 },
+  spacer: { flex: 1 },
   skip: { color: colors.muted, fontWeight: '700' },
   hero: { alignItems: 'center', gap: 16 },
   icon: { width: 132, height: 132, borderRadius: 44, backgroundColor: '#EEF2FF', alignItems: 'center', justifyContent: 'center' },
