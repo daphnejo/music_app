@@ -8,7 +8,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-const source = require('../../assets/icon.png');
+const source = require('../../.generated/icon.png');
 
 export function BrandMark({ size = 72, showName = true, subtitle, style }: Props) {
   const imageStyle: ImageStyle = { width: size, height: size, borderRadius: Math.round(size * 0.26) };
