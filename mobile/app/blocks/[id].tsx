@@ -8,11 +8,11 @@ import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Screen } from '@/components/ui/Screen';
 import { useCourse } from '@/context/CourseContext';
+import { useTheme } from '@/context/ThemeContext';
 import { API_BASE_URL, ApiError, apiRequest } from '@/services/api/client';
 import type { BlockDetailResponse } from '@/types/content';
-import { colors } from '@/theme/colors';
 
-type SubmitResponse = {
+ type SubmitResponse = {
   attemptId: string;
   correct: boolean;
   score: number;
@@ -41,6 +41,7 @@ function bodyLines(body: unknown): string[] {
 export default function BlockDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { reload: reloadCourse } = useCourse();
+  const { colors } = useTheme();
   const [data, setData] = useState<BlockDetailResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -129,72 +130,75 @@ export default function BlockDetailScreen() {
   if (!data) return <Screen><ErrorState message="Material topilmadi." /></Screen>;
 
   const progressPercent = data.navigation.total ? Math.round((data.navigation.position / data.navigation.total) * 100) : 0;
+  const cardStyle = { backgroundColor: colors.surface, borderColor: colors.border };
 
   return (
     <Screen>
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()} style={styles.back}>
+        <Pressable onPress={() => router.back()} style={[styles.back, cardStyle]}>
           <Ionicons name="arrow-back" size={21} color={colors.text} />
         </Pressable>
         <View style={{ flex: 1 }}>
-          <Text style={styles.eyebrow}>{data.block.lesson.title}</Text>
-          <Text style={styles.title}>{data.block.title}</Text>
+          <Text style={[styles.eyebrow, { color: colors.primary }]}>{data.block.lesson.title}</Text>
+          <Text style={[styles.title, { color: colors.text }]}>{data.block.title}</Text>
         </View>
       </View>
 
-      <View style={styles.positionCard}>
+      <View style={[styles.positionCard, cardStyle]}>
         <View style={styles.positionTop}>
-          <Text style={styles.positionText}>{data.navigation.position} / {data.navigation.total}</Text>
-          {data.block.sourceSlide ? <Text style={styles.source}>Manba: {data.block.sourceSlide}-slayd</Text> : null}
+          <Text style={[styles.positionText, { color: colors.text }]}>{data.navigation.position} / {data.navigation.total}</Text>
+          {data.block.sourceSlide ? <Text style={[styles.source, { color: colors.muted }]}>Manba: {data.block.sourceSlide}-slayd</Text> : null}
         </View>
         <ProgressBar value={progressPercent} />
       </View>
 
       {lines.length ? (
-        <View style={styles.theoryCard}>
-          {lines.map((line, index) => <Text key={`${line}-${index}`} style={styles.bodyText}>{line}</Text>)}
+        <View style={[styles.theoryCard, cardStyle]}>
+          {lines.map((line, index) => <Text key={`${line}-${index}`} style={[styles.bodyText, { color: colors.text }]}>{line}</Text>)}
         </View>
       ) : null}
 
       {images.map((asset) => (
-        <View key={asset.id} style={styles.imageCard}>
-          {asset.caption ? <Text style={styles.mediaTitle}>{asset.caption}</Text> : null}
+        <View key={asset.id} style={[styles.imageCard, cardStyle]}>
+          {asset.caption ? <Text style={[styles.mediaTitle, { color: colors.text }]}>{asset.caption}</Text> : null}
           <Image source={{ uri: absoluteUrl(asset.url) }} style={styles.image} resizeMode="contain" />
         </View>
       ))}
 
-      {audios.length ? <Text style={styles.sectionLabel}>TINGLASH</Text> : null}
+      {audios.length ? <Text style={[styles.sectionLabel, { color: colors.primary }]}>TINGLASH</Text> : null}
       {audios.map((asset) => <AudioPlayer key={asset.id} url={absoluteUrl(asset.url)} title={asset.caption} />)}
 
-      {videos.length ? <Text style={styles.sectionLabel}>VIDEO</Text> : null}
+      {videos.length ? <Text style={[styles.sectionLabel, { color: colors.primary }]}>VIDEO</Text> : null}
       {videos.map((asset) => <VideoPlayer key={asset.id} url={absoluteUrl(asset.url)} title={asset.caption} />)}
 
       {data.question ? (
-        <View style={styles.questionCard}>
-          <Text style={styles.sectionLabel}>TOPSHIRIQ</Text>
-          <Text style={styles.question}>{data.question.prompt}</Text>
+        <View style={[styles.questionCard, cardStyle]}>
+          <Text style={[styles.sectionLabel, { color: colors.primary }]}>TOPSHIRIQ</Text>
+          <Text style={[styles.question, { color: colors.text }]}>{data.question.prompt}</Text>
           <View style={styles.options}>
             {data.question.options.map((option) => {
               const selected = selectedOptionId === option.id;
               const isCorrect = submitResult?.correctOptionIds?.includes(option.id) ?? false;
               const isWrongSelected = !!submitResult && selected && !isCorrect;
+              const optionSurface = isCorrect
+                ? { borderColor: colors.success, backgroundColor: colors.successSurface }
+                : isWrongSelected
+                  ? { borderColor: colors.warning, backgroundColor: colors.warningSurface }
+                  : selected
+                    ? { borderColor: colors.primary, backgroundColor: colors.primarySoft }
+                    : { borderColor: colors.border, backgroundColor: colors.surface };
               return (
                 <Pressable
                   key={option.id}
                   disabled={!!submitResult}
                   onPress={() => void saveDraft(option.id)}
-                  style={[
-                    styles.option,
-                    selected && styles.optionSelected,
-                    isCorrect && styles.optionCorrect,
-                    isWrongSelected && styles.optionWrong,
-                  ]}
+                  style={[styles.option, optionSurface]}
                 >
-                  <View style={[styles.radio, selected && styles.radioSelected]}>
-                    {selected ? <View style={styles.radioDot} /> : null}
+                  <View style={[styles.radio, { borderColor: selected ? colors.primary : colors.muted }]}>
+                    {selected ? <View style={[styles.radioDot, { backgroundColor: colors.primary }]} /> : null}
                   </View>
                   <View style={{ flex: 1, gap: 8 }}>
-                    <Text style={styles.optionText}>{option.text}</Text>
+                    <Text style={[styles.optionText, { color: colors.text }]}>{option.text}</Text>
                     {option.imageUrl ? <Image source={{ uri: absoluteUrl(option.imageUrl) }} style={styles.optionImage} resizeMode="contain" /> : null}
                   </View>
                 </Pressable>
@@ -203,12 +207,16 @@ export default function BlockDetailScreen() {
           </View>
 
           {submitResult ? (
-            <View style={[styles.feedback, submitResult.correct ? styles.feedbackCorrect : styles.feedbackWrong]}>
-              <Ionicons name={submitResult.correct ? 'checkmark-circle' : 'information-circle'} size={22} color={submitResult.correct ? '#16794C' : '#9A5A16'} />
+            <View style={[styles.feedback, { backgroundColor: submitResult.correct ? colors.successSurface : colors.warningSurface }]}>
+              <Ionicons
+                name={submitResult.correct ? 'checkmark-circle' : 'information-circle'}
+                size={22}
+                color={submitResult.correct ? colors.success : colors.warning}
+              />
               <View style={{ flex: 1 }}>
-                <Text style={styles.feedbackTitle}>{submitResult.correct ? 'To‘g‘ri!' : 'Yana bir bor ko‘rib chiqing'}</Text>
-                <Text style={styles.feedbackText}>Natija: {submitResult.score} / {submitResult.maxScore}</Text>
-                {submitResult.explanation ? <Text style={styles.feedbackText}>{submitResult.explanation}</Text> : null}
+                <Text style={[styles.feedbackTitle, { color: colors.text }]}>{submitResult.correct ? 'To‘g‘ri!' : 'Yana bir bor ko‘rib chiqing'}</Text>
+                <Text style={[styles.feedbackText, { color: colors.muted }]}>Natija: {submitResult.score} / {submitResult.maxScore}</Text>
+                {submitResult.explanation ? <Text style={[styles.feedbackText, { color: colors.muted }]}>{submitResult.explanation}</Text> : null}
               </View>
             </View>
           ) : null}
@@ -217,7 +225,7 @@ export default function BlockDetailScreen() {
             <Pressable
               disabled={!selectedOptionId || isSubmitting}
               onPress={() => void submitQuestion()}
-              style={[styles.primaryButton, (!selectedOptionId || isSubmitting) && styles.buttonDisabled]}
+              style={[styles.primaryButton, { backgroundColor: colors.primary }, (!selectedOptionId || isSubmitting) && styles.buttonDisabled]}
             >
               <Text style={styles.primaryButtonText}>{isSubmitting ? 'Tekshirilmoqda…' : 'Javobni tekshirish'}</Text>
             </Pressable>
@@ -227,7 +235,10 @@ export default function BlockDetailScreen() {
         <Pressable
           disabled={data.progress.state === 'completed' || isSubmitting}
           onPress={() => void completeBlock()}
-          style={[styles.primaryButton, data.progress.state === 'completed' && styles.completedButton]}
+          style={[
+            styles.primaryButton,
+            { backgroundColor: data.progress.state === 'completed' ? colors.success : colors.primary },
+          ]}
         >
           <Ionicons name={data.progress.state === 'completed' ? 'checkmark-circle' : 'checkmark'} size={19} color="#fff" />
           <Text style={styles.primaryButtonText}>
@@ -242,17 +253,17 @@ export default function BlockDetailScreen() {
         <Pressable
           disabled={!data.navigation.prevBlockId}
           onPress={() => data.navigation.prevBlockId && router.replace({ pathname: '/blocks/[id]', params: { id: data.navigation.prevBlockId } })}
-          style={[styles.navButton, !data.navigation.prevBlockId && styles.buttonDisabled]}
+          style={[styles.navButton, cardStyle, !data.navigation.prevBlockId && styles.buttonDisabled]}
         >
           <Ionicons name="arrow-back" size={18} color={colors.text} />
-          <Text style={styles.navText}>Oldingi</Text>
+          <Text style={[styles.navText, { color: colors.text }]}>Oldingi</Text>
         </Pressable>
         <Pressable
           disabled={!data.navigation.nextBlockId}
           onPress={() => data.navigation.nextBlockId && router.replace({ pathname: '/blocks/[id]', params: { id: data.navigation.nextBlockId } })}
-          style={[styles.navButton, !data.navigation.nextBlockId && styles.buttonDisabled]}
+          style={[styles.navButton, cardStyle, !data.navigation.nextBlockId && styles.buttonDisabled]}
         >
-          <Text style={styles.navText}>Keyingi</Text>
+          <Text style={[styles.navText, { color: colors.text }]}>Keyingi</Text>
           <Ionicons name="arrow-forward" size={18} color={colors.text} />
         </Pressable>
       </View>
@@ -262,41 +273,34 @@ export default function BlockDetailScreen() {
 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
-  back: { width: 42, height: 42, borderRadius: 14, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center' },
-  eyebrow: { color: colors.primary, fontSize: 11, fontWeight: '900', marginBottom: 3 },
-  title: { fontSize: 23, lineHeight: 29, fontWeight: '900', color: colors.text },
-  positionCard: { gap: 8, backgroundColor: colors.surface, borderRadius: 18, padding: 14, borderWidth: 1, borderColor: colors.border },
+  back: { width: 42, height: 42, borderRadius: 14, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
+  eyebrow: { fontSize: 11, fontWeight: '900', marginBottom: 3 },
+  title: { fontSize: 23, lineHeight: 29, fontWeight: '900' },
+  positionCard: { gap: 8, borderRadius: 18, padding: 14, borderWidth: 1 },
   positionTop: { flexDirection: 'row', justifyContent: 'space-between' },
-  positionText: { color: colors.text, fontSize: 12, fontWeight: '800' },
-  source: { color: colors.muted, fontSize: 11 },
-  theoryCard: { gap: 12, backgroundColor: colors.surface, borderRadius: 22, padding: 18, borderWidth: 1, borderColor: colors.border },
-  bodyText: { color: colors.text, fontSize: 16, lineHeight: 24 },
-  imageCard: { backgroundColor: colors.surface, borderRadius: 20, padding: 10, gap: 8, borderWidth: 1, borderColor: colors.border },
+  positionText: { fontSize: 12, fontWeight: '800' },
+  source: { fontSize: 11 },
+  theoryCard: { gap: 12, borderRadius: 22, padding: 18, borderWidth: 1 },
+  bodyText: { fontSize: 16, lineHeight: 24 },
+  imageCard: { borderRadius: 20, padding: 10, gap: 8, borderWidth: 1 },
   image: { width: '100%', height: 240, borderRadius: 14 },
-  mediaTitle: { color: colors.text, fontWeight: '800', paddingHorizontal: 4 },
-  sectionLabel: { color: colors.primary, fontSize: 11, fontWeight: '900', letterSpacing: .8 },
-  questionCard: { backgroundColor: colors.surface, borderRadius: 22, padding: 16, gap: 14, borderWidth: 1, borderColor: colors.border },
-  question: { color: colors.text, fontSize: 18, lineHeight: 25, fontWeight: '900' },
+  mediaTitle: { fontWeight: '800', paddingHorizontal: 4 },
+  sectionLabel: { fontSize: 11, fontWeight: '900', letterSpacing: .8 },
+  questionCard: { borderRadius: 22, padding: 16, gap: 14, borderWidth: 1 },
+  question: { fontSize: 18, lineHeight: 25, fontWeight: '900' },
   options: { gap: 10 },
-  option: { flexDirection: 'row', gap: 12, alignItems: 'center', padding: 14, borderWidth: 1.5, borderColor: colors.border, borderRadius: 18, backgroundColor: '#fff' },
-  optionSelected: { borderColor: colors.primary, backgroundColor: '#F5F7FF' },
-  optionCorrect: { borderColor: '#2DAA74', backgroundColor: '#ECFAF3' },
-  optionWrong: { borderColor: '#D99A44', backgroundColor: '#FFF8EC' },
-  radio: { width: 22, height: 22, borderRadius: 999, borderWidth: 2, borderColor: '#B9BDCE', alignItems: 'center', justifyContent: 'center' },
-  radioSelected: { borderColor: colors.primary },
-  radioDot: { width: 10, height: 10, borderRadius: 999, backgroundColor: colors.primary },
-  optionText: { color: colors.text, fontSize: 15, lineHeight: 21, fontWeight: '700' },
+  option: { flexDirection: 'row', gap: 12, alignItems: 'center', padding: 14, borderWidth: 1.5, borderRadius: 18 },
+  radio: { width: 22, height: 22, borderRadius: 999, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
+  radioDot: { width: 10, height: 10, borderRadius: 999 },
+  optionText: { fontSize: 15, lineHeight: 21, fontWeight: '700' },
   optionImage: { width: '100%', height: 130 },
-  primaryButton: { minHeight: 54, paddingHorizontal: 16, borderRadius: 18, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
-  completedButton: { backgroundColor: '#2DAA74' },
+  primaryButton: { minHeight: 54, paddingHorizontal: 16, borderRadius: 18, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
   buttonDisabled: { opacity: .42 },
   primaryButtonText: { color: '#fff', fontWeight: '900', fontSize: 15 },
   feedback: { flexDirection: 'row', gap: 10, padding: 14, borderRadius: 16 },
-  feedbackCorrect: { backgroundColor: '#ECFAF3' },
-  feedbackWrong: { backgroundColor: '#FFF8EC' },
-  feedbackTitle: { color: colors.text, fontWeight: '900' },
-  feedbackText: { color: colors.muted, marginTop: 2, lineHeight: 18 },
+  feedbackTitle: { fontWeight: '900' },
+  feedbackText: { marginTop: 2, lineHeight: 18 },
   navRow: { flexDirection: 'row', gap: 10 },
-  navButton: { flex: 1, minHeight: 50, borderRadius: 16, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 7 },
-  navText: { color: colors.text, fontWeight: '800' },
+  navButton: { flex: 1, minHeight: 50, borderRadius: 16, borderWidth: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 7 },
+  navText: { fontWeight: '800' },
 });
