@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Text, View, type ImageStyle, type StyleProp, type ViewStyle } from 'react-native';
+import { Image, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import { BrandWordmark } from '@/components/brand/BrandWordmark';
 import { colors } from '@/theme/colors';
 
 type Props = {
@@ -8,22 +9,23 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-const source = require('../../.generated/icon.png');
+const source = require('../../.generated/mark.png');
 
 export function BrandMark({ size = 72, showName = true, subtitle, style }: Props) {
-  const imageStyle: ImageStyle = { width: size, height: size, borderRadius: Math.round(size * 0.26) };
+  const imageBox = Math.round(size * 1.38);
 
   return (
     <View style={[styles.wrap, style]}>
-      <Image source={source} resizeMode="contain" style={imageStyle} />
-      {showName ? <Text style={styles.name}>Solfedjio</Text> : null}
+      <View style={{ width: imageBox, height: imageBox, alignItems: 'center', justifyContent: 'center' }}>
+        <Image source={source} resizeMode="contain" style={{ width: imageBox, height: imageBox }} />
+      </View>
+      {showName ? <BrandWordmark size={Math.max(22, Math.round(size * 0.38))} /> : null}
       {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrap: { alignItems: 'center', gap: 6 },
-  name: { color: colors.text, fontSize: 27, fontWeight: '900' },
-  subtitle: { color: colors.muted, textAlign: 'center', fontSize: 13 },
+  wrap: { alignItems: 'center', gap: 3 },
+  subtitle: { color: colors.muted, textAlign: 'center', fontSize: 13, marginTop: 2 },
 });
