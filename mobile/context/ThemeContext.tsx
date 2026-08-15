@@ -9,6 +9,7 @@ type ThemeContextValue = {
   preference: ThemePreference;
   resolvedTheme: ResolvedTheme;
   isDark: boolean;
+  isReady: boolean;
   colors: ThemeColors;
   setPreference: (value: ThemePreference) => Promise<void>;
 };
@@ -18,12 +19,17 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 export function ThemeProvider({ children }: PropsWithChildren) {
   const systemScheme = useColorScheme();
   const [preference, setPreferenceState] = useState<ThemePreference>('system');
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     let mounted = true;
-    void getThemePreference().then((value) => {
-      if (mounted) setPreferenceState(value);
-    });
+    void getThemePreference()
+      .then((value) => {
+        if (mounted) setPreferenceState(value);
+      })
+      .finally(() => {
+        if (mounted) setIsReady(true);
+      });
     return () => {
       mounted = false;
     };
@@ -42,9 +48,10 @@ export function ThemeProvider({ children }: PropsWithChildren) {
     preference,
     resolvedTheme,
     isDark: resolvedTheme === 'dark',
+    isReady,
     colors: resolvedTheme === 'dark' ? darkColors : lightColors,
     setPreference,
-  }), [preference, resolvedTheme, setPreference]);
+  }), [isReady, preference, resolvedTheme, setPreference]);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
