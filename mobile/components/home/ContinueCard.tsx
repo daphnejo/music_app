@@ -2,22 +2,23 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { colors } from '@/theme/colors';
+import { useTheme } from '@/context/ThemeContext';
 import { lessonProgress, type CourseLessonSummary } from '@/types/content';
 
 export function ContinueCard({ lesson }: { lesson: CourseLessonSummary }) {
+  const { colors } = useTheme();
   const progress = lessonProgress(lesson);
   const prefix = lesson.declaredNumber ? `${lesson.declaredNumber}-dars · ` : '';
   return (
-    <View style={styles.card}>
-      <View style={styles.icon}><Ionicons name="musical-notes" size={24} color={colors.primary} /></View>
+    <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      <View style={[styles.icon, { backgroundColor: colors.primarySoft }]}><Ionicons name="musical-notes" size={24} color={colors.primary} /></View>
       <View style={styles.body}>
-        <Text style={styles.eyebrow}>DAVOM ETTIRISH</Text>
-        <Text style={styles.title}>{prefix}{lesson.title}</Text>
-        <Text style={styles.caption}>{lesson.completed}/{lesson.blockCount} qism · {progress}% bajarildi</Text>
+        <Text style={[styles.eyebrow, { color: colors.primary }]}>DAVOM ETTIRISH</Text>
+        <Text style={[styles.title, { color: colors.text }]}>{prefix}{lesson.title}</Text>
+        <Text style={[styles.caption, { color: colors.muted }]}>{lesson.completed}/{lesson.blockCount} qism · {progress}% bajarildi</Text>
         <ProgressBar value={progress} />
       </View>
-      <Pressable onPress={() => router.push({ pathname: '/lessons/[id]', params: { id: lesson.id } })} style={styles.button}>
+      <Pressable onPress={() => router.push({ pathname: '/lessons/[id]', params: { id: lesson.id } })} style={[styles.button, { backgroundColor: colors.primary }]}>
         <Ionicons name="play" size={17} color="#fff" />
       </Pressable>
     </View>
@@ -25,11 +26,11 @@ export function ContinueCard({ lesson }: { lesson: CourseLessonSummary }) {
 }
 
 const styles = StyleSheet.create({
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: colors.surface, borderRadius: 24, padding: 16, borderWidth: 1, borderColor: colors.border },
-  icon: { width: 48, height: 48, borderRadius: 16, backgroundColor: '#EEF2FF', alignItems: 'center', justifyContent: 'center' },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, borderRadius: 24, padding: 16, borderWidth: 1 },
+  icon: { width: 48, height: 48, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   body: { flex: 1, gap: 5 },
-  eyebrow: { fontSize: 11, fontWeight: '800', letterSpacing: .7, color: colors.primary },
-  title: { fontSize: 17, fontWeight: '800', color: colors.text },
-  caption: { fontSize: 12, color: colors.muted },
-  button: { width: 42, height: 42, borderRadius: 14, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
+  eyebrow: { fontSize: 11, fontWeight: '800', letterSpacing: .7 },
+  title: { fontSize: 17, fontWeight: '800' },
+  caption: { fontSize: 12 },
+  button: { width: 42, height: 42, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
 });

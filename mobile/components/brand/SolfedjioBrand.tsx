@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { colors } from '@/theme/colors';
+import { Image, StyleSheet, View } from 'react-native';
+import { BrandWordmark } from '@/components/brand/BrandWordmark';
 
 type Props = {
   size?: number;
@@ -12,11 +12,11 @@ export function SolfedjioBrand({ size = 76, showName = false, compact = false }:
     <View style={[styles.wrap, compact && styles.compact]}>
       <Image
         accessibilityLabel="Solfedjio logotipi"
-        source={require('../../assets/icon.png')}
-        style={{ width: size, height: size, borderRadius: Math.round(size * 0.23) }}
+        source={require('../../.generated/mark.png')}
+        style={{ width: size, height: size }}
         resizeMode="contain"
       />
-      {showName ? <Text style={[styles.name, compact && styles.nameCompact]}>Solfedjio</Text> : null}
+      {showName ? <BrandWordmark size={compact ? 20 : 27} /> : null}
     </View>
   );
 }
@@ -24,6 +24,4 @@ export function SolfedjioBrand({ size = 76, showName = false, compact = false }:
 const styles = StyleSheet.create({
   wrap: { alignItems: 'center', justifyContent: 'center', gap: 8 },
   compact: { flexDirection: 'row', gap: 9 },
-  name: { color: colors.text, fontSize: 27, fontWeight: '900', letterSpacing: -0.6 },
-  nameCompact: { fontSize: 20 },
 });

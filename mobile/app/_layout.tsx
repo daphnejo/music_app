@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
@@ -9,10 +9,13 @@ import { AnimatedBrandIntro } from '@/components/brand/AnimatedBrandIntro';
 import { BrandMark } from '@/components/brand/BrandMark';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { CourseProvider } from '@/context/CourseContext';
-import { colors } from '@/theme/colors';
+import { ThemeProvider, useTheme } from '@/context/ThemeContext';
+import type { ThemeColors } from '@/theme/colors';
 
 function RootNavigator() {
   const { user, isLoading, sessionRestoreError, retrySessionRestore, logout } = useAuth();
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const [introDone, setIntroDone] = useState(false);
   const finishIntro = useCallback(() => setIntroDone(true), []);
 
@@ -63,6 +66,7 @@ function RootNavigator() {
         <Stack.Screen name="piano" />
         <Stack.Screen name="profile-info" />
         <Stack.Screen name="change-password" />
+        <Stack.Screen name="appearance" />
         <Stack.Screen name="language" />
         <Stack.Screen name="notifications" />
         <Stack.Screen name="help" />
@@ -72,30 +76,52 @@ function RootNavigator() {
   );
 }
 
+function AppProviders() {
+  const { isDark, isReady, colors } = useTheme();
+
+  if (!isReady) {
+    return <View style={[rootStyles.themeBoot, { backgroundColor: colors.background }]} />;
+  }
+
+  return (
+    <>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <AuthProvider>
+        <CourseProvider>
+          <RootNavigator />
+        </CourseProvider>
+      </AuthProvider>
+    </>
+  );
+}
+
 export default function RootLayout() {
   return (
-    <GestureHandlerRootView style={styles.root}>
+    <GestureHandlerRootView style={rootStyles.root}>
       <SafeAreaProvider>
-        <StatusBar style="dark" />
-        <AuthProvider>
-          <CourseProvider>
-            <RootNavigator />
-          </CourseProvider>
-        </AuthProvider>
+        <ThemeProvider>
+          <AppProviders />
+        </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }
 
-const styles = StyleSheet.create({
+const rootStyles = StyleSheet.create({
   root: { flex: 1 },
-  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background, paddingHorizontal: 28 },
-  spinner: { marginTop: 20 },
-  errorMark: { width: 82, height: 82, borderRadius: 27, backgroundColor: '#EEF2FF', alignItems: 'center', justifyContent: 'center' },
-  errorTitle: { marginTop: 18, color: colors.text, fontSize: 21, fontWeight: '900', textAlign: 'center' },
-  errorText: { marginTop: 7, color: colors.muted, fontSize: 13, lineHeight: 20, textAlign: 'center' },
-  retryButton: { marginTop: 20, height: 52, minWidth: 190, paddingHorizontal: 22, borderRadius: 17, backgroundColor: colors.primary, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
-  retryText: { color: '#fff', fontWeight: '900' },
-  logoutLink: { marginTop: 12, padding: 10 },
-  logoutLinkText: { color: colors.muted, fontWeight: '700' },
+  themeBoot: { flex: 1 },
 });
+
+function createStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background, paddingHorizontal: 28 },
+    spinner: { marginTop: 20 },
+    errorMark: { width: 82, height: 82, borderRadius: 27, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
+    errorTitle: { marginTop: 18, color: colors.text, fontSize: 21, fontWeight: '900', textAlign: 'center' },
+    errorText: { marginTop: 7, color: colors.muted, fontSize: 13, lineHeight: 20, textAlign: 'center' },
+    retryButton: { marginTop: 20, height: 52, minWidth: 190, paddingHorizontal: 22, borderRadius: 17, backgroundColor: colors.primary, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+    retryText: { color: '#fff', fontWeight: '900' },
+    logoutLink: { marginTop: 12, padding: 10 },
+    logoutLinkText: { color: colors.muted, fontWeight: '700' },
+  });
+}

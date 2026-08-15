@@ -1,22 +1,24 @@
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors } from '@/theme/colors';
+import { useTheme } from '@/context/ThemeContext';
 
 export function LoadingState({ text = 'Yuklanmoqda…' }: { text?: string }) {
+  const { colors } = useTheme();
   return (
     <View style={styles.state}>
       <ActivityIndicator color={colors.primary} />
-      <Text style={styles.text}>{text}</Text>
+      <Text style={[styles.text, { color: colors.muted }]}>{text}</Text>
     </View>
   );
 }
 
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
+  const { colors } = useTheme();
   return (
     <View style={styles.state}>
-      <Text style={styles.errorTitle}>Ma’lumot yuklanmadi</Text>
-      <Text style={styles.text}>{message}</Text>
+      <Text style={[styles.errorTitle, { color: colors.text }]}>Ma’lumot yuklanmadi</Text>
+      <Text style={[styles.text, { color: colors.muted }]}>{message}</Text>
       {onRetry ? (
-        <Pressable style={styles.button} onPress={onRetry}>
+        <Pressable style={[styles.button, { backgroundColor: colors.primary }]} onPress={onRetry}>
           <Text style={styles.buttonText}>Qayta urinish</Text>
         </Pressable>
       ) : null}
@@ -26,8 +28,8 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 
 const styles = StyleSheet.create({
   state: { alignItems: 'center', justifyContent: 'center', gap: 10, paddingVertical: 36, paddingHorizontal: 20 },
-  text: { color: colors.muted, textAlign: 'center', lineHeight: 20 },
-  errorTitle: { color: colors.text, fontWeight: '900', fontSize: 16 },
-  button: { marginTop: 4, backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 14 },
+  text: { textAlign: 'center', lineHeight: 20 },
+  errorTitle: { fontWeight: '900', fontSize: 16 },
+  button: { marginTop: 4, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 14 },
   buttonText: { color: '#fff', fontWeight: '800' },
 });
