@@ -5,7 +5,8 @@ import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-na
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { AudioContext, type GainNode, type OscillatorNode } from 'react-native-audio-api';
 import { Screen } from '@/components/ui/Screen';
-import { colors } from '@/theme/colors';
+import { useTheme } from '@/context/ThemeContext';
+import type { ThemeColors } from '@/theme/colors';
 
 const WHITE_KEY_HEIGHT = 220;
 const BLACK_KEY_HEIGHT = 132;
@@ -51,6 +52,8 @@ function mapHasValue(map: Map<number, string>, value: string) {
 
 export default function PianoScreen() {
   const { width: screenWidth } = useWindowDimensions();
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const [octave, setOctave] = useState(4);
   const [activeNotes, setActiveNotes] = useState<Set<string>>(() => new Set());
   const [lastNote, setLastNote] = useState<PianoNote | null>(null);
@@ -357,40 +360,42 @@ export default function PianoScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  header: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  backButton: { width: 42, height: 42, borderRadius: 14, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center' },
-  headerText: { flex: 1 },
-  headerSpacer: { width: 42 },
-  eyebrow: { color: colors.primary, fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
-  title: { color: colors.text, fontSize: 28, fontWeight: '900', marginTop: 2 },
-  infoCard: { flexDirection: 'row', alignItems: 'center', gap: 13, borderRadius: 22, padding: 16, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
-  noteBadge: { width: 52, height: 52, borderRadius: 17, backgroundColor: '#EEF2FF', alignItems: 'center', justifyContent: 'center' },
-  infoBody: { flex: 1 },
-  infoLabel: { color: colors.muted, fontSize: 11, fontWeight: '700' },
-  infoValue: { color: colors.text, fontSize: 19, fontWeight: '900', marginTop: 2 },
-  infoFrequency: { color: colors.muted, fontSize: 11, marginTop: 3 },
-  controlsCard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 13, backgroundColor: colors.surface, borderRadius: 20, borderWidth: 1, borderColor: colors.border },
-  controlLabel: { color: colors.text, fontSize: 14, fontWeight: '800' },
-  octaveControls: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  octaveButton: { width: 38, height: 38, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: '#EEF2FF' },
-  disabledButton: { opacity: 0.35 },
-  octaveValue: { minWidth: 72, alignItems: 'center' },
-  octaveNumber: { color: colors.text, fontSize: 18, fontWeight: '900' },
-  octaveRange: { color: colors.muted, fontSize: 9, marginTop: 1 },
-  keyboardCard: { backgroundColor: '#17172A', borderRadius: 24, paddingTop: 15, paddingBottom: 16, overflow: 'hidden' },
-  keyboardHint: { color: '#C9C9D8', fontSize: 11, fontWeight: '700', paddingHorizontal: 16, marginBottom: 12 },
-  keyboardSurface: { alignItems: 'center', paddingHorizontal: 12 },
-  keyboard: { height: WHITE_KEY_HEIGHT, position: 'relative' },
-  whiteRow: { flexDirection: 'row', height: WHITE_KEY_HEIGHT },
-  whiteKey: { height: WHITE_KEY_HEIGHT, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#D6D6E2', borderBottomLeftRadius: 7, borderBottomRightRadius: 7, alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 13 },
-  whiteKeyActive: { backgroundColor: '#C7D2FE' },
-  whiteLabel: { color: colors.text, fontSize: 11, fontWeight: '900' },
-  whiteScientific: { color: colors.muted, fontSize: 9, marginTop: 2, fontWeight: '700' },
-  whiteLabelActive: { color: '#312E81' },
-  blackKey: { position: 'absolute', top: 0, zIndex: 5, height: BLACK_KEY_HEIGHT, borderBottomLeftRadius: 7, borderBottomRightRadius: 7, backgroundColor: '#111118', borderWidth: 1, borderColor: '#333342', alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 10 },
-  blackKeyActive: { backgroundColor: colors.primary, borderColor: '#818CF8' },
-  blackLabel: { color: '#FFFFFF', fontSize: 8, fontWeight: '800', transform: [{ rotate: '-90deg' }] },
-  tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingHorizontal: 4 },
-  tipText: { flex: 1, color: colors.muted, fontSize: 11, lineHeight: 16 },
-});
+function createStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    header: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+    backButton: { width: 42, height: 42, borderRadius: 14, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center' },
+    headerText: { flex: 1 },
+    headerSpacer: { width: 42 },
+    eyebrow: { color: colors.primary, fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
+    title: { color: colors.text, fontSize: 28, fontWeight: '900', marginTop: 2 },
+    infoCard: { flexDirection: 'row', alignItems: 'center', gap: 13, borderRadius: 22, padding: 16, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
+    noteBadge: { width: 52, height: 52, borderRadius: 17, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
+    infoBody: { flex: 1 },
+    infoLabel: { color: colors.muted, fontSize: 11, fontWeight: '700' },
+    infoValue: { color: colors.text, fontSize: 19, fontWeight: '900', marginTop: 2 },
+    infoFrequency: { color: colors.muted, fontSize: 11, marginTop: 3 },
+    controlsCard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 13, backgroundColor: colors.surface, borderRadius: 20, borderWidth: 1, borderColor: colors.border },
+    controlLabel: { color: colors.text, fontSize: 14, fontWeight: '800' },
+    octaveControls: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+    octaveButton: { width: 38, height: 38, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primarySoft },
+    disabledButton: { opacity: 0.35 },
+    octaveValue: { minWidth: 72, alignItems: 'center' },
+    octaveNumber: { color: colors.text, fontSize: 18, fontWeight: '900' },
+    octaveRange: { color: colors.muted, fontSize: 9, marginTop: 1 },
+    keyboardCard: { backgroundColor: '#17172A', borderRadius: 24, paddingTop: 15, paddingBottom: 16, overflow: 'hidden' },
+    keyboardHint: { color: '#C9C9D8', fontSize: 11, fontWeight: '700', paddingHorizontal: 16, marginBottom: 12 },
+    keyboardSurface: { alignItems: 'center', paddingHorizontal: 12 },
+    keyboard: { height: WHITE_KEY_HEIGHT, position: 'relative' },
+    whiteRow: { flexDirection: 'row', height: WHITE_KEY_HEIGHT },
+    whiteKey: { height: WHITE_KEY_HEIGHT, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#D6D6E2', borderBottomLeftRadius: 7, borderBottomRightRadius: 7, alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 13 },
+    whiteKeyActive: { backgroundColor: '#C7D2FE' },
+    whiteLabel: { color: '#17172A', fontSize: 11, fontWeight: '900' },
+    whiteScientific: { color: '#74748A', fontSize: 9, marginTop: 2, fontWeight: '700' },
+    whiteLabelActive: { color: '#312E81' },
+    blackKey: { position: 'absolute', top: 0, zIndex: 5, height: BLACK_KEY_HEIGHT, borderBottomLeftRadius: 7, borderBottomRightRadius: 7, backgroundColor: '#111118', borderWidth: 1, borderColor: '#333342', alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 10 },
+    blackKeyActive: { backgroundColor: colors.primary, borderColor: '#818CF8' },
+    blackLabel: { color: '#FFFFFF', fontSize: 8, fontWeight: '800', transform: [{ rotate: '-90deg' }] },
+    tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingHorizontal: 4 },
+    tipText: { flex: 1, color: colors.muted, fontSize: 11, lineHeight: 16 },
+  });
+}
