@@ -77,7 +77,12 @@ function RootNavigator() {
 }
 
 function AppProviders() {
-  const { isDark } = useTheme();
+  const { isDark, isReady, colors } = useTheme();
+
+  if (!isReady) {
+    return <View style={[rootStyles.themeBoot, { backgroundColor: colors.background }]} />;
+  }
+
   return (
     <>
       <StatusBar style={isDark ? 'light' : 'dark'} />
@@ -102,7 +107,10 @@ export default function RootLayout() {
   );
 }
 
-const rootStyles = StyleSheet.create({ root: { flex: 1 } });
+const rootStyles = StyleSheet.create({
+  root: { flex: 1 },
+  themeBoot: { flex: 1 },
+});
 
 function createStyles(colors: ThemeColors) {
   return StyleSheet.create({
