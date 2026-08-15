@@ -1,9 +1,11 @@
+import { useCallback, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AnimatedBrandIntro } from '@/components/brand/AnimatedBrandIntro';
 import { BrandMark } from '@/components/brand/BrandMark';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { CourseProvider } from '@/context/CourseContext';
@@ -11,6 +13,12 @@ import { colors } from '@/theme/colors';
 
 function RootNavigator() {
   const { user, isLoading, sessionRestoreError, retrySessionRestore, logout } = useAuth();
+  const [introDone, setIntroDone] = useState(false);
+  const finishIntro = useCallback(() => setIntroDone(true), []);
+
+  if (!introDone) {
+    return <AnimatedBrandIntro onFinish={finishIntro} />;
+  }
 
   if (isLoading) {
     return (
