@@ -5,9 +5,9 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Screen } from '@/components/ui/Screen';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { useCourse } from '@/context/CourseContext';
+import { useTheme } from '@/context/ThemeContext';
 import { ApiError, apiRequest } from '@/services/api/client';
 import { lessonProgress } from '@/types/content';
-import { colors } from '@/theme/colors';
 
 type ProgressResponse = {
   summary: null | {
@@ -21,6 +21,7 @@ type ProgressResponse = {
 
 export default function ProgressScreen() {
   const { data, isLoading: courseLoading, error: courseError, reload: reloadCourse } = useCourse();
+  const { colors } = useTheme();
   const [progressData, setProgressData] = useState<ProgressResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,32 +55,34 @@ export default function ProgressScreen() {
     ? Math.round((summary.correctAnswers / summary.answeredQuestions) * 100)
     : null;
 
+  const cardStyle = { backgroundColor: colors.surface, borderColor: colors.border };
+
   return (
     <Screen>
       <SectionHeader title="Natijalar" caption="Faqat haqiqiy bajarilgan dars va test natijalari." />
-      <View style={styles.hero}>
-        <Text style={styles.value}>{overall}%</Text>
-        <Text style={styles.label}>Umumiy progress</Text>
+      <View style={[styles.hero, cardStyle]}>
+        <Text style={[styles.value, { color: colors.primary }]}>{overall}%</Text>
+        <Text style={[styles.label, { color: colors.muted }]}>Umumiy progress</Text>
         <ProgressBar value={overall} />
       </View>
       <View style={styles.row}>
-        <View style={styles.metric}>
-          <Text style={styles.metricValue}>{completedLessons}</Text>
-          <Text style={styles.label}>yakunlangan dars</Text>
+        <View style={[styles.metric, cardStyle]}>
+          <Text style={[styles.metricValue, { color: colors.text }]}>{completedLessons}</Text>
+          <Text style={[styles.label, { color: colors.muted }]}>yakunlangan dars</Text>
         </View>
-        <View style={styles.metric}>
-          <Text style={styles.metricValue}>{answerAccuracy === null ? '—' : `${answerAccuracy}%`}</Text>
-          <Text style={styles.label}>test aniqligi</Text>
+        <View style={[styles.metric, cardStyle]}>
+          <Text style={[styles.metricValue, { color: colors.text }]}>{answerAccuracy === null ? '—' : `${answerAccuracy}%`}</Text>
+          <Text style={[styles.label, { color: colors.muted }]}>test aniqligi</Text>
         </View>
       </View>
       <View style={styles.row}>
-        <View style={styles.metric}>
-          <Text style={styles.metricValue}>{completedBlocks}</Text>
-          <Text style={styles.label}>bajarilgan qism</Text>
+        <View style={[styles.metric, cardStyle]}>
+          <Text style={[styles.metricValue, { color: colors.text }]}>{completedBlocks}</Text>
+          <Text style={[styles.label, { color: colors.muted }]}>bajarilgan qism</Text>
         </View>
-        <View style={styles.metric}>
-          <Text style={styles.metricValue}>{summary?.answeredQuestions ?? 0}</Text>
-          <Text style={styles.label}>javob berilgan test</Text>
+        <View style={[styles.metric, cardStyle]}>
+          <Text style={[styles.metricValue, { color: colors.text }]}>{summary?.answeredQuestions ?? 0}</Text>
+          <Text style={[styles.label, { color: colors.muted }]}>javob berilgan test</Text>
         </View>
       </View>
       <SectionHeader title="Darslar bo‘yicha" />
@@ -87,13 +90,13 @@ export default function ProgressScreen() {
         {lessons.map((lesson) => {
           const percent = lessonProgress(lesson);
           return (
-            <View key={lesson.id} style={styles.lesson}>
+            <View key={lesson.id} style={[styles.lesson, cardStyle]}>
               <View style={styles.lessonTop}>
-                <Text style={styles.lessonTitle}>{lesson.declaredNumber ? `${lesson.declaredNumber}-dars · ` : ''}{lesson.title}</Text>
-                <Text style={styles.percent}>{percent}%</Text>
+                <Text style={[styles.lessonTitle, { color: colors.text }]}>{lesson.declaredNumber ? `${lesson.declaredNumber}-dars · ` : ''}{lesson.title}</Text>
+                <Text style={[styles.percent, { color: colors.primary }]}>{percent}%</Text>
               </View>
               <ProgressBar value={percent} />
-              <Text style={styles.lessonMeta}>{lesson.completed}/{lesson.blockCount} qism bajarildi</Text>
+              <Text style={[styles.lessonMeta, { color: colors.muted }]}>{lesson.completed}/{lesson.blockCount} qism bajarildi</Text>
             </View>
           );
         })}
@@ -103,15 +106,15 @@ export default function ProgressScreen() {
 }
 
 const styles = StyleSheet.create({
-  hero: { backgroundColor: colors.surface, borderRadius: 24, padding: 20, gap: 8, borderWidth: 1, borderColor: colors.border },
-  value: { fontSize: 36, fontWeight: '900', color: colors.primary },
-  label: { color: colors.muted, fontSize: 12 },
+  hero: { borderRadius: 24, padding: 20, gap: 8, borderWidth: 1 },
+  value: { fontSize: 36, fontWeight: '900' },
+  label: { fontSize: 12 },
   row: { flexDirection: 'row', gap: 12 },
-  metric: { flex: 1, backgroundColor: colors.surface, borderRadius: 20, padding: 16, borderWidth: 1, borderColor: colors.border },
-  metricValue: { fontSize: 22, fontWeight: '900', color: colors.text },
-  lesson: { backgroundColor: colors.surface, borderRadius: 18, padding: 15, gap: 10, borderWidth: 1, borderColor: colors.border },
+  metric: { flex: 1, borderRadius: 20, padding: 16, borderWidth: 1 },
+  metricValue: { fontSize: 22, fontWeight: '900' },
+  lesson: { borderRadius: 18, padding: 15, gap: 10, borderWidth: 1 },
   lessonTop: { flexDirection: 'row', justifyContent: 'space-between', gap: 10 },
-  lessonTitle: { flex: 1, fontWeight: '700', color: colors.text },
-  percent: { color: colors.primary, fontWeight: '800' },
-  lessonMeta: { color: colors.muted, fontSize: 11 },
+  lessonTitle: { flex: 1, fontWeight: '700' },
+  percent: { fontWeight: '800' },
+  lessonMeta: { fontSize: 11 },
 });
