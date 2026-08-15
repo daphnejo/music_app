@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { Animated, Easing, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { BrandWordmark } from '@/components/brand/BrandWordmark';
+import { useTheme } from '@/context/ThemeContext';
 
 const markSource = require('../../.generated/mark.png');
 
@@ -10,6 +11,7 @@ type Props = {
 
 export function AnimatedBrandIntro({ onFinish }: Props) {
   const { width } = useWindowDimensions();
+  const { colors, isDark } = useTheme();
   const markSize = useMemo(() => Math.min(330, Math.max(230, width * 0.66)), [width]);
 
   const screenOpacity = useRef(new Animated.Value(1)).current;
@@ -24,81 +26,29 @@ export function AnimatedBrandIntro({ onFinish }: Props) {
   useEffect(() => {
     const animation = Animated.sequence([
       Animated.parallel([
-        Animated.timing(markOpacity, {
-          toValue: 1,
-          duration: 420,
-          easing: Easing.out(Easing.quad),
-          useNativeDriver: true,
-        }),
-        Animated.spring(markScale, {
-          toValue: 1,
-          speed: 12,
-          bounciness: 7,
-          useNativeDriver: true,
-        }),
-        Animated.timing(markY, {
-          toValue: 0,
-          duration: 560,
-          easing: Easing.out(Easing.cubic),
-          useNativeDriver: true,
-        }),
+        Animated.timing(markOpacity, { toValue: 1, duration: 420, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+        Animated.spring(markScale, { toValue: 1, speed: 12, bounciness: 7, useNativeDriver: true }),
+        Animated.timing(markY, { toValue: 0, duration: 560, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
         Animated.sequence([
           Animated.delay(120),
           Animated.parallel([
-            Animated.timing(glowOpacity, {
-              toValue: 0.16,
-              duration: 430,
-              useNativeDriver: true,
-            }),
-            Animated.timing(glowScale, {
-              toValue: 1.14,
-              duration: 650,
-              easing: Easing.out(Easing.cubic),
-              useNativeDriver: true,
-            }),
+            Animated.timing(glowOpacity, { toValue: isDark ? 0.24 : 0.16, duration: 430, useNativeDriver: true }),
+            Animated.timing(glowScale, { toValue: 1.14, duration: 650, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
           ]),
         ]),
       ]),
       Animated.parallel([
-        Animated.timing(wordOpacity, {
-          toValue: 1,
-          duration: 360,
-          easing: Easing.out(Easing.quad),
-          useNativeDriver: true,
-        }),
-        Animated.timing(wordY, {
-          toValue: 0,
-          duration: 430,
-          easing: Easing.out(Easing.cubic),
-          useNativeDriver: true,
-        }),
+        Animated.timing(wordOpacity, { toValue: 1, duration: 360, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+        Animated.timing(wordY, { toValue: 0, duration: 430, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
         Animated.sequence([
-          Animated.timing(glowOpacity, {
-            toValue: 0.07,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-          Animated.timing(glowOpacity, {
-            toValue: 0.13,
-            duration: 360,
-            useNativeDriver: true,
-          }),
+          Animated.timing(glowOpacity, { toValue: isDark ? 0.12 : 0.07, duration: 300, useNativeDriver: true }),
+          Animated.timing(glowOpacity, { toValue: isDark ? 0.2 : 0.13, duration: 360, useNativeDriver: true }),
         ]),
       ]),
       Animated.delay(520),
       Animated.parallel([
-        Animated.timing(screenOpacity, {
-          toValue: 0,
-          duration: 300,
-          easing: Easing.in(Easing.quad),
-          useNativeDriver: true,
-        }),
-        Animated.timing(markScale, {
-          toValue: 1.04,
-          duration: 300,
-          easing: Easing.in(Easing.quad),
-          useNativeDriver: true,
-        }),
+        Animated.timing(screenOpacity, { toValue: 0, duration: 300, easing: Easing.in(Easing.quad), useNativeDriver: true }),
+        Animated.timing(markScale, { toValue: 1.04, duration: 300, easing: Easing.in(Easing.quad), useNativeDriver: true }),
       ]),
     ]);
 
@@ -107,10 +57,10 @@ export function AnimatedBrandIntro({ onFinish }: Props) {
     });
 
     return () => animation.stop();
-  }, [glowOpacity, glowScale, markOpacity, markScale, markY, onFinish, screenOpacity, wordOpacity, wordY]);
+  }, [glowOpacity, glowScale, isDark, markOpacity, markScale, markY, onFinish, screenOpacity, wordOpacity, wordY]);
 
   return (
-    <Animated.View style={[styles.screen, { opacity: screenOpacity }]}>
+    <Animated.View style={[styles.screen, { opacity: screenOpacity, backgroundColor: colors.background }]}>
       <View style={[styles.markStage, { width: markSize, height: markSize }]}>
         <Animated.View
           style={[
@@ -142,39 +92,16 @@ export function AnimatedBrandIntro({ onFinish }: Props) {
       <Animated.View style={{ opacity: wordOpacity, transform: [{ translateY: wordY }] }}>
         <BrandWordmark size={Math.min(58, Math.max(42, width * 0.12))} style={styles.wordmark} />
       </Animated.View>
-      <Animated.Text style={[styles.caption, { opacity: wordOpacity }]}>Musiqani tingla. O‘rgan. His qil.</Animated.Text>
+      <Animated.Text style={[styles.caption, { opacity: wordOpacity, color: colors.muted }]}>Musiqani tingla. O‘rgan. His qil.</Animated.Text>
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 24,
-  },
-  markStage: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: -20,
-  },
-  glow: {
-    position: 'absolute',
-    backgroundColor: '#3B82F6',
-  },
-  mark: {
-    position: 'absolute',
-  },
-  wordmark: {
-    textAlign: 'center',
-  },
-  caption: {
-    marginTop: 10,
-    color: '#7B7D95',
-    fontSize: 13,
-    fontWeight: '600',
-    letterSpacing: 0.15,
-  },
+  screen: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 },
+  markStage: { alignItems: 'center', justifyContent: 'center', marginBottom: -20 },
+  glow: { position: 'absolute', backgroundColor: '#3B82F6' },
+  mark: { position: 'absolute' },
+  wordmark: { textAlign: 'center' },
+  caption: { marginTop: 10, fontSize: 13, fontWeight: '600', letterSpacing: 0.15 },
 });
