@@ -4,10 +4,11 @@ import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { Screen } from '@/components/ui/Screen';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { useCourse } from '@/context/CourseContext';
-import { colors } from '@/theme/colors';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function LessonsScreen() {
   const { data, isLoading, error, reload } = useCourse();
+  const { colors } = useTheme();
 
   if (isLoading && !data) return <Screen><LoadingState text="Darslar yuklanmoqda…" /></Screen>;
   if (error && !data) return <Screen><ErrorState message={error} onRetry={() => void reload()} /></Screen>;
@@ -21,8 +22,8 @@ export default function LessonsScreen() {
     <Screen>
       <SectionHeader title="Darslar" caption={`${data.course.title}${data.course.subtitle ? ` · ${data.course.subtitle}` : ''}`} />
       <View style={styles.summary}>
-        <Text style={styles.value}>{started} / {data.lessons.length}</Text>
-        <Text style={styles.label}>dars boshlandi</Text>
+        <Text style={[styles.value, { color: colors.primary }]}>{started} / {data.lessons.length}</Text>
+        <Text style={[styles.label, { color: colors.muted }]}>dars boshlandi</Text>
       </View>
       <View style={styles.list}>{data.lessons.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)}</View>
     </Screen>
@@ -32,6 +33,6 @@ export default function LessonsScreen() {
 const styles = StyleSheet.create({
   list: { gap: 12 },
   summary: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },
-  value: { color: colors.primary, fontSize: 22, fontWeight: '900' },
-  label: { color: colors.muted, fontSize: 13 },
+  value: { fontSize: 22, fontWeight: '900' },
+  label: { fontSize: 13 },
 });
