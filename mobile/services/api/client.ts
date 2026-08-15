@@ -1,4 +1,6 @@
 const DEFAULT_API_BASE_URL = 'https://solfedjio-backend-mlfe.onrender.com';
+const REQUEST_TIMEOUT_MS = 30_000;
+
 export const API_BASE_URL = (process.env.EXPO_PUBLIC_API_BASE_URL?.trim() || DEFAULT_API_BASE_URL).replace(/\/$/, '');
 
 export class ApiError extends Error {
@@ -34,15 +36,41 @@ async function request<T>(path: string, options: ApiOptions = {}, token?: string
   };
   if (token) headers.authorization = `Bearer ${token}`;
 
+  const controller = new AbortController();
+  let timedOut = false;
+  const upstreamSignal = options.signal;
+  const abortFromUpstream = () => controller.abort();
+
+  if (upstreamSignal?.aborted) {
+    controller.abort();
+  } else {
+    upstreamSignal?.addEventListener('abort', abortFromUpstream, { once: true });
+  }
+
+  const timeout = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, REQUEST_TIMEOUT_MS);
+
   let response: Response;
   try {
     response = await fetch(`${API_BASE_URL}${path}`, {
       ...options,
       headers,
+      signal: controller.signal,
       body: options.body === undefined ? undefined : JSON.stringify(options.body),
     });
   } catch {
+    if (timedOut) {
+      throw new ApiError(0, 'Server javobi kutilganidan uzoq davom etdi. Qayta urinib ko‘ring.', 'timeout');
+    }
+    if (upstreamSignal?.aborted) {
+      throw new ApiError(0, 'So‘rov bekor qilindi.', 'aborted');
+    }
     throw new ApiError(0, 'Server bilan aloqa qilib bo‘lmadi. Internetni tekshiring.', 'network');
+  } finally {
+    clearTimeout(timeout);
+    upstreamSignal?.removeEventListener('abort', abortFromUpstream);
   }
 
   const data = await response.json().catch(() => null);

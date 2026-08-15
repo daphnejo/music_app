@@ -7,6 +7,7 @@ on:
       - agent/piano-interactions
       - agent/app-polish-auth
       - agent/fix-brand-assets
+      - agent/release-hardening
   pull_request:
     branches:
       - main
@@ -25,6 +26,12 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
       - run: npx expo prebuild --platform android --clean --no-install
+      - name: Reject unused microphone permission
+        run: |
+          if grep -q "android.permission.RECORD_AUDIO" android/app/src/main/AndroidManifest.xml; then
+            echo "Unexpected RECORD_AUDIO permission found in generated AndroidManifest.xml"
+            exit 1
+          fi
       - run: npx expo export --platform android --output-dir /tmp/expo-dist
 
   backend-content-check:
