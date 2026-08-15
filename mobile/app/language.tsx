@@ -2,37 +2,38 @@ import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 import { BackHeader } from '@/components/ui/BackHeader';
 import { Screen } from '@/components/ui/Screen';
-import { colors } from '@/theme/colors';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function LanguageScreen() {
+  const { colors } = useTheme();
   return (
     <Screen>
       <BackHeader title="Til" caption="Ilova interfeysi tili" />
-      <View style={styles.card}>
+      <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         <View style={styles.row}>
-          <View style={styles.icon}><Ionicons name="language-outline" size={22} color={colors.primary} /></View>
+          <View style={[styles.icon, { backgroundColor: colors.primarySoft }]}><Ionicons name="language-outline" size={22} color={colors.primary} /></View>
           <View style={styles.body}>
-            <Text style={styles.title}>O‘zbek tili</Text>
-            <Text style={styles.caption}>Ilovaning qo‘llab-quvvatlanadigan interfeys tili</Text>
+            <Text style={[styles.title, { color: colors.text }]}>O‘zbek tili</Text>
+            <Text style={[styles.caption, { color: colors.muted }]}>Ilovaning qo‘llab-quvvatlanadigan interfeys tili</Text>
           </View>
-          <Ionicons name="checkmark-circle" size={24} color="#2DAA74" />
+          <Ionicons name="checkmark-circle" size={24} color={colors.success} />
         </View>
       </View>
-      <View style={styles.note}>
+      <View style={[styles.note, { backgroundColor: colors.primarySoft }]}>
         <Ionicons name="information-circle-outline" size={20} color={colors.primary} />
-        <Text style={styles.noteText}>Hozirgi versiyada interfeys O‘zbek tilida ishlaydi. Mavjud bo‘lmagan tillar tanlanadigan qilib ko‘rsatilmaydi.</Text>
+        <Text style={[styles.noteText, { color: colors.text }]}>Hozirgi versiyada interfeys O‘zbek tilida ishlaydi. Mavjud bo‘lmagan tillar tanlanadigan qilib ko‘rsatilmaydi.</Text>
       </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: colors.surface, borderRadius: 22, borderWidth: 1, borderColor: colors.border, padding: 16 },
+  card: { borderRadius: 22, borderWidth: 1, padding: 16 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  icon: { width: 44, height: 44, borderRadius: 15, backgroundColor: '#EEF2FF', alignItems: 'center', justifyContent: 'center' },
+  icon: { width: 44, height: 44, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
   body: { flex: 1 },
-  title: { color: colors.text, fontWeight: '900', fontSize: 15 },
-  caption: { color: colors.muted, marginTop: 3, fontSize: 12, lineHeight: 17 },
-  note: { flexDirection: 'row', gap: 10, backgroundColor: '#EEF2FF', borderRadius: 18, padding: 14 },
-  noteText: { flex: 1, color: colors.text, lineHeight: 20, fontSize: 13 },
+  title: { fontWeight: '900', fontSize: 15 },
+  caption: { marginTop: 3, fontSize: 12, lineHeight: 17 },
+  note: { flexDirection: 'row', gap: 10, borderRadius: 18, padding: 14 },
+  noteText: { flex: 1, lineHeight: 20, fontSize: 13 },
 });
