@@ -3,11 +3,12 @@ import { Redirect, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { BrandMark } from '@/components/brand/BrandMark';
 import { useAuth } from '@/context/AuthContext';
+import { useTheme } from '@/context/ThemeContext';
 import { hasSeenOnboarding } from '@/services/app/preferences';
-import { colors } from '@/theme/colors';
 
 export default function Index() {
   const { user } = useAuth();
+  const { colors } = useTheme();
   const [destination, setDestination] = useState<Href | null>(user ? '/(tabs)' : null);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function Index() {
 
   if (!destination) {
     return (
-      <View style={styles.loading}>
+      <View style={[styles.loading, { backgroundColor: colors.background }]}>
         <BrandMark size={84} subtitle="Solfedjio yuklanmoqda…" />
       </View>
     );
@@ -42,5 +43,5 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background, paddingHorizontal: 28 },
+  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 28 },
 });
