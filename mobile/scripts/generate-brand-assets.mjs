@@ -11,24 +11,20 @@ const W = SIZE * SCALE;
 const H = SIZE * SCALE;
 const pixels = new Uint8Array(W * H * 4);
 
-for (let i = 0; i < W * H; i += 1) {
-  pixels[i * 4] = 255;
-  pixels[i * 4 + 1] = 255;
-  pixels[i * 4 + 2] = 255;
-  pixels[i * 4 + 3] = 255;
-}
-
 function clamp(v, min = 0, max = 1) { return Math.max(min, Math.min(max, v)); }
 function gradient(x, y) {
   const t = clamp((x / W) * 0.72 + (1 - y / H) * 0.28);
-  const a = [47, 36, 143];
-  const b = [29, 161, 242];
+  const a = [39, 29, 139];
+  const b = [28, 160, 244];
   return a.map((v, i) => Math.round(v + (b[i] - v) * t));
 }
 function put(x, y, color) {
   if (x < 0 || y < 0 || x >= W || y >= H) return;
   const i = (Math.floor(y) * W + Math.floor(x)) * 4;
-  pixels[i] = color[0]; pixels[i + 1] = color[1]; pixels[i + 2] = color[2]; pixels[i + 3] = 255;
+  pixels[i] = color[0];
+  pixels[i + 1] = color[1];
+  pixels[i + 2] = color[2];
+  pixels[i + 3] = 255;
 }
 function circle(cx, cy, r, colorFn = gradient) {
   const minX = Math.max(0, Math.floor(cx - r));
@@ -86,11 +82,9 @@ function roundedRect(x, y, w, h, radius, color) {
 }
 
 const s = SCALE;
-// Circular piano body.
+// Approved Solfedjio symbol: circular piano body + note + sound waves.
 ring(405 * s, 675 * s, 150 * s, 34 * s);
-// Main note stem.
 stroke([[500 * s, 245 * s], [500 * s, 675 * s]], 46 * s);
-// Curved note flag.
 const flag = [];
 for (let i = 0; i <= 120; i += 1) {
   const t = i / 120;
@@ -100,35 +94,52 @@ for (let i = 0; i <= 120; i += 1) {
   flag.push([x * s, y * s]);
 }
 stroke(flag, 45 * s);
-// Piano black keys inside the circular body.
-const dark = [41, 34, 132];
+const dark = [35, 29, 127];
 roundedRect(345 * s, 585 * s, 34 * s, 145 * s, 15 * s, dark);
 roundedRect(412 * s, 585 * s, 34 * s, 145 * s, 15 * s, dark);
 stroke([[362 * s, 715 * s], [362 * s, 806 * s]], 5 * s, () => dark);
 stroke([[429 * s, 715 * s], [429 * s, 815 * s]], 5 * s, () => dark);
-// Sound waves.
 arc(555 * s, 680 * s, 78 * s, -53, 53, 24 * s);
 arc(555 * s, 680 * s, 128 * s, -53, 53, 25 * s);
 arc(555 * s, 680 * s, 182 * s, -53, 53, 27 * s);
 
-// Downsample 2x for smooth edges.
-const out = new Uint8Array(SIZE * SIZE * 4);
+// Downsample 2x, retaining a transparent anti-aliased mark.
+const mark = new Uint8Array(SIZE * SIZE * 4);
 for (let y = 0; y < SIZE; y += 1) {
   for (let x = 0; x < SIZE; x += 1) {
-    const sum = [0, 0, 0, 0];
+    let alphaSamples = 0;
+    const rgb = [0, 0, 0];
     for (let oy = 0; oy < SCALE; oy += 1) {
       for (let ox = 0; ox < SCALE; ox += 1) {
         const i = (((y * SCALE + oy) * W) + (x * SCALE + ox)) * 4;
-        sum[0] += pixels[i]; sum[1] += pixels[i + 1]; sum[2] += pixels[i + 2]; sum[3] += pixels[i + 3];
+        if (pixels[i + 3] > 0) {
+          alphaSamples += 1;
+          rgb[0] += pixels[i];
+          rgb[1] += pixels[i + 1];
+          rgb[2] += pixels[i + 2];
+        }
       }
     }
     const o = (y * SIZE + x) * 4;
-    const count = SCALE * SCALE;
-    out[o] = Math.round(sum[0] / count);
-    out[o + 1] = Math.round(sum[1] / count);
-    out[o + 2] = Math.round(sum[2] / count);
-    out[o + 3] = 255;
+    if (alphaSamples > 0) {
+      mark[o] = Math.round(rgb[0] / alphaSamples);
+      mark[o + 1] = Math.round(rgb[1] / alphaSamples);
+      mark[o + 2] = Math.round(rgb[2] / alphaSamples);
+      mark[o + 3] = Math.round(255 * alphaSamples / (SCALE * SCALE));
+    }
   }
+}
+
+function onWhite(source) {
+  const result = new Uint8Array(source.length);
+  for (let i = 0; i < source.length; i += 4) {
+    const a = source[i + 3] / 255;
+    result[i] = Math.round(source[i] * a + 255 * (1 - a));
+    result[i + 1] = Math.round(source[i + 1] * a + 255 * (1 - a));
+    result[i + 2] = Math.round(source[i + 2] * a + 255 * (1 - a));
+    result[i + 3] = 255;
+  }
+  return result;
 }
 
 const crcTable = new Uint32Array(256);
@@ -148,12 +159,12 @@ function chunk(type, data) {
   const crc = Buffer.alloc(4); crc.writeUInt32BE(crc32(Buffer.concat([t, data])), 0);
   return Buffer.concat([len, t, data, crc]);
 }
-function pngBuffer() {
+function pngBuffer(rgba) {
   const raw = Buffer.alloc((SIZE * 4 + 1) * SIZE);
   for (let y = 0; y < SIZE; y += 1) {
     const row = y * (SIZE * 4 + 1);
-    raw[row] = 0; // PNG filter 0 — compatible with Expo/Jimp.
-    Buffer.from(out.buffer, out.byteOffset + y * SIZE * 4, SIZE * 4).copy(raw, row + 1);
+    raw[row] = 0;
+    Buffer.from(rgba.buffer, rgba.byteOffset + y * SIZE * 4, SIZE * 4).copy(raw, row + 1);
   }
   const ihdr = Buffer.alloc(13);
   ihdr.writeUInt32BE(SIZE, 0); ihdr.writeUInt32BE(SIZE, 4);
@@ -167,8 +178,10 @@ function pngBuffer() {
 }
 
 mkdirSync(OUT, { recursive: true });
-const png = pngBuffer();
-for (const name of ['icon.png', 'adaptive-icon.png', 'splash-icon.png']) {
-  writeFileSync(resolve(OUT, name), png);
-}
-console.log(`[brand] generated ${png.length} byte Expo-safe Solfedjio assets`);
+const transparentPng = pngBuffer(mark);
+const whitePng = pngBuffer(onWhite(mark));
+writeFileSync(resolve(OUT, 'mark.png'), transparentPng);
+writeFileSync(resolve(OUT, 'adaptive-icon.png'), transparentPng);
+writeFileSync(resolve(OUT, 'splash-icon.png'), transparentPng);
+writeFileSync(resolve(OUT, 'icon.png'), whitePng);
+console.log(`[brand] generated approved Solfedjio mark (${transparentPng.length} bytes)`);
