@@ -4,8 +4,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { BackHeader } from '@/components/ui/BackHeader';
 import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { Screen } from '@/components/ui/Screen';
+import { useTheme } from '@/context/ThemeContext';
 import { apiRequest } from '@/services/api/client';
-import { colors } from '@/theme/colors';
 
 type NotificationItem = {
   id: string;
@@ -19,6 +19,7 @@ type NotificationItem = {
 type NotificationResponse = { notifications: NotificationItem[]; unread: number };
 
 export default function NotificationsScreen() {
+  const { colors } = useTheme();
   const [data, setData] = useState<NotificationResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,26 +60,39 @@ export default function NotificationsScreen() {
       {data && !data.notifications.length ? (
         <View style={styles.empty}>
           <Ionicons name="notifications-off-outline" size={34} color={colors.muted} />
-          <Text style={styles.emptyTitle}>Hozircha bildirishnoma yo‘q</Text>
-          <Text style={styles.emptyText}>Yangi xabarlar shu yerda ko‘rinadi.</Text>
+          <Text style={[styles.emptyTitle, { color: colors.text }]}>Hozircha bildirishnoma yo‘q</Text>
+          <Text style={[styles.emptyText, { color: colors.muted }]}>Yangi xabarlar shu yerda ko‘rinadi.</Text>
         </View>
       ) : null}
       <View style={styles.list}>
-        {data?.notifications.map((item) => (
-          <Pressable key={item.id} onPress={() => void markRead(item)} style={[styles.card, !item.readAt && styles.unreadCard]}>
-            <View style={[styles.icon, !item.readAt && styles.unreadIcon]}>
-              <Ionicons name="notifications-outline" size={20} color={item.readAt ? colors.muted : colors.primary} />
-            </View>
-            <View style={styles.body}>
-              <View style={styles.titleRow}>
-                <Text style={styles.title}>{item.title}</Text>
-                {!item.readAt ? <View style={styles.dot} /> : null}
+        {data?.notifications.map((item) => {
+          const unread = !item.readAt;
+          return (
+            <Pressable
+              key={item.id}
+              onPress={() => void markRead(item)}
+              style={[
+                styles.card,
+                {
+                  backgroundColor: unread ? colors.primarySoft : colors.surface,
+                  borderColor: unread ? colors.primary : colors.border,
+                },
+              ]}
+            >
+              <View style={[styles.icon, { backgroundColor: unread ? colors.primarySoft : colors.surfaceAlt }]}>
+                <Ionicons name="notifications-outline" size={20} color={unread ? colors.primary : colors.muted} />
               </View>
-              {item.body ? <Text style={styles.text}>{item.body}</Text> : null}
-              <Text style={styles.date}>{formatDate(item.createdAt)}</Text>
-            </View>
-          </Pressable>
-        ))}
+              <View style={styles.body}>
+                <View style={styles.titleRow}>
+                  <Text style={[styles.title, { color: colors.text }]}>{item.title}</Text>
+                  {unread ? <View style={[styles.dot, { backgroundColor: colors.primary }]} /> : null}
+                </View>
+                {item.body ? <Text style={[styles.text, { color: colors.muted }]}>{item.body}</Text> : null}
+                <Text style={[styles.date, { color: colors.muted }]}>{formatDate(item.createdAt)}</Text>
+              </View>
+            </Pressable>
+          );
+        })}
       </View>
     </Screen>
   );
@@ -92,17 +106,15 @@ function formatDate(value: string) {
 
 const styles = StyleSheet.create({
   list: { gap: 10 },
-  card: { flexDirection: 'row', gap: 12, backgroundColor: colors.surface, borderRadius: 20, padding: 15, borderWidth: 1, borderColor: colors.border },
-  unreadCard: { borderColor: '#C7D2FE', backgroundColor: '#F8F9FF' },
-  icon: { width: 42, height: 42, borderRadius: 14, backgroundColor: '#F1F1F7', alignItems: 'center', justifyContent: 'center' },
-  unreadIcon: { backgroundColor: '#EEF2FF' },
+  card: { flexDirection: 'row', gap: 12, borderRadius: 20, padding: 15, borderWidth: 1 },
+  icon: { width: 42, height: 42, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
   body: { flex: 1, gap: 4 },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  title: { flex: 1, color: colors.text, fontSize: 14, fontWeight: '900' },
-  dot: { width: 8, height: 8, borderRadius: 8, backgroundColor: colors.primary },
-  text: { color: colors.muted, lineHeight: 19, fontSize: 13 },
-  date: { marginTop: 2, color: '#9A9AAF', fontSize: 11, fontWeight: '600' },
+  title: { flex: 1, fontSize: 14, fontWeight: '900' },
+  dot: { width: 8, height: 8, borderRadius: 8 },
+  text: { lineHeight: 19, fontSize: 13 },
+  date: { marginTop: 2, fontSize: 11, fontWeight: '600' },
   empty: { alignItems: 'center', gap: 7, paddingVertical: 42, paddingHorizontal: 20 },
-  emptyTitle: { color: colors.text, fontWeight: '900', fontSize: 16 },
-  emptyText: { color: colors.muted, textAlign: 'center' },
+  emptyTitle: { fontWeight: '900', fontSize: 16 },
+  emptyText: { textAlign: 'center' },
 });
