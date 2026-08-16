@@ -3,7 +3,7 @@
     "name": "Solfedjio",
     "slug": "solfedjio-mobile",
     "version": "0.1.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "scheme": "solfedjio",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,6 +13,7 @@
     "android": {
       "package": "uz.artclub.solfedjio",
       "edgeToEdgeEnabled": true,
+      "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": { "foregroundImage": "./.generated/adaptive-icon.png", "backgroundColor": "#FFFFFF" },
       "permissions": ["android.permission.MODIFY_AUDIO_SETTINGS"]
     },
