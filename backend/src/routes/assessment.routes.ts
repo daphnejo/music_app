@@ -21,6 +21,12 @@ async function assertBlockAccessible(blockId: string, cvId: mongoose.Types.Objec
   return block;
 }
 
+function assertQuestionReviewed(needsReview: boolean) {
+  if (needsReview) {
+    throw conflict("Bu topshiriqning javob kaliti metodist tasdig'ini kutmoqda. Hozircha avtomatik baholash o'chirilgan.");
+  }
+}
+
 /** Javobni baholash. options.isCorrect o'qiladigan yagona joy (select:false'ni +bilan ochamiz). */
 async function grade(questionId: mongoose.Types.ObjectId, type: string, maxScore: number, payload: AnswerPayload) {
   const question = await Question.findById(questionId).select('+options.isCorrect');
@@ -102,6 +108,11 @@ assessmentRouter.post(
     if (!key || key.length < 8) throw badRequest("Idempotency-Key header kerak (kamida 8 belgi)");
 
     const payload = req.body as AnswerPayload;
+    const question = await Question.findOne({ blockId: block._id });
+
+    // Source'dan olingan javob kaliti hali metodist tasdig'ini kutayotgan bo'lsa,
+    // uni studentga authoritative natija sifatida bermaymiz.
+    if (question) assertQuestionReviewed(block.needsReview);
 
     const existing = await Attempt.findOne({ userId: user.id, blockId: block._id, idempotencyKey: key, status: 'submitted' });
     if (existing) {
@@ -115,8 +126,6 @@ assessmentRouter.post(
       });
       return;
     }
-
-    const question = await Question.findOne({ blockId: block._id });
 
     // Savolsiz blok — amaliyot: bajarilganini tasdiqlash
     if (!question) {
@@ -222,6 +231,7 @@ assessmentRouter.post(
     const results: Array<{ blockId: string; status: string; correct?: boolean }> = [];
     for (const item of items) {
       try {
+        const block = await assertBlockAccessible(item.blockId, cvId);
         const already = await Attempt.findOne({ userId: user.id, blockId: item.blockId, idempotencyKey: item.idempotencyKey });
         if (already) {
           results.push({ blockId: item.blockId, status: 'duplicate_ignored' });
@@ -230,6 +240,10 @@ assessmentRouter.post(
         const question = await Question.findOne({ blockId: item.blockId });
         if (!question) {
           results.push({ blockId: item.blockId, status: 'skipped_no_question' });
+          continue;
+        }
+        if (block.needsReview) {
+          results.push({ blockId: item.blockId, status: 'pending_methodist_review' });
           continue;
         }
         const r = await grade(question._id, question.type, question.maxScore, item.payload);
