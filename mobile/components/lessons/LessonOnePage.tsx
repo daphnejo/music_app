@@ -16,14 +16,6 @@ type LessonOnePageProps = {
   onComplete: () => void;
 };
 
-function cleanTitle(value: string) {
-  return value.trim().replace(/[.\s]+$/, '');
-}
-
-function isDefinition(line: string) {
-  return /^\s*solfedjio\s*[–—-]/i.test(line);
-}
-
 export function LessonOnePage({
   lessonTitle,
   sectionTitle,
@@ -36,10 +28,9 @@ export function LessonOnePage({
   onComplete,
 }: LessonOnePageProps) {
   const { colors } = useTheme();
-  const definition = lines.find(isDefinition) ?? lines[0] ?? '';
-  const history = lines.find((line) => line !== definition) ?? '';
   const mainImage = images.find((asset) => /\.jpe?g(?:$|\?)/i.test(asset.file)) ?? images[0] ?? null;
-  const title = cleanTitle(lessonTitle);
+  const hasGuidoFact = lines.some((line) => /gvido|guido/i.test(line));
+  const canGoNext = completed && !!onNext;
 
   return (
     <View style={styles.page}>
@@ -58,45 +49,37 @@ export function LessonOnePage({
           <Text style={[styles.lessonBadgeText, { color: colors.primary }]}>1-DARS</Text>
         </View>
 
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Keyingi"
-          disabled={!onNext}
-          onPress={onNext}
-          style={[
-            styles.navButton,
-            { backgroundColor: colors.surface, borderColor: colors.border },
-            !onNext && styles.disabled,
-          ]}
-        >
-          <Ionicons name="arrow-forward" size={22} color={colors.text} />
-        </Pressable>
-      </View>
-
-      <View style={[styles.hero, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
-        <View style={[styles.heroIcon, { backgroundColor: colors.primarySoft }]}> 
-          <Ionicons name="musical-note" size={30} color={colors.primary} />
-        </View>
-        <View style={styles.heroCopy}>
-          <Text style={[styles.kicker, { color: colors.primary }]}>1-DARS</Text>
-          <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
+        <View style={[styles.navButton, styles.placeholderButton]}>
+          <Ionicons name="star" size={20} color="#F2B01E" />
         </View>
       </View>
 
-      {definition ? (
-        <View style={[styles.definitionCard, { backgroundColor: colors.primarySoft, borderColor: colors.border }]}> 
-          <View style={[styles.quoteIcon, { backgroundColor: colors.surface }]}> 
-            <Ionicons name="book-outline" size={21} color={colors.primary} />
-          </View>
-          <Text style={[styles.definitionText, { color: colors.text }]}>{definition}</Text>
+      <View style={[styles.hero, { backgroundColor: colors.primary }]}> 
+        <View style={styles.heroBubble}>
+          <Ionicons name="musical-note" size={36} color="#FFFFFF" />
         </View>
-      ) : null}
+        <Text style={styles.heroKicker}>BIRINCHI QADAM 🎵</Text>
+        <Text style={styles.heroTitle}>Solfedjio bilan tanishamiz!</Text>
+        <Text style={styles.heroText}>Musiqa olamiga kirishga tayyormisan?</Text>
+      </View>
 
-      <View style={styles.interestingHeader}>
-        <View style={[styles.bulb, { backgroundColor: colors.warningSurface }]}> 
-          <Ionicons name="bulb-outline" size={22} color={colors.warning} />
+      <View style={[styles.stepCard, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
+        <View style={[styles.stepNumber, { backgroundColor: colors.primarySoft }]}>
+          <Text style={[styles.stepNumberText, { color: colors.primary }]}>1</Text>
         </View>
-        <Text style={[styles.interestingTitle, { color: colors.text }]}>{sectionTitle}</Text>
+        <View style={styles.stepCopy}>
+          <Text style={[styles.stepLabel, { color: colors.primary }]}>BILIB OLAMIZ</Text>
+          <Text style={[styles.stepTitle, { color: colors.text }]}>Solfedjio nima?</Text>
+          <Text style={[styles.stepText, { color: colors.muted }]}>Solfedjio — notaga qarab kuylashni o‘rganishga yordam beradigan musiqa mashg‘uloti.</Text>
+        </View>
+      </View>
+
+      <View style={[styles.factCard, { backgroundColor: '#FFF1B9' }]}> 
+        <View style={styles.factIcon}><Text style={styles.factEmoji}>💡</Text></View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.factLabel}>BILASANMI?</Text>
+          <Text style={styles.factText}>“Solfedjio” nomi “sol” va “fa” notalari nomidan kelib chiqqan.</Text>
+        </View>
       </View>
 
       {mainImage ? (
@@ -108,111 +91,88 @@ export function LessonOnePage({
             cachePolicy="memory-disk"
             transition={180}
           />
+          {hasGuidoFact ? (
+            <View style={styles.imageCaption}>
+              <Ionicons name="sparkles" size={18} color={colors.primary} />
+              <Text style={[styles.imageCaptionText, { color: colors.text }]}>Gvido de Aresso nomi solfedjio va nota tizimi tarixi bilan bog‘liq.</Text>
+            </View>
+          ) : null}
         </View>
       ) : null}
 
-      {history ? (
-        <View style={[styles.historyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
-          <View style={[styles.historyMark, { backgroundColor: colors.primarySoft }]}> 
-            <Ionicons name="sparkles-outline" size={20} color={colors.primary} />
-          </View>
-          <Text style={[styles.historyText, { color: colors.text }]}>{history}</Text>
+      <View style={[styles.readyCard, { backgroundColor: colors.primarySoft }]}> 
+        <Text style={styles.readyEmoji}>{completed ? '🌟' : '🎶'}</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={[styles.readyTitle, { color: colors.text }]}>{completed ? 'Barakalla!' : 'Esda qoldimi?'}</Text>
+          <Text style={[styles.readyText, { color: colors.muted }]}>{completed ? 'Birinchi qadamni bajarding. Endi davom etamiz!' : 'Tayyor bo‘lsang, keyingi qadamga o‘tamiz.'}</Text>
         </View>
-      ) : null}
+      </View>
 
       <Pressable
         accessibilityRole="button"
-        disabled={completed || saving}
-        onPress={onComplete}
-        style={[
-          styles.completeButton,
-          { backgroundColor: completed ? colors.success : colors.primary },
-          saving && styles.disabled,
-        ]}
+        disabled={saving}
+        onPress={canGoNext ? onNext : onComplete}
+        style={[styles.completeButton, { backgroundColor: completed ? colors.success : colors.primary }, saving && styles.disabled]}
       >
-        <Ionicons name={completed ? 'checkmark-circle' : 'checkmark'} size={20} color="#fff" />
         <Text style={styles.completeText}>
-          {completed ? 'Dars o‘qib chiqildi' : saving ? 'Saqlanmoqda…' : 'O‘qib chiqdim'}
+          {saving ? 'Saqlanmoqda…' : canGoNext ? 'Keyingi qadam' : completed ? 'Barakalla! ⭐' : 'Tushundim! ⭐'}
         </Text>
+        <Ionicons name={canGoNext ? 'arrow-forward' : completed ? 'star' : 'checkmark'} size={21} color="#FFFFFF" />
       </Pressable>
+
+      <Text style={[styles.sourceHint, { color: colors.muted }]} numberOfLines={1}>{lessonTitle} · {sectionTitle}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  page: { gap: 16 },
+  page: { gap: 15 },
   topbar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   navButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 15,
+    width: 46,
+    height: 46,
+    borderRadius: 17,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  placeholderButton: { borderWidth: 0 },
   lessonBadge: {
-    minHeight: 36,
-    paddingHorizontal: 13,
+    minHeight: 38,
+    paddingHorizontal: 14,
     borderRadius: 999,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
   },
-  lessonBadgeText: { fontSize: 12, fontWeight: '900', letterSpacing: 0.5 },
-  hero: {
-    borderWidth: 1,
-    borderRadius: 26,
-    padding: 18,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-  },
-  heroIcon: {
-    width: 60,
-    height: 60,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  heroCopy: { flex: 1, gap: 3 },
-  kicker: { fontSize: 11, fontWeight: '900', letterSpacing: 1.1 },
-  title: { fontSize: 30, lineHeight: 35, fontWeight: '900', letterSpacing: 0.3 },
-  definitionCard: {
-    borderWidth: 1,
-    borderRadius: 24,
-    padding: 17,
-    gap: 12,
-  },
-  quoteIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  definitionText: { fontSize: 17, lineHeight: 27, fontWeight: '600' },
-  interestingHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 2 },
-  bulb: { width: 42, height: 42, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
-  interestingTitle: { fontSize: 25, lineHeight: 31, fontWeight: '900' },
-  imageCard: { borderWidth: 1, borderRadius: 24, padding: 10, overflow: 'hidden' },
-  image: { width: '100%', aspectRatio: 1.45, borderRadius: 17 },
-  historyCard: {
-    borderWidth: 1,
-    borderRadius: 24,
-    padding: 17,
-    gap: 12,
-  },
-  historyMark: { width: 40, height: 40, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
-  historyText: { fontSize: 17, lineHeight: 27, fontWeight: '600' },
-  completeButton: {
-    minHeight: 58,
-    borderRadius: 19,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingHorizontal: 18,
-  },
-  completeText: { color: '#fff', fontSize: 15, fontWeight: '900' },
-  disabled: { opacity: 0.42 },
+  lessonBadgeText: { fontSize: 12, fontWeight: '900', letterSpacing: 0.6 },
+  hero: { borderRadius: 30, padding: 22, minHeight: 220, justifyContent: 'center', overflow: 'hidden' },
+  heroBubble: { width: 64, height: 64, borderRadius: 23, backgroundColor: 'rgba(255,255,255,0.17)', alignItems: 'center', justifyContent: 'center', marginBottom: 17 },
+  heroKicker: { color: 'rgba(255,255,255,0.75)', fontSize: 11, fontWeight: '900', letterSpacing: 1 },
+  heroTitle: { color: '#FFFFFF', fontSize: 30, lineHeight: 36, fontWeight: '900', marginTop: 6 },
+  heroText: { color: 'rgba(255,255,255,0.82)', fontSize: 14, lineHeight: 20, fontWeight: '700', marginTop: 7 },
+  stepCard: { borderRadius: 26, padding: 17, borderWidth: 1, flexDirection: 'row', alignItems: 'flex-start', gap: 13 },
+  stepNumber: { width: 44, height: 44, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  stepNumberText: { fontSize: 18, fontWeight: '900' },
+  stepCopy: { flex: 1 },
+  stepLabel: { fontSize: 10, fontWeight: '900', letterSpacing: 0.8 },
+  stepTitle: { fontSize: 22, lineHeight: 27, fontWeight: '900', marginTop: 4 },
+  stepText: { fontSize: 16, lineHeight: 24, fontWeight: '600', marginTop: 7 },
+  factCard: { borderRadius: 26, padding: 17, flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
+  factIcon: { width: 45, height: 45, borderRadius: 16, backgroundColor: '#FFE27A', alignItems: 'center', justifyContent: 'center' },
+  factEmoji: { fontSize: 24 },
+  factLabel: { color: '#926000', fontSize: 10, fontWeight: '900', letterSpacing: 0.9 },
+  factText: { color: '#4D4020', fontSize: 16, lineHeight: 23, fontWeight: '800', marginTop: 5 },
+  imageCard: { borderRadius: 26, padding: 10, borderWidth: 1, overflow: 'hidden' },
+  image: { width: '100%', aspectRatio: 1.45, borderRadius: 19 },
+  imageCaption: { flexDirection: 'row', gap: 9, alignItems: 'center', paddingHorizontal: 8, paddingVertical: 11 },
+  imageCaptionText: { flex: 1, fontSize: 13, lineHeight: 19, fontWeight: '700' },
+  readyCard: { borderRadius: 24, padding: 15, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  readyEmoji: { fontSize: 30 },
+  readyTitle: { fontSize: 16, fontWeight: '900' },
+  readyText: { fontSize: 12, lineHeight: 18, fontWeight: '600', marginTop: 2 },
+  completeButton: { minHeight: 60, borderRadius: 21, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 9, paddingHorizontal: 18 },
+  completeText: { color: '#FFFFFF', fontSize: 16, fontWeight: '900' },
+  sourceHint: { alignSelf: 'center', fontSize: 10, fontWeight: '600', opacity: 0.65 },
+  disabled: { opacity: 0.5 },
 });
