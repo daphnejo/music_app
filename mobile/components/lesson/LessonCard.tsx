@@ -17,7 +17,7 @@ const LESSON_ICONS: Array<keyof typeof Ionicons.glyphMap> = [
   'musical-note',
   'grid',
   'color-wand',
-  'piano',
+  'headset',
 ];
 
 export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary; index?: number }) {
