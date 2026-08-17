@@ -62,8 +62,22 @@ function isRepeatedSourceHeading(line: string, blockTitle: string, lessonTitle: 
 }
 
 function optionTextForDisplay(value: string) {
-  const withoutPrefix = value.replace(/^\s*[a-z]\s*[).:\-]\s*/i, '').trim();
-  return withoutPrefix || value;
+  const trimmed = value.trim();
+  const prefixPattern = /^\s*[a-z]\s*[).:\-]\s*/i;
+  if (!prefixPattern.test(trimmed)) return trimmed;
+  return trimmed.replace(prefixPattern, '').trim();
+}
+
+function sourceFileName(value: string | null | undefined) {
+  if (!value) return null;
+  let decoded = value;
+  try {
+    decoded = decodeURIComponent(value);
+  } catch {
+    // Keep the original path if decoding fails.
+  }
+  const clean = decoded.split('?')[0] ?? decoded;
+  return clean.split('/').filter(Boolean).pop()?.toLocaleLowerCase('uz-UZ') ?? null;
 }
 
 export default function BlockDetailScreen() {
@@ -104,6 +118,12 @@ export default function BlockDetailScreen() {
   const images = data?.assets.filter((asset) => asset.kind === 'image') ?? [];
   const audios = data?.assets.filter((asset) => asset.kind === 'audio') ?? [];
   const videos = data?.assets.filter((asset) => asset.kind === 'video') ?? [];
+  const optionImageNames = new Set(
+    (data?.question?.options ?? [])
+      .map((option) => sourceFileName(option.imageUrl))
+      .filter((name): name is string => !!name),
+  );
+  const contentImages = images.filter((asset) => !optionImageNames.has(sourceFileName(asset.file) ?? ''));
 
   const saveDraft = async (optionId: string) => {
     if (!id) return;
@@ -197,7 +217,7 @@ export default function BlockDetailScreen() {
         </View>
       ) : null}
 
-      <SourceImageGallery images={images} resolveUrl={absoluteUrl} />
+      <SourceImageGallery images={contentImages} resolveUrl={absoluteUrl} />
 
       <SourceAudioSection audios={audios} resolveUrl={absoluteUrl} />
 
@@ -213,6 +233,7 @@ export default function BlockDetailScreen() {
               const selected = selectedOptionId === option.id;
               const isCorrect = submitResult?.correctOptionIds?.includes(option.id) ?? false;
               const isWrongSelected = !!submitResult && selected && !isCorrect;
+              const displayOptionText = optionTextForDisplay(option.text);
               const optionSurface = isCorrect
                 ? { borderColor: colors.success, backgroundColor: colors.successSurface }
                 : isWrongSelected
@@ -249,7 +270,7 @@ export default function BlockDetailScreen() {
                     )}
                   </View>
                   <View style={{ flex: 1, gap: 8 }}>
-                    <Text style={[styles.optionText, { color: colors.text }]}>{optionTextForDisplay(option.text)}</Text>
+                    {displayOptionText ? <Text style={[styles.optionText, { color: colors.text }]}>{displayOptionText}</Text> : null}
                     {option.imageUrl ? <Image source={{ uri: absoluteUrl(option.imageUrl) }} style={styles.optionImage} resizeMode="contain" /> : null}
                   </View>
                 </Pressable>
