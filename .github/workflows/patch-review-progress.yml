@@ -1,0 +1,50 @@
+name: Patch review-safe progress
+
+on:
+  push:
+    branches:
+      - agent/review-safe-progress
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/review-safe-progress
+
+      - name: Patch progress statistics
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('backend/src/routes/content.routes.ts')
+          text = path.read_text()
+          old = """    const attempts = await Attempt.find({ userId: user.id, status: 'submitted', questionId: { $ne: null } }).select('_id');
+    const answers = await Answer.find({ attemptId: { $in: attempts.map((a) => a._id) } });
+"""
+          new = """    const unreviewedBlockIds = blocks.filter((b) => b.needsReview).map((b) => b._id);
+    const attempts = await Attempt.find({
+      userId: user.id,
+      status: 'submitted',
+      questionId: { $ne: null },
+      ...(unreviewedBlockIds.length ? { blockId: { $nin: unreviewedBlockIds } } : {}),
+    }).select('_id');
+    const answers = await Answer.find({ attemptId: { $in: attempts.map((a) => a._id) } });
+"""
+          if old not in text:
+              raise SystemExit('Expected progress query was not found; refusing to patch')
+          path.write_text(text.replace(old, new, 1))
+          PY
+
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add backend/src/routes/content.routes.ts
+          git commit -m "exclude unreviewed tests from progress accuracy"
+          git push origin HEAD:agent/review-safe-progress
