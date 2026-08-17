@@ -60,6 +60,11 @@ function isRepeatedSourceHeading(line: string, blockTitle: string, lessonTitle: 
   return normalizedWithoutNumber === normalizedBlock || normalizedWithoutNumber === normalizedLesson;
 }
 
+function optionTextForDisplay(value: string) {
+  const withoutPrefix = value.replace(/^\s*[a-z]\s*[).:\-]\s*/i, '').trim();
+  return withoutPrefix || value;
+}
+
 export default function BlockDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { reload: reloadCourse } = useCourse();
@@ -157,6 +162,13 @@ export default function BlockDetailScreen() {
 
   const progressPercent = data.navigation.total ? Math.round((data.navigation.position / data.navigation.total) * 100) : 0;
   const cardStyle = { backgroundColor: colors.surface, borderColor: colors.border };
+  const completionLabel = data.progress.state === 'completed'
+    ? 'Bajarildi'
+    : isSubmitting
+      ? 'Saqlanmoqda…'
+      : data.block.type === 'practice_acknowledgement'
+        ? 'Mashqni bajardim'
+        : 'O‘rgandim / Bajarildi';
 
   return (
     <Screen>
@@ -201,8 +213,8 @@ export default function BlockDetailScreen() {
         <View style={[styles.questionCard, cardStyle]}>
           <Text style={[styles.sectionLabel, { color: colors.primary }]}>TOPSHIRIQ</Text>
           <Text style={[styles.question, { color: colors.text }]}>{data.question.prompt}</Text>
-          <View style={styles.options}>
-            {data.question.options.map((option) => {
+          <View style={styles.options} accessibilityRole="radiogroup">
+            {data.question.options.map((option, optionIndex) => {
               const selected = selectedOptionId === option.id;
               const isCorrect = submitResult?.correctOptionIds?.includes(option.id) ?? false;
               const isWrongSelected = !!submitResult && selected && !isCorrect;
@@ -213,18 +225,36 @@ export default function BlockDetailScreen() {
                   : selected
                     ? { borderColor: colors.primary, backgroundColor: colors.primarySoft }
                     : { borderColor: colors.border, backgroundColor: colors.surface };
+              const markerSurface = isCorrect
+                ? colors.success
+                : isWrongSelected
+                  ? colors.warning
+                  : selected
+                    ? colors.primary
+                    : colors.surfaceAlt;
+              const markerTextColor = isCorrect || isWrongSelected || selected ? '#fff' : colors.text;
+              const optionLetter = String.fromCharCode(65 + optionIndex);
+
               return (
                 <Pressable
                   key={option.id}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected, disabled: !!submitResult }}
                   disabled={!!submitResult}
                   onPress={() => void saveDraft(option.id)}
                   style={[styles.option, optionSurface]}
                 >
-                  <View style={[styles.radio, { borderColor: selected ? colors.primary : colors.muted }]}>
-                    {selected ? <View style={[styles.radioDot, { backgroundColor: colors.primary }]} /> : null}
+                  <View style={[styles.optionMarker, { backgroundColor: markerSurface }]}>
+                    {isCorrect ? (
+                      <Ionicons name="checkmark" size={17} color="#fff" />
+                    ) : isWrongSelected ? (
+                      <Ionicons name="close" size={17} color="#fff" />
+                    ) : (
+                      <Text style={[styles.optionLetter, { color: markerTextColor }]}>{optionLetter}</Text>
+                    )}
                   </View>
                   <View style={{ flex: 1, gap: 8 }}>
-                    <Text style={[styles.optionText, { color: colors.text }]}>{option.text}</Text>
+                    <Text style={[styles.optionText, { color: colors.text }]}>{optionTextForDisplay(option.text)}</Text>
                     {option.imageUrl ? <Image source={{ uri: absoluteUrl(option.imageUrl) }} style={styles.optionImage} resizeMode="contain" /> : null}
                   </View>
                 </Pressable>
@@ -240,7 +270,7 @@ export default function BlockDetailScreen() {
                 color={submitResult.correct ? colors.success : colors.warning}
               />
               <View style={{ flex: 1 }}>
-                <Text style={[styles.feedbackTitle, { color: colors.text }]}>{submitResult.correct ? 'To‘g‘ri!' : 'Yana bir bor ko‘rib chiqing'}</Text>
+                <Text style={[styles.feedbackTitle, { color: colors.text }]}>{submitResult.correct ? 'To‘g‘ri!' : 'Javobni qayta ko‘rib chiqing'}</Text>
                 <Text style={[styles.feedbackText, { color: colors.muted }]}>Natija: {submitResult.score} / {submitResult.maxScore}</Text>
                 {submitResult.explanation ? <Text style={[styles.feedbackText, { color: colors.muted }]}>{submitResult.explanation}</Text> : null}
               </View>
@@ -267,9 +297,7 @@ export default function BlockDetailScreen() {
           ]}
         >
           <Ionicons name={data.progress.state === 'completed' ? 'checkmark-circle' : 'checkmark'} size={19} color="#fff" />
-          <Text style={styles.primaryButtonText}>
-            {data.progress.state === 'completed' ? 'Bajarildi' : isSubmitting ? 'Saqlanmoqda…' : 'O‘rgandim / Bajarildi'}
-          </Text>
+          <Text style={styles.primaryButtonText}>{completionLabel}</Text>
         </Pressable>
       )}
 
@@ -316,8 +344,8 @@ const styles = StyleSheet.create({
   question: { fontSize: 18, lineHeight: 25, fontWeight: '900' },
   options: { gap: 10 },
   option: { flexDirection: 'row', gap: 12, alignItems: 'center', padding: 14, borderWidth: 1.5, borderRadius: 18 },
-  radio: { width: 22, height: 22, borderRadius: 999, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
-  radioDot: { width: 10, height: 10, borderRadius: 999 },
+  optionMarker: { width: 32, height: 32, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
+  optionLetter: { fontSize: 13, fontWeight: '900' },
   optionText: { fontSize: 15, lineHeight: 21, fontWeight: '700' },
   optionImage: { width: '100%', height: 130 },
   primaryButton: { minHeight: 54, paddingHorizontal: 16, borderRadius: 18, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
