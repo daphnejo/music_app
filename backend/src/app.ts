@@ -7,6 +7,7 @@ import { authRouter } from './routes/auth.routes.ts';
 import { contentRouter } from './routes/content.routes.ts';
 import { miscRouter } from './routes/misc.routes.ts';
 import { assessmentRouter } from './routes/assessment.routes.ts';
+import { progressRouter } from './routes/progress.routes.ts';
 import { teacherRouter } from './routes/teacher.routes.ts';
 import { adminRouter } from './routes/admin.routes.ts';
 import { mediaRouter } from './routes/media.routes.ts';
@@ -34,6 +35,7 @@ export function createApp() {
 
   app.use('/api', contentRouter);
   app.use('/api', assessmentRouter);
+  app.use('/api', progressRouter);
   app.use('/api/teacher', teacherRouter);
   app.use('/api/admin', adminRouter);
   app.use('/api/analytics', analyticsRouter);
