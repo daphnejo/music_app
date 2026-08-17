@@ -12,7 +12,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { API_BASE_URL, ApiError, apiRequest } from '@/services/api/client';
 import type { BlockDetailResponse } from '@/types/content';
 
- type SubmitResponse = {
+type SubmitResponse = {
   attemptId: string;
   correct: boolean;
   score: number;
@@ -36,6 +36,28 @@ function bodyLines(body: unknown): string[] {
   if (typeof body === 'string') return body.trim() ? [body.trim()] : [];
   if (!Array.isArray(body)) return [];
   return body.map((item) => String(item ?? '').trim()).filter(Boolean);
+}
+
+function normalizeHeading(value: string) {
+  return value
+    .toLocaleLowerCase('uz-UZ')
+    .replace(/[’‘`ʻʼ']/g, '')
+    .replace(/[^a-z0-9\u0400-\u04ff]+/gi, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function isRepeatedSourceHeading(line: string, blockTitle: string, lessonTitle: string) {
+  const normalizedLine = normalizeHeading(line);
+  const normalizedBlock = normalizeHeading(blockTitle);
+  const normalizedLesson = normalizeHeading(lessonTitle);
+
+  if (!normalizedLine) return true;
+  if (normalizedLine === normalizedBlock || normalizedLine === normalizedLesson) return true;
+
+  const withoutLessonNumber = line.replace(/^\s*\d+\s*[-.]?\s*dars\s*[.:'’\-–—]*\s*/i, '');
+  const normalizedWithoutNumber = normalizeHeading(withoutLessonNumber);
+  return normalizedWithoutNumber === normalizedBlock || normalizedWithoutNumber === normalizedLesson;
 }
 
 export default function BlockDetailScreen() {
@@ -68,7 +90,11 @@ export default function BlockDetailScreen() {
 
   useEffect(() => { void load(); }, [load]);
 
-  const lines = useMemo(() => bodyLines(data?.block.body), [data?.block.body]);
+  const lines = useMemo(() => {
+    const rawLines = bodyLines(data?.block.body);
+    if (!data) return rawLines;
+    return rawLines.filter((line) => !isRepeatedSourceHeading(line, data.block.title, data.block.lesson.title));
+  }, [data]);
   const images = data?.assets.filter((asset) => asset.kind === 'image') ?? [];
   const audios = data?.assets.filter((asset) => asset.kind === 'audio') ?? [];
   const videos = data?.assets.filter((asset) => asset.kind === 'video') ?? [];
@@ -146,8 +172,8 @@ export default function BlockDetailScreen() {
 
       <View style={[styles.positionCard, cardStyle]}>
         <View style={styles.positionTop}>
-          <Text style={[styles.positionText, { color: colors.text }]}>{data.navigation.position} / {data.navigation.total}</Text>
-          {data.block.sourceSlide ? <Text style={[styles.source, { color: colors.muted }]}>Manba: {data.block.sourceSlide}-slayd</Text> : null}
+          <Text style={[styles.positionText, { color: colors.text }]}>Qism {data.navigation.position} / {data.navigation.total}</Text>
+          <Text style={[styles.positionPercent, { color: colors.primary }]}>{progressPercent}%</Text>
         </View>
         <ProgressBar value={progressPercent} />
       </View>
@@ -277,9 +303,9 @@ const styles = StyleSheet.create({
   eyebrow: { fontSize: 11, fontWeight: '900', marginBottom: 3 },
   title: { fontSize: 23, lineHeight: 29, fontWeight: '900' },
   positionCard: { gap: 8, borderRadius: 18, padding: 14, borderWidth: 1 },
-  positionTop: { flexDirection: 'row', justifyContent: 'space-between' },
+  positionTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   positionText: { fontSize: 12, fontWeight: '800' },
-  source: { fontSize: 11 },
+  positionPercent: { fontSize: 12, fontWeight: '900' },
   theoryCard: { gap: 12, borderRadius: 22, padding: 18, borderWidth: 1 },
   bodyText: { fontSize: 16, lineHeight: 24 },
   imageCard: { borderRadius: 20, padding: 10, gap: 8, borderWidth: 1 },
