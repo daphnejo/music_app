@@ -31,7 +31,11 @@ const r2 = new S3Client({
 });
 
 async function directMediaUrl(file: string): Promise<string> {
-  return getSignedUrl(r2, new GetObjectCommand({ Bucket: config.r2.bucket, Key: file }), { expiresIn: 300 });
+  return getSignedUrl(
+    r2,
+    new GetObjectCommand({ Bucket: config.r2.bucket, Key: file }),
+    { expiresIn: config.mediaTokenTtlSeconds },
+  );
 }
 
 async function mediaUrlByAssetId(assetId: string): Promise<string | null> {
@@ -78,7 +82,7 @@ async function assetsForBlock(blockId: Types.ObjectId) {
           caption: a.caption,
           transcript: a.transcript,
           rightsStatus: a.rightsStatus,
-          // Native media local HTTP redirectdan o'tmaydi; R2 private qoladi, URL 5 daqiqada eskiradi.
+          // Native media local HTTP redirectdan o'tmaydi; R2 private qoladi, URL muddati config orqali boshqariladi.
           url: await directMediaUrl(a.file),
         };
       }),
