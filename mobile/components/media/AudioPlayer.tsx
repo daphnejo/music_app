@@ -9,10 +9,27 @@ function formatTime(seconds: number) {
   return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, '0')}`;
 }
 
+function fallbackAudioTitle(url: string) {
+  let decoded = url;
+  try {
+    decoded = decodeURIComponent(url);
+  } catch {
+    // Keep the original URL if it contains an invalid escape sequence.
+  }
+
+  const clean = decoded.split('?')[0] ?? decoded;
+  const fileName = clean.split('/').filter(Boolean).pop() ?? clean;
+  const numbered = fileName.match(/(?:audio|sound)?[\s_-]*(\d+)(?=\.[a-z0-9]+$|$)/i)
+    ?? clean.match(/audio[^0-9]*(\d+)/i);
+
+  return numbered ? `Audio ${Number(numbered[1])}` : 'Audio';
+}
+
 export function AudioPlayer({ url, title }: { url: string; title?: string | null }) {
   const { colors } = useTheme();
   const player = useAudioPlayer(url, { updateInterval: 500 });
   const status = useAudioPlayerStatus(player);
+  const displayTitle = title?.trim() || fallbackAudioTitle(url);
 
   const toggle = () => {
     if (status.playing) player.pause();
@@ -28,7 +45,7 @@ export function AudioPlayer({ url, title }: { url: string; title?: string | null
     <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View style={[styles.icon, { backgroundColor: colors.primarySoft }]}><Ionicons name="musical-note" size={22} color={colors.primary} /></View>
       <View style={styles.body}>
-        <Text style={[styles.title, { color: colors.text }]}>{title || 'Audio misol'}</Text>
+        <Text style={[styles.title, { color: colors.text }]}>{displayTitle}</Text>
         <View style={[styles.track, { backgroundColor: colors.surfaceAlt }]}><View style={[styles.fill, { width: `${progress * 100}%`, backgroundColor: colors.primary }]} /></View>
         <Text style={[styles.time, { color: colors.muted }]}>{formatTime(status.currentTime)} / {formatTime(status.duration)}</Text>
       </View>
