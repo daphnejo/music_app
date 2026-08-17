@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SourceAudioSection } from '@/components/media/SourceAudioSection';
 import { SourceImageGallery } from '@/components/media/SourceImageGallery';
 import { SourceVideoSection } from '@/components/media/SourceVideoSection';
@@ -270,7 +271,14 @@ export default function BlockDetailScreen() {
                   </View>
                   <View style={{ flex: 1, gap: 8 }}>
                     {displayOptionText ? <Text style={[styles.optionText, { color: colors.text }]}>{displayOptionText}</Text> : null}
-                    {option.imageUrl ? <Image source={{ uri: absoluteUrl(option.imageUrl) }} style={styles.optionImage} resizeMode="contain" /> : null}
+                    {option.imageUrl ? (
+                      <Image
+                        source={{ uri: absoluteUrl(option.imageUrl) }}
+                        style={styles.optionImage}
+                        contentFit="contain"
+                        cachePolicy="memory-disk"
+                      />
+                    ) : null}
                   </View>
                 </Pressable>
               );

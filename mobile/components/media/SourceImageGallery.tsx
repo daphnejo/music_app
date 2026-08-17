@@ -1,4 +1,5 @@
-import { Image, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Image } from 'expo-image';
+import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 import type { BlockAsset } from '@/types/content';
 
@@ -21,7 +22,7 @@ export function SourceImageGallery({ images, resolveUrl }: Props) {
     return (
       <View style={[styles.singleCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         {asset.caption ? <Text style={[styles.caption, { color: colors.text }]}>{asset.caption}</Text> : null}
-        <Image source={{ uri: resolveUrl(asset.url) }} style={styles.singleImage} resizeMode="contain" />
+        <Image source={{ uri: resolveUrl(asset.url) }} style={styles.singleImage} contentFit="contain" cachePolicy="memory-disk" />
       </View>
     );
   }
@@ -59,7 +60,7 @@ export function SourceImageGallery({ images, resolveUrl }: Props) {
                 <Text style={[styles.counterText, { color: colors.primary }]}>{index + 1}/{images.length}</Text>
               </View>
             </View>
-            <Image source={{ uri: resolveUrl(asset.url) }} style={styles.image} resizeMode="contain" />
+            <Image source={{ uri: resolveUrl(asset.url) }} style={styles.image} contentFit="contain" cachePolicy="memory-disk" />
           </View>
         ))}
       </ScrollView>
