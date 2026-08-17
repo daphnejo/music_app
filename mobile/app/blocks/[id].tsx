@@ -137,7 +137,7 @@ export default function BlockDetailScreen() {
   };
 
   const submitQuestion = async () => {
-    if (!id || !selectedOptionId) return;
+    if (!id || !selectedOptionId || data?.block.needsReview) return;
     setIsSubmitting(true);
     setError(null);
     try {
@@ -184,6 +184,7 @@ export default function BlockDetailScreen() {
 
   const progressPercent = data.navigation.total ? Math.round((data.navigation.position / data.navigation.total) * 100) : 0;
   const cardStyle = { backgroundColor: colors.surface, borderColor: colors.border };
+  const reviewPending = !!data.question && data.block.needsReview;
   const completionLabel = data.progress.state === 'completed'
     ? 'Bajarildi'
     : isSubmitting
@@ -228,11 +229,22 @@ export default function BlockDetailScreen() {
         <View style={[styles.questionCard, cardStyle]}>
           <Text style={[styles.sectionLabel, { color: colors.primary }]}>TOPSHIRIQ</Text>
           <Text style={[styles.question, { color: colors.text }]}>{data.question.prompt}</Text>
+
+          {reviewPending ? (
+            <View style={[styles.reviewNotice, { backgroundColor: colors.warningSurface, borderColor: colors.warning }]}>
+              <Ionicons name="time-outline" size={21} color={colors.warning} />
+              <View style={styles.reviewNoticeBody}>
+                <Text style={[styles.reviewNoticeTitle, { color: colors.text }]}>Metodist tasdig‘i kutilmoqda</Text>
+                <Text style={[styles.reviewNoticeText, { color: colors.muted }]}>Javob kaliti hali tasdiqlanmagan, shuning uchun bu topshiriq hozir avtomatik baholanmaydi.</Text>
+              </View>
+            </View>
+          ) : null}
+
           <View style={styles.options} accessibilityRole="radiogroup">
             {data.question.options.map((option, optionIndex) => {
               const selected = selectedOptionId === option.id;
-              const isCorrect = submitResult?.correctOptionIds?.includes(option.id) ?? false;
-              const isWrongSelected = !!submitResult && selected && !isCorrect;
+              const isCorrect = !reviewPending && (submitResult?.correctOptionIds?.includes(option.id) ?? false);
+              const isWrongSelected = !reviewPending && !!submitResult && selected && !isCorrect;
               const displayOptionText = optionTextForDisplay(option.text);
               const optionSurface = isCorrect
                 ? { borderColor: colors.success, backgroundColor: colors.successSurface }
@@ -285,7 +297,7 @@ export default function BlockDetailScreen() {
             })}
           </View>
 
-          {submitResult ? (
+          {!reviewPending && submitResult ? (
             <View style={[styles.feedback, { backgroundColor: submitResult.correct ? colors.successSurface : colors.warningSurface }]}>
               <Ionicons
                 name={submitResult.correct ? 'checkmark-circle' : 'information-circle'}
@@ -300,7 +312,21 @@ export default function BlockDetailScreen() {
             </View>
           ) : null}
 
-          {!submitResult ? (
+          {reviewPending ? (
+            <Pressable
+              disabled={data.progress.state === 'completed' || isSubmitting}
+              onPress={() => void completeBlock()}
+              style={[
+                styles.primaryButton,
+                { backgroundColor: data.progress.state === 'completed' ? colors.success : colors.primary },
+              ]}
+            >
+              <Ionicons name={data.progress.state === 'completed' ? 'checkmark-circle' : 'eye-outline'} size={19} color="#fff" />
+              <Text style={styles.primaryButtonText}>
+                {data.progress.state === 'completed' ? 'Ko‘rib chiqildi' : isSubmitting ? 'Saqlanmoqda…' : 'Topshiriqni ko‘rib chiqdim'}
+              </Text>
+            </Pressable>
+          ) : !submitResult ? (
             <Pressable
               disabled={!selectedOptionId || isSubmitting}
               onPress={() => void submitQuestion()}
@@ -362,6 +388,10 @@ const styles = StyleSheet.create({
   sectionLabel: { fontSize: 11, fontWeight: '900', letterSpacing: .8 },
   questionCard: { borderRadius: 22, padding: 16, gap: 14, borderWidth: 1 },
   question: { fontSize: 18, lineHeight: 25, fontWeight: '900' },
+  reviewNotice: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, padding: 13, borderRadius: 16, borderWidth: 1 },
+  reviewNoticeBody: { flex: 1, gap: 3 },
+  reviewNoticeTitle: { fontSize: 13, fontWeight: '900' },
+  reviewNoticeText: { fontSize: 12, lineHeight: 17 },
   options: { gap: 10 },
   option: { flexDirection: 'row', gap: 12, alignItems: 'center', padding: 14, borderWidth: 1.5, borderRadius: 18 },
   optionMarker: { width: 32, height: 32, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
