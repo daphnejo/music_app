@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { AudioPlayer } from '@/components/media/AudioPlayer';
+import { SourceAudioSection } from '@/components/media/SourceAudioSection';
 import { SourceImageGallery } from '@/components/media/SourceImageGallery';
 import { VideoPlayer } from '@/components/media/VideoPlayer';
 import { ErrorState, LoadingState } from '@/components/ui/DataState';
@@ -199,8 +199,7 @@ export default function BlockDetailScreen() {
 
       <SourceImageGallery images={images} resolveUrl={absoluteUrl} />
 
-      {audios.length ? <Text style={[styles.sectionLabel, { color: colors.primary }]}>TINGLASH</Text> : null}
-      {audios.map((asset) => <AudioPlayer key={asset.id} url={absoluteUrl(asset.url)} title={asset.caption} />)}
+      <SourceAudioSection audios={audios} resolveUrl={absoluteUrl} />
 
       {videos.length ? <Text style={[styles.sectionLabel, { color: colors.primary }]}>VIDEO</Text> : null}
       {videos.map((asset) => <VideoPlayer key={asset.id} url={absoluteUrl(asset.url)} title={asset.caption} />)}
