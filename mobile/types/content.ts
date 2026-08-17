@@ -55,7 +55,7 @@ export type BlockDetailResponse = {
     sourceSlide: number | null;
     needsReview: boolean;
     reviewNote: string | null;
-    lesson: { id: string; title: string; order: number };
+    lesson: { id: string; title: string; order: number; declaredNumber: number | null };
   };
   assets: BlockAsset[];
   question: null | {
