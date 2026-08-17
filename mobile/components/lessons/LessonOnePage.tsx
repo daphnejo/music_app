@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  definitionText: { fontSize: 17, lineHeight: 27, fontWeight: '650' },
+  definitionText: { fontSize: 17, lineHeight: 27, fontWeight: '600' },
   interestingHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 2 },
   bulb: { width: 42, height: 42, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
   interestingTitle: { fontSize: 25, lineHeight: 31, fontWeight: '900' },
