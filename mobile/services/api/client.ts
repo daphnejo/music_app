@@ -52,15 +52,29 @@ async function request<T>(path: string, options: ApiOptions = {}, token?: string
     controller.abort();
   }, REQUEST_TIMEOUT_MS);
 
+  const url = `${API_BASE_URL}${path}`;
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
+    response = await fetch(url, {
       ...options,
       headers,
       signal: controller.signal,
       body: options.body === undefined ? undefined : JSON.stringify(options.body),
     });
-  } catch {
+  } catch (cause) {
+    if (__DEV__) {
+      const detail = cause instanceof Error
+        ? `${cause.name}: ${cause.message}`
+        : String(cause);
+      console.warn('[D-Solfedjio API] Network request failed', {
+        url,
+        method: options.method ?? 'GET',
+        detail,
+        timedOut,
+        aborted: !!upstreamSignal?.aborted,
+      });
+    }
+
     if (timedOut) {
       throw new ApiError(0, 'Server javobi kutilganidan uzoq davom etdi. Qayta urinib ko‘ring.', 'timeout');
     }
