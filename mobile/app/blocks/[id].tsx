@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SourceAudioSection } from '@/components/media/SourceAudioSection';
 import { SourceImageGallery } from '@/components/media/SourceImageGallery';
-import { VideoPlayer } from '@/components/media/VideoPlayer';
+import { SourceVideoSection } from '@/components/media/SourceVideoSection';
 import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Screen } from '@/components/ui/Screen';
@@ -221,8 +221,7 @@ export default function BlockDetailScreen() {
 
       <SourceAudioSection audios={audios} resolveUrl={absoluteUrl} />
 
-      {videos.length ? <Text style={[styles.sectionLabel, { color: colors.primary }]}>VIDEO</Text> : null}
-      {videos.map((asset) => <VideoPlayer key={asset.id} url={absoluteUrl(asset.url)} title={asset.caption} />)}
+      <SourceVideoSection videos={videos} resolveUrl={absoluteUrl} />
 
       {data.question ? (
         <View style={[styles.questionCard, cardStyle]}>
