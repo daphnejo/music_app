@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { h, forbidden } from '../errors.ts';
+import { h } from '../errors.ts';
 import { requireAuth } from '../middleware/auth.middleware.ts';
 import { accessibleVersionId } from './content.routes.ts';
+import { isStudentVisibleBlock, isStudentVisibleLesson } from '../student-content.ts';
 import { Lesson, Block, Progress, Attempt, Answer } from '../models/index.ts';
 
 export const progressRouter = Router();
@@ -23,17 +24,24 @@ progressRouter.get(
       return;
     }
 
-    const lessons = await Lesson.find({ courseVersionId: cvId }).sort({ orderIndex: 1 });
-    const lessonIds = lessons.map((lesson) => lesson._id);
-    const blocks = await Block.find({ lessonId: { $in: lessonIds } });
+    const allLessons = await Lesson.find({ courseVersionId: cvId }).sort({ orderIndex: 1 });
+    const lessons = allLessons.filter((lesson) => isStudentVisibleLesson(lesson));
+    const lessonById = new Map(allLessons.map((lesson) => [String(lesson._id), lesson]));
+    const allBlocks = await Block.find({ lessonId: { $in: allLessons.map((lesson) => lesson._id) } });
+    const blocks = allBlocks.filter((block) => {
+      const lesson = lessonById.get(String(block.lessonId));
+      return !!lesson && isStudentVisibleBlock(lesson, block);
+    });
     const blockIds = blocks.map((block) => block._id);
     const reviewedBlockIds = blocks.filter((block) => !block.needsReview).map((block) => block._id);
 
-    const progressRows = await Progress.find({
-      userId: user.id,
-      courseVersionId: cvId,
-      blockId: { $in: blockIds },
-    });
+    const progressRows = blockIds.length
+      ? await Progress.find({
+          userId: user.id,
+          courseVersionId: cvId,
+          blockId: { $in: blockIds },
+        })
+      : [];
     const progressByBlock = new Map(progressRows.map((progress) => [String(progress.blockId), progress]));
     const completedBlocks = progressRows.filter((progress) => progress.state === 'completed').length;
 
