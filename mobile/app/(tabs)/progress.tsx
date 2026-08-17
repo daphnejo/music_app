@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Screen } from '@/components/ui/Screen';
@@ -54,12 +55,29 @@ export default function ProgressScreen() {
   const answerAccuracy = summary?.answeredQuestions
     ? Math.round((summary.correctAnswers / summary.answeredQuestions) * 100)
     : null;
+  const testStatsUnavailable = !!error && !summary;
 
   const cardStyle = { backgroundColor: colors.surface, borderColor: colors.border };
 
   return (
     <Screen>
       <SectionHeader title="Natijalar" caption="Faqat haqiqiy bajarilgan dars va test natijalari." />
+
+      {error && data ? (
+        <View style={[styles.warning, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.warningIcon, { backgroundColor: colors.primarySoft }]}>
+            <Ionicons name="cloud-offline-outline" size={20} color={colors.primary} />
+          </View>
+          <View style={styles.warningBody}>
+            <Text style={[styles.warningTitle, { color: colors.text }]}>Test statistikasi vaqtincha yangilanmadi</Text>
+            <Text style={[styles.warningText, { color: colors.muted }]}>{error}</Text>
+          </View>
+          <Pressable disabled={isLoading} onPress={() => void loadProgress()} style={styles.retry} hitSlop={8}>
+            <Ionicons name="refresh" size={19} color={colors.primary} />
+          </Pressable>
+        </View>
+      ) : null}
+
       <View style={[styles.hero, cardStyle]}>
         <Text style={[styles.value, { color: colors.primary }]}>{overall}%</Text>
         <Text style={[styles.label, { color: colors.muted }]}>Umumiy progress</Text>
@@ -71,7 +89,7 @@ export default function ProgressScreen() {
           <Text style={[styles.label, { color: colors.muted }]}>yakunlangan dars</Text>
         </View>
         <View style={[styles.metric, cardStyle]}>
-          <Text style={[styles.metricValue, { color: colors.text }]}>{answerAccuracy === null ? '—' : `${answerAccuracy}%`}</Text>
+          <Text style={[styles.metricValue, { color: colors.text }]}>{testStatsUnavailable || answerAccuracy === null ? '—' : `${answerAccuracy}%`}</Text>
           <Text style={[styles.label, { color: colors.muted }]}>test aniqligi</Text>
         </View>
       </View>
@@ -81,7 +99,7 @@ export default function ProgressScreen() {
           <Text style={[styles.label, { color: colors.muted }]}>bajarilgan qism</Text>
         </View>
         <View style={[styles.metric, cardStyle]}>
-          <Text style={[styles.metricValue, { color: colors.text }]}>{summary?.answeredQuestions ?? 0}</Text>
+          <Text style={[styles.metricValue, { color: colors.text }]}>{testStatsUnavailable ? '—' : (summary?.answeredQuestions ?? 0)}</Text>
           <Text style={[styles.label, { color: colors.muted }]}>javob berilgan test</Text>
         </View>
       </View>
@@ -106,6 +124,12 @@ export default function ProgressScreen() {
 }
 
 const styles = StyleSheet.create({
+  warning: { flexDirection: 'row', alignItems: 'center', gap: 11, borderWidth: 1, borderRadius: 18, padding: 13 },
+  warningIcon: { width: 38, height: 38, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
+  warningBody: { flex: 1, gap: 3 },
+  warningTitle: { fontSize: 13, fontWeight: '900' },
+  warningText: { fontSize: 11, lineHeight: 16 },
+  retry: { width: 38, height: 38, alignItems: 'center', justifyContent: 'center' },
   hero: { borderRadius: 24, padding: 20, gap: 8, borderWidth: 1 },
   value: { fontSize: 36, fontWeight: '900' },
   label: { fontSize: 12 },
