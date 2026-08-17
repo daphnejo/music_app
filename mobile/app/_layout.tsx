@@ -50,7 +50,14 @@ function RootNavigator() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background }, animation: 'fade_from_bottom' }}>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: colors.background },
+        animation: 'fade_from_bottom',
+        orientation: 'portrait',
+      }}
+    >
       <Stack.Screen name="index" />
 
       <Stack.Protected guard={!user}>
@@ -63,7 +70,7 @@ function RootNavigator() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="lessons/[id]" />
         <Stack.Screen name="blocks/[id]" />
-        <Stack.Screen name="piano" />
+        <Stack.Screen name="piano" options={{ orientation: 'landscape' }} />
         <Stack.Screen name="profile-info" />
         <Stack.Screen name="change-password" />
         <Stack.Screen name="appearance" />
