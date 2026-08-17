@@ -6,7 +6,7 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Screen } from '@/components/ui/Screen';
 import { useCourse } from '@/context/CourseContext';
 import { useTheme } from '@/context/ThemeContext';
-import { lessonProgress } from '@/types/content';
+import { lessonProgress, type CourseBlockSummary } from '@/types/content';
 
 const blockIcon = (type: string) => {
   if (type.includes('audio')) return 'headset-outline';
@@ -17,10 +17,26 @@ const blockIcon = (type: string) => {
   return 'book-outline';
 };
 
-function blockTitleForDisplay(value: string, lessonTitle: string) {
+function cleanBlockTitle(value: string) {
   const trimmed = value.trim();
   const withoutLessonPrefix = trimmed.replace(/^\s*\d+\s*[-.]?\s*dars\s*[.:'’\-–—]*\s*/i, '').trim();
-  const cleaned = withoutLessonPrefix || trimmed;
+  return withoutLessonPrefix || trimmed;
+}
+
+function lessonTitleForDisplay(lessonTitle: string, blocks: CourseBlockSummary[]) {
+  const trimmed = lessonTitle.trim();
+  if (!trimmed.endsWith('…')) return trimmed;
+
+  const prefix = trimmed.slice(0, -1);
+  const completeSourceTitle = blocks
+    .map((block) => cleanBlockTitle(block.title))
+    .find((title) => !title.endsWith('…') && title.startsWith(prefix));
+
+  return completeSourceTitle || trimmed;
+}
+
+function blockTitleForDisplay(value: string, lessonTitle: string) {
+  const cleaned = cleanBlockTitle(value);
   const completeLessonTitle = lessonTitle.trim();
 
   if (cleaned.endsWith('…') && completeLessonTitle && !completeLessonTitle.endsWith('…') && cleaned.startsWith(completeLessonTitle)) {
@@ -41,6 +57,7 @@ export default function LessonDetailScreen() {
   const lesson = data?.lessons.find((item) => item.id === id);
   if (!lesson) return <Screen><ErrorState message="Dars topilmadi." onRetry={() => void reload()} /></Screen>;
 
+  const displayLessonTitle = lessonTitleForDisplay(lesson.title, lesson.blocks);
   const progress = lessonProgress(lesson);
   const firstPending = lesson.blocks.find((block) => block.state !== 'completed');
   const ctaBlock = firstPending ?? lesson.blocks[0];
@@ -59,7 +76,7 @@ export default function LessonDetailScreen() {
         </Pressable>
         <View style={{ flex: 1 }}>
           <Text style={[styles.eyebrow, { color: colors.primary }]}>{lesson.declaredNumber ? `${lesson.declaredNumber}-DARS` : 'KIRISH'}</Text>
-          <Text style={[styles.title, { color: colors.text }]}>{lesson.title}</Text>
+          <Text style={[styles.title, { color: colors.text }]}>{displayLessonTitle}</Text>
         </View>
       </View>
 
@@ -74,6 +91,7 @@ export default function LessonDetailScreen() {
       <View style={styles.list}>
         {lesson.blocks.map((block, index) => {
           const done = block.state === 'completed';
+          const waitingForReview = block.needsReview && !done;
           return (
             <Pressable
               key={block.id}
@@ -87,9 +105,15 @@ export default function LessonDetailScreen() {
               </View>
               <Ionicons name={blockIcon(block.type) as never} size={22} color={colors.primary} />
               <View style={{ flex: 1 }}>
-                <Text style={[styles.sectionTitle, { color: colors.text }]}>{blockTitleForDisplay(block.title, lesson.title)}</Text>
-                <Text style={[styles.sectionText, { color: colors.muted }]}>
-                  {done ? 'Bajarildi' : block.state === 'in_progress' ? 'Davom etmoqda' : 'Boshlanmagan'}
+                <Text style={[styles.sectionTitle, { color: colors.text }]}>{blockTitleForDisplay(block.title, displayLessonTitle)}</Text>
+                <Text style={[styles.sectionText, { color: waitingForReview ? colors.warning : colors.muted }]}>
+                  {done
+                    ? 'Bajarildi'
+                    : waitingForReview
+                      ? 'Metodist tasdig‘i kutilmoqda'
+                      : block.state === 'in_progress'
+                        ? 'Davom etmoqda'
+                        : 'Boshlanmagan'}
                 </Text>
               </View>
               <Ionicons name="chevron-forward" size={19} color={colors.muted} />
