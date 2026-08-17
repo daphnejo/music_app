@@ -83,7 +83,7 @@ function sourceFileName(value: string | null | undefined) {
 
 export default function BlockDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { reload: reloadCourse } = useCourse();
+  const { data: courseData, reload: reloadCourse } = useCourse();
   const { colors } = useTheme();
   const [data, setData] = useState<BlockDetailResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -182,7 +182,11 @@ export default function BlockDetailScreen() {
   if (error && !data) return <Screen><ErrorState message={error} onRetry={() => void load()} /></Screen>;
   if (!data) return <Screen><ErrorState message="Material topilmadi." /></Screen>;
 
-  const progressPercent = data.navigation.total ? Math.round((data.navigation.position / data.navigation.total) * 100) : 0;
+  const lessonSummary = courseData?.lessons.find((lesson) => lesson.id === data.block.lesson.id);
+  const lessonBlockIndex = lessonSummary?.blocks.findIndex((block) => block.id === data.block.id) ?? -1;
+  const lessonPosition = lessonBlockIndex >= 0 ? lessonBlockIndex + 1 : data.navigation.position;
+  const lessonTotal = lessonSummary?.blockCount ?? data.navigation.total;
+  const progressPercent = lessonTotal ? Math.round((lessonPosition / lessonTotal) * 100) : 0;
   const cardStyle = { backgroundColor: colors.surface, borderColor: colors.border };
   const reviewPending = !!data.question && data.block.needsReview;
   const completionLabel = data.progress.state === 'completed'
@@ -207,7 +211,7 @@ export default function BlockDetailScreen() {
 
       <View style={[styles.positionCard, cardStyle]}>
         <View style={styles.positionTop}>
-          <Text style={[styles.positionText, { color: colors.text }]}>Qism {data.navigation.position} / {data.navigation.total}</Text>
+          <Text style={[styles.positionText, { color: colors.text }]}>Qism {lessonPosition} / {lessonTotal}</Text>
           <Text style={[styles.positionPercent, { color: colors.primary }]}>{progressPercent}%</Text>
         </View>
         <ProgressBar value={progressPercent} />
