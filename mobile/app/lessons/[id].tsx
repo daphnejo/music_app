@@ -87,7 +87,6 @@ export default function LessonDetailScreen() {
           <Text style={styles.ctaText}>{progress > 0 ? 'Darsni davom ettirish' : 'Darsni boshlash'}</Text>
         </Pressable>
       ) : null}
-      <Text style={[styles.note, { color: colors.muted }]}>Mazmun sen bergan Solfedjio materialidan backend orqali yuklanadi.</Text>
     </Screen>
   );
 }
@@ -109,5 +108,4 @@ const styles = StyleSheet.create({
   sectionText: { fontSize: 12, lineHeight: 17 },
   cta: { height: 56, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
   ctaText: { color: '#fff', fontWeight: '800' },
-  note: { fontSize: 12, textAlign: 'center' },
 });
