@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 import type { BlockAsset } from '@/types/content';
 
@@ -17,7 +17,15 @@ type LessonOnePageProps = {
   onComplete: () => void;
 };
 
-const TOTAL_STEPS = 5;
+const QUIZ_STEP = 4;
+const REWARD_STEP = 5;
+const TOTAL_STEPS = 6;
+
+const QUIZ_OPTIONS = [
+  { id: 'sing', text: 'Notaga qarab kuylashni o‘rganamiz', correct: true, icon: 'musical-notes' as const },
+  { id: 'draw', text: 'Faqat rasm chizamiz', correct: false, icon: 'color-palette' as const },
+  { id: 'sport', text: 'Faqat sport bilan shug‘ullanamiz', correct: false, icon: 'football' as const },
+];
 
 export function LessonOnePage({
   images,
@@ -29,8 +37,22 @@ export function LessonOnePage({
 }: LessonOnePageProps) {
   const { colors } = useTheme();
   const [step, setStep] = useState(0);
+  const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
+  const [quizPassed, setQuizPassed] = useState(completed);
+  const rewardScale = useRef(new Animated.Value(0.82)).current;
   const mainImage = images.find((asset) => /\.jpe?g(?:$|\?)/i.test(asset.file)) ?? images[0] ?? null;
-  const isFinalStep = step === TOTAL_STEPS - 1;
+  const isFinalStep = step === REWARD_STEP;
+
+  useEffect(() => {
+    if (step !== REWARD_STEP) return;
+    rewardScale.setValue(0.82);
+    Animated.spring(rewardScale, {
+      toValue: 1,
+      friction: 5,
+      tension: 85,
+      useNativeDriver: true,
+    }).start();
+  }, [rewardScale, step]);
 
   function goBack() {
     if (step > 0) {
@@ -41,8 +63,10 @@ export function LessonOnePage({
   }
 
   function goForward() {
+    if (step === QUIZ_STEP && !quizPassed) return;
+
     if (!isFinalStep) {
-      setStep((value) => Math.min(TOTAL_STEPS - 1, value + 1));
+      setStep((value) => Math.min(REWARD_STEP, value + 1));
       return;
     }
 
@@ -54,15 +78,30 @@ export function LessonOnePage({
     onNext?.();
   }
 
-  const buttonLabel = !isFinalStep
-    ? 'Davom etish'
-    : saving
-      ? 'Saqlanmoqda…'
-      : completed && onNext
-        ? 'Keyingi qadam'
-        : completed
-          ? 'Barakalla! ⭐'
-          : 'Darsni tugatish ⭐';
+  function chooseQuizOption(optionId: string, correct: boolean) {
+    if (quizPassed) return;
+    setSelectedQuizId(optionId);
+    setQuizPassed(correct);
+  }
+
+  const quizSelected = QUIZ_OPTIONS.find((option) => option.id === selectedQuizId) ?? null;
+  const buttonDisabled = saving || (step === QUIZ_STEP && !quizPassed) || (isFinalStep && completed && !onNext);
+
+  const buttonLabel = step === QUIZ_STEP
+    ? quizPassed
+      ? 'Barakalla! Davom et 🎉'
+      : selectedQuizId
+        ? 'Yana urinib ko‘r 😊'
+        : 'Javobni tanla'
+    : !isFinalStep
+      ? 'Davom etish'
+      : saving
+        ? 'Saqlanmoqda…'
+        : completed && onNext
+          ? 'Keyingi qadam'
+          : completed
+            ? 'Barakalla! ⭐'
+            : 'Yulduzlarni olish ⭐';
 
   return (
     <View style={styles.page}>
@@ -163,31 +202,104 @@ export function LessonOnePage({
         </View>
       ) : null}
 
-      {step === 4 ? (
-        <View style={[styles.rewardCard, { backgroundColor: colors.primarySoft }]}> 
-          <Text style={styles.rewardEmoji}>{completed ? '🌟' : '🎉'}</Text>
-          <Text style={[styles.rewardTitle, { color: colors.text }]}>{completed ? 'Barakalla!' : 'Ajoyib!'}</Text>
-          <Text style={[styles.rewardText, { color: colors.muted }]}>Solfedjio nima ekanini bilib olding. Birinchi qadam tayyor!</Text>
-          <View style={styles.starsRow}>
-            {[0, 1, 2].map((value) => (
-              <Ionicons key={value} name="star" size={34} color="#F2B01E" />
-            ))}
+      {step === QUIZ_STEP ? (
+        <View style={[styles.quizCard, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
+          <View style={[styles.quizIcon, { backgroundColor: colors.primarySoft }]}>
+            <Ionicons name="help" size={34} color={colors.primary} />
           </View>
+          <Text style={[styles.stepLabel, { color: colors.primary }]}>MINI SAVOL</Text>
+          <Text style={[styles.quizTitle, { color: colors.text }]}>Solfedjioda nimani o‘rganamiz?</Text>
+
+          <View style={styles.quizOptions}>
+            {QUIZ_OPTIONS.map((option) => {
+              const selected = selectedQuizId === option.id;
+              const correctSelected = selected && option.correct;
+              const wrongSelected = selected && !option.correct;
+              const optionStyle = correctSelected
+                ? { backgroundColor: colors.successSurface, borderColor: colors.success }
+                : wrongSelected
+                  ? { backgroundColor: '#FFF3D5', borderColor: '#E2A93B' }
+                  : { backgroundColor: colors.surface, borderColor: colors.border };
+              const iconBackground = correctSelected
+                ? colors.success
+                : wrongSelected
+                  ? '#E2A93B'
+                  : colors.primarySoft;
+              const iconColor = correctSelected || wrongSelected ? '#FFFFFF' : colors.primary;
+
+              return (
+                <Pressable
+                  key={option.id}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected, disabled: quizPassed }}
+                  disabled={quizPassed}
+                  onPress={() => chooseQuizOption(option.id, option.correct)}
+                  style={({ pressed }) => [styles.quizOption, optionStyle, pressed && !quizPassed && styles.pressed]}
+                >
+                  <View style={[styles.quizOptionIcon, { backgroundColor: iconBackground }]}>
+                    <Ionicons
+                      name={correctSelected ? 'checkmark' : wrongSelected ? 'refresh' : option.icon}
+                      size={21}
+                      color={iconColor}
+                    />
+                  </View>
+                  <Text style={[styles.quizOptionText, { color: colors.text }]}>{option.text}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
+
+          {quizSelected ? (
+            <View style={[styles.quizFeedback, { backgroundColor: quizPassed ? colors.successSurface : '#FFF3D5' }]}>
+              <Text style={styles.quizFeedbackEmoji}>{quizPassed ? '🎉' : '😊'}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.quizFeedbackTitle, { color: colors.text }]}>{quizPassed ? 'Barakalla!' : 'Yana bir bor urinib ko‘r'}</Text>
+                <Text style={[styles.quizFeedbackText, { color: colors.muted }]}>
+                  {quizPassed ? 'To‘g‘ri! Solfedjio bizga notaga qarab kuylashni o‘rgatadi.' : 'Boshqa javobni tanlab ko‘r. Sen uddalaysan!'}
+                </Text>
+              </View>
+            </View>
+          ) : null}
+        </View>
+      ) : null}
+
+      {step === REWARD_STEP ? (
+        <View style={[styles.rewardCard, { backgroundColor: colors.primarySoft }]}> 
+          <Animated.View style={{ alignItems: 'center', transform: [{ scale: rewardScale }] }}>
+            <Text style={styles.rewardEmoji}>{completed ? '🌟' : '🎉'}</Text>
+            <Text style={[styles.rewardTitle, { color: colors.text }]}>{completed ? 'Barakalla!' : 'Ajoyib!'}</Text>
+            <Text style={[styles.rewardText, { color: colors.muted }]}>Solfedjio nima ekanini bilib olding va mini savolni ham bajarding!</Text>
+            <View style={styles.starsRow}>
+              {[0, 1, 2].map((value) => (
+                <Ionicons key={value} name="star" size={38} color="#F2B01E" />
+              ))}
+            </View>
+            <View style={[styles.rewardPill, { backgroundColor: '#FFFFFFAA' }]}>
+              <Ionicons name="trophy" size={20} color="#A66A00" />
+              <Text style={styles.rewardPillText}>+3 yulduz</Text>
+            </View>
+          </Animated.View>
         </View>
       ) : null}
 
       <Pressable
         accessibilityRole="button"
-        disabled={saving || (isFinalStep && completed && !onNext)}
+        accessibilityState={{ disabled: buttonDisabled }}
+        disabled={buttonDisabled}
         onPress={goForward}
-        style={[
+        style={({ pressed }) => [
           styles.completeButton,
           { backgroundColor: isFinalStep ? colors.success : colors.primary },
-          (saving || (isFinalStep && completed && !onNext)) && styles.disabled,
+          buttonDisabled && styles.disabled,
+          pressed && !buttonDisabled && styles.pressed,
         ]}
       >
         <Text style={styles.completeText}>{buttonLabel}</Text>
-        <Ionicons name={isFinalStep ? (completed ? 'arrow-forward' : 'star') : 'arrow-forward'} size={21} color="#FFFFFF" />
+        <Ionicons
+          name={step === QUIZ_STEP ? (quizPassed ? 'arrow-forward' : 'sparkles') : isFinalStep ? (completed ? 'arrow-forward' : 'star') : 'arrow-forward'}
+          size={21}
+          color="#FFFFFF"
+        />
       </Pressable>
     </View>
   );
@@ -200,9 +312,9 @@ const styles = StyleSheet.create({
   lessonBadge: { minHeight: 38, paddingHorizontal: 14, borderRadius: 999, flexDirection: 'row', alignItems: 'center', gap: 6 },
   lessonBadgeText: { fontSize: 12, fontWeight: '900', letterSpacing: 0.6 },
   starBadge: { width: 46, height: 46, alignItems: 'center', justifyContent: 'center' },
-  progressDots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 7 },
-  progressDot: { width: 28, height: 7, borderRadius: 999 },
-  progressDotCurrent: { width: 42 },
+  progressDots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6 },
+  progressDot: { width: 23, height: 7, borderRadius: 999 },
+  progressDotCurrent: { width: 36 },
   hero: { minHeight: 410, borderRadius: 32, padding: 26, justifyContent: 'center', alignItems: 'flex-start', overflow: 'hidden' },
   heroBubble: { width: 76, height: 76, borderRadius: 27, backgroundColor: 'rgba(255,255,255,0.17)', alignItems: 'center', justifyContent: 'center', marginBottom: 26 },
   heroKicker: { color: 'rgba(255,255,255,0.78)', fontSize: 12, fontWeight: '900', letterSpacing: 1 },
@@ -231,12 +343,26 @@ const styles = StyleSheet.create({
   image: { width: '100%', aspectRatio: 1.45, borderRadius: 20 },
   imageFallback: { width: '100%', aspectRatio: 1.45, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
   historyText: { fontSize: 15, lineHeight: 22, fontWeight: '700', marginTop: 13 },
+  quizCard: { minHeight: 410, borderRadius: 32, padding: 20, borderWidth: 1, justifyContent: 'center' },
+  quizIcon: { width: 64, height: 64, borderRadius: 23, alignItems: 'center', justifyContent: 'center', marginBottom: 17 },
+  quizTitle: { fontSize: 28, lineHeight: 34, fontWeight: '900', marginTop: 7, marginBottom: 18 },
+  quizOptions: { gap: 10 },
+  quizOption: { minHeight: 66, borderRadius: 20, borderWidth: 1.5, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  quizOptionIcon: { width: 42, height: 42, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
+  quizOptionText: { flex: 1, fontSize: 15, lineHeight: 21, fontWeight: '800' },
+  quizFeedback: { marginTop: 14, borderRadius: 19, padding: 13, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  quizFeedbackEmoji: { fontSize: 28 },
+  quizFeedbackTitle: { fontSize: 15, fontWeight: '900' },
+  quizFeedbackText: { fontSize: 12, lineHeight: 17, fontWeight: '600', marginTop: 2 },
   rewardCard: { minHeight: 410, borderRadius: 32, padding: 26, alignItems: 'center', justifyContent: 'center' },
   rewardEmoji: { fontSize: 72 },
   rewardTitle: { fontSize: 34, lineHeight: 40, fontWeight: '900', marginTop: 14 },
   rewardText: { fontSize: 17, lineHeight: 25, fontWeight: '600', textAlign: 'center', marginTop: 10, maxWidth: 310 },
   starsRow: { flexDirection: 'row', gap: 8, marginTop: 26 },
+  rewardPill: { marginTop: 20, minHeight: 46, borderRadius: 999, paddingHorizontal: 18, flexDirection: 'row', alignItems: 'center', gap: 7 },
+  rewardPillText: { color: '#7C5700', fontSize: 14, fontWeight: '900' },
   completeButton: { minHeight: 60, borderRadius: 21, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 9, paddingHorizontal: 18 },
   completeText: { color: '#FFFFFF', fontSize: 16, fontWeight: '900' },
-  disabled: { opacity: 0.5 },
+  disabled: { opacity: 0.48 },
+  pressed: { opacity: 0.78, transform: [{ scale: 0.99 }] },
 });
