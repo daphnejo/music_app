@@ -31,7 +31,7 @@ export default function ProgressScreen() {
     setIsLoading(true);
     setError(null);
     try {
-      setProgressData(await apiRequest<ProgressResponse>('/api/progress'));
+      setProgressData(await apiRequest<ProgressResponse>('/api/progress/summary'));
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Natijalarni yuklab bo‘lmadi');
     } finally {
