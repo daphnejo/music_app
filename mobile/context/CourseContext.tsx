@@ -12,6 +12,29 @@ type CourseContextValue = {
 
 const CourseContext = createContext<CourseContextValue | null>(null);
 
+function isLegacyLessonOneCover(title: string) {
+  return title.trim().toLocaleLowerCase('uz-UZ').replace(/\s+/g, ' ') === '1-dars. solfedjio.';
+}
+
+function curateStudentCourse(response: CourseMapResponse): CourseMapResponse {
+  const lessons = response.lessons
+    .filter((lesson) => lesson.declaredNumber !== 0)
+    .map((lesson) => {
+      const blocks = lesson.declaredNumber === 1
+        ? lesson.blocks.filter((block) => !isLegacyLessonOneCover(block.title))
+        : lesson.blocks;
+      const completed = blocks.filter((block) => block.state === 'completed').length;
+      return { ...lesson, blocks, blockCount: blocks.length, completed };
+    });
+
+  const visibleBlockIds = new Set(lessons.flatMap((lesson) => lesson.blocks.map((block) => block.id)));
+  const lastBlockId = response.lastBlockId && visibleBlockIds.has(response.lastBlockId)
+    ? response.lastBlockId
+    : null;
+
+  return { ...response, lessons, lastBlockId };
+}
+
 export function CourseProvider({ children }: PropsWithChildren) {
   const { user } = useAuth();
   const userId = user?.id ?? null;
@@ -30,7 +53,8 @@ export function CourseProvider({ children }: PropsWithChildren) {
     setIsLoading(true);
     setError(null);
     try {
-      setData(await apiRequest<CourseMapResponse>('/api/course'));
+      const response = await apiRequest<CourseMapResponse>('/api/course');
+      setData(curateStudentCourse(response));
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Kursni yuklab bo‘lmadi');
     } finally {
