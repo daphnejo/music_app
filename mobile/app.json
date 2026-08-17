@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Solfedjio",
+    "name": "D-Solfedjio",
     "slug": "solfedjio-mobile",
     "version": "0.1.0",
     "orientation": "default",
@@ -8,13 +8,13 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "icon": "./.generated/icon.png",
-    "splash": { "image": "./.generated/splash-icon.png", "resizeMode": "contain", "backgroundColor": "#FFFFFF" },
+    "splash": { "image": "./.generated/splash-icon.png", "resizeMode": "contain", "backgroundColor": "#FFF9F2" },
     "ios": { "supportsTablet": true, "bundleIdentifier": "uz.artclub.solfedjio", "config": { "usesNonExemptEncryption": false } },
     "android": {
       "package": "uz.artclub.solfedjio",
       "edgeToEdgeEnabled": true,
       "softwareKeyboardLayoutMode": "resize",
-      "adaptiveIcon": { "foregroundImage": "./.generated/adaptive-icon.png", "backgroundColor": "#FFFFFF" },
+      "adaptiveIcon": { "foregroundImage": "./.generated/adaptive-icon.png", "backgroundColor": "#FFF9F2" },
       "permissions": ["android.permission.MODIFY_AUDIO_SETTINGS"]
     },
     "plugins": [
