@@ -36,7 +36,10 @@ export default function HomeScreen() {
             <Ionicons name="musical-note" size={14} color={colors.primary} />
             <Text style={[styles.brandText, { color: colors.primary }]}>D-SOLFEDJIO</Text>
           </View>
-          <Text style={[styles.greeting, { color: colors.text }]}>Salom, {firstName}! 👋</Text>
+          <View style={styles.greetingRow}>
+            <Text style={[styles.greeting, { color: colors.text }]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.84}>Salom, {firstName}!</Text>
+            <Text style={styles.wave}>👋</Text>
+          </View>
           <Text style={[styles.caption, { color: colors.muted }]}>Bugun musiqa bilan o‘ynaymizmi?</Text>
         </View>
         <Pressable
@@ -110,7 +113,9 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   brandText: { fontSize: 10, fontWeight: '900', letterSpacing: 0.8 },
-  greeting: { fontSize: 29, lineHeight: 35, fontWeight: '900' },
+  greetingRow: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingRight: 2 },
+  greeting: { flexShrink: 1, fontSize: 27, lineHeight: 33, fontWeight: '900' },
+  wave: { fontSize: 25, lineHeight: 30 },
   caption: { fontSize: 14, lineHeight: 20, fontWeight: '600' },
   avatar: { width: 52, height: 52, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
   avatarText: { color: '#FFFFFF', fontSize: 18, fontWeight: '900' },
