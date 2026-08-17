@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { lessonProgress, type CourseLessonSummary } from '@/types/content';
+import { childLessonTitle } from '@/utils/lesson-display';
 
 const CARD_PALETTES = [
   { background: '#EEE9FF', icon: '#6C5CE7', bubble: '#DDD4FF' },
@@ -26,6 +27,7 @@ export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary;
   const iconName = LESSON_ICONS[index % LESSON_ICONS.length];
   const nextBlock = lesson.blocks.find((block) => block.state !== 'completed') ?? lesson.blocks[0];
   const stars = progress >= 100 ? 3 : progress >= 66 ? 2 : progress > 0 ? 1 : 0;
+  const title = childLessonTitle(lesson);
 
   const openLesson = () => {
     if (nextBlock) {
@@ -40,7 +42,7 @@ export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary;
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${lesson.declaredNumber ?? index + 1}-dars. ${lesson.title}. ${statusLabel}`}
+      accessibilityLabel={`${lesson.declaredNumber ?? index + 1}-dars. ${title}. ${statusLabel}`}
       onPress={openLesson}
       style={({ pressed }) => [styles.card, { backgroundColor: palette.background }, pressed && styles.pressed]}
     >
@@ -52,7 +54,7 @@ export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary;
         <Text style={[styles.eyebrow, { color: palette.icon }]}>
           {lesson.declaredNumber ? `${lesson.declaredNumber}-DARS` : `DARS ${index + 1}`}
         </Text>
-        <Text style={styles.title} numberOfLines={2}>{lesson.title}</Text>
+        <Text style={styles.title} numberOfLines={2}>{title}</Text>
 
         <View style={styles.bottomRow}>
           <View style={styles.stars} accessibilityLabel={`${stars} ta yulduz`}>
@@ -73,7 +75,7 @@ export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary;
 
 const styles = StyleSheet.create({
   card: {
-    minHeight: 142,
+    minHeight: 136,
     borderRadius: 30,
     padding: 16,
     flexDirection: 'row',
@@ -81,11 +83,11 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   pressed: { opacity: 0.78, transform: [{ scale: 0.99 }] },
-  iconBubble: { width: 68, height: 68, borderRadius: 23, alignItems: 'center', justifyContent: 'center' },
+  iconBubble: { width: 66, height: 66, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
   main: { flex: 1, minWidth: 0 },
   eyebrow: { fontSize: 11, fontWeight: '900', letterSpacing: 0.8, marginBottom: 5 },
-  title: { color: '#2E2940', fontSize: 19, lineHeight: 24, fontWeight: '900' },
-  bottomRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 9, marginTop: 12 },
+  title: { color: '#2E2940', fontSize: 18, lineHeight: 23, fontWeight: '900' },
+  bottomRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 9, marginTop: 11 },
   stars: { flexDirection: 'row', gap: 2 },
   status: { color: '#655F75', fontSize: 11, fontWeight: '800' },
   goButton: { width: 44, height: 44, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
