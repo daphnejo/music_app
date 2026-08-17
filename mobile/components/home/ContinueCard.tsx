@@ -14,6 +14,10 @@ export function ContinueCard({ lesson }: { lesson: CourseLessonSummary }) {
   const title = childLessonTitle(lesson);
 
   const openLesson = () => {
+    if (lesson.declaredNumber === 2 && nextBlock) {
+      router.push({ pathname: '/lesson-two', params: { blockId: nextBlock.id } });
+      return;
+    }
     if (nextBlock) {
       router.push({ pathname: '/blocks/[id]', params: { id: nextBlock.id } });
       return;
