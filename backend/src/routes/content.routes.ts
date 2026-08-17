@@ -6,6 +6,7 @@ import { h, forbidden, notFound } from '../errors.ts';
 import { requireAuth } from '../middleware/auth.middleware.ts';
 import { classIdsForUser, type AuthUser } from '../auth.ts';
 import { config } from '../config.ts';
+import { isStudentVisibleBlock, isStudentVisibleLesson } from '../student-content.ts';
 import {
   CourseVersion,
   Lesson,
@@ -103,18 +104,27 @@ contentRouter.get(
     const cv = await CourseVersion.findById(cvId).populate('courseId');
     const course = cv?.courseId as unknown as { _id: Types.ObjectId; code: string; title: string; subtitle: string };
 
-    const lessons = await Lesson.find({ courseVersionId: cvId }).sort({ orderIndex: 1 });
-    const lessonIds = lessons.map((l) => l._id);
-    const blocks = await Block.find({ lessonId: { $in: lessonIds } }).sort({ orderIndex: 1 });
+    const allLessons = await Lesson.find({ courseVersionId: cvId }).sort({ orderIndex: 1 });
+    const lessons = allLessons.filter((lesson) => isStudentVisibleLesson(lesson));
+    const lessonById = new Map(allLessons.map((lesson) => [String(lesson._id), lesson]));
+    const allBlocks = await Block.find({ lessonId: { $in: allLessons.map((lesson) => lesson._id) } }).sort({ orderIndex: 1 });
+    const blocks = allBlocks.filter((block) => {
+      const lesson = lessonById.get(String(block.lessonId));
+      return !!lesson && isStudentVisibleBlock(lesson, block);
+    });
     const blockIds = blocks.map((b) => b._id);
-    const progressRows = await Progress.find({ userId: user.id, courseVersionId: cvId, blockId: { $in: blockIds } });
+    const visibleBlockIds = new Set(blocks.map((block) => String(block._id)));
+    const progressRows = blockIds.length
+      ? await Progress.find({ userId: user.id, courseVersionId: cvId, blockId: { $in: blockIds } })
+      : [];
     const progressByBlock = new Map(progressRows.map((p) => [String(p.blockId), p]));
 
     const lastPos = await LastPosition.findOne({ userId: user.id, courseVersionId: cvId });
+    const lastBlockId = lastPos && visibleBlockIds.has(String(lastPos.blockId)) ? String(lastPos.blockId) : null;
 
     res.json({
       course: { id: String(course._id), code: course.code, title: course.title, subtitle: course.subtitle, version: cv!.version, courseVersionId: String(cvId) },
-      lastBlockId: lastPos ? String(lastPos.blockId) : null,
+      lastBlockId,
       lessons: lessons.map((l) => {
         const own = blocks.filter((b) => String(b.lessonId) === String(l._id));
         return {
@@ -154,7 +164,7 @@ contentRouter.get(
     const block = await Block.findById(blockId);
     if (!block) throw notFound('Blok topilmadi');
     const lesson = await Lesson.findOne({ _id: block.lessonId, courseVersionId: cvId });
-    if (!lesson) throw notFound('Blok sizga ochiq kurs versiyasida topilmadi');
+    if (!lesson || !isStudentVisibleBlock(lesson, block)) throw notFound('Blok sizga ochiq kurs versiyasida topilmadi');
 
     // is_correct maydoni schema darajasida select:false — clientga hech qachon ketmaydi
     const question = await Question.findOne({ blockId: block._id }).select('type prompt options');
@@ -176,11 +186,12 @@ contentRouter.get(
 
     const best = await Progress.findOne({ userId: user.id, courseVersionId: cvId, blockId: block._id });
 
-    const lessonsOrdered = await Lesson.find({ courseVersionId: cvId }).sort({ orderIndex: 1 });
+    const lessonsOrdered = (await Lesson.find({ courseVersionId: cvId }).sort({ orderIndex: 1 }))
+      .filter((item) => isStudentVisibleLesson(item));
     const neighbours: string[] = [];
     for (const l of lessonsOrdered) {
-      const bs = await Block.find({ lessonId: l._id }).sort({ orderIndex: 1 }).select('_id');
-      neighbours.push(...bs.map((b) => String(b._id)));
+      const bs = await Block.find({ lessonId: l._id }).sort({ orderIndex: 1 });
+      neighbours.push(...bs.filter((b) => isStudentVisibleBlock(l, b)).map((b) => String(b._id)));
     }
     const idx = neighbours.indexOf(String(block._id));
 
@@ -207,7 +218,12 @@ contentRouter.get(
         sourceSlide: block.sourceSlide,
         needsReview: block.needsReview,
         reviewNote: block.reviewNote,
-        lesson: { id: String(lesson._id), title: lesson.title, order: lesson.orderIndex },
+        lesson: {
+          id: String(lesson._id),
+          title: lesson.title,
+          order: lesson.orderIndex,
+          declaredNumber: lesson.declaredNumber,
+        },
       },
       assets: await assetsForBlock(block._id),
       question: question ? { id: String(question._id), type: question.type, prompt: question.prompt, options } : null,
@@ -235,7 +251,7 @@ contentRouter.post(
     const block = await Block.findById(blockId);
     if (!block) throw notFound('Blok topilmadi');
     const lesson = await Lesson.findOne({ _id: block.lessonId, courseVersionId: cvId });
-    if (!lesson) throw notFound('Blok topilmadi');
+    if (!lesson || !isStudentVisibleBlock(lesson, block)) throw notFound('Blok topilmadi');
 
     await Progress.updateOne(
       { userId: user.id, courseVersionId: cvId, blockId: block._id },
@@ -257,16 +273,24 @@ contentRouter.get(
       return;
     }
 
-    const lessons = await Lesson.find({ courseVersionId: cvId }).sort({ orderIndex: 1 });
-    const lessonIds = lessons.map((l) => l._id);
-    const blocks = await Block.find({ lessonId: { $in: lessonIds } });
+    const allLessons = await Lesson.find({ courseVersionId: cvId }).sort({ orderIndex: 1 });
+    const lessons = allLessons.filter((lesson) => isStudentVisibleLesson(lesson));
+    const lessonById = new Map(allLessons.map((lesson) => [String(lesson._id), lesson]));
+    const allBlocks = await Block.find({ lessonId: { $in: allLessons.map((lesson) => lesson._id) } });
+    const blocks = allBlocks.filter((block) => {
+      const lesson = lessonById.get(String(block.lessonId));
+      return !!lesson && isStudentVisibleBlock(lesson, block);
+    });
+    const blockIds = blocks.map((block) => block._id);
     const total = blocks.length;
 
-    const progressRows = await Progress.find({ userId: user.id, courseVersionId: cvId });
+    const progressRows = blockIds.length
+      ? await Progress.find({ userId: user.id, courseVersionId: cvId, blockId: { $in: blockIds } })
+      : [];
     const done = progressRows.filter((p) => p.state === 'completed').length;
     const progressByBlock = new Map(progressRows.map((p) => [String(p.blockId), p]));
 
-    const attempts = await Attempt.find({ userId: user.id, status: 'submitted', questionId: { $ne: null } }).select('_id');
+    const attempts = await Attempt.find({ userId: user.id, status: 'submitted', questionId: { $ne: null }, blockId: { $in: blockIds } }).select('_id');
     const answers = await Answer.find({ attemptId: { $in: attempts.map((a) => a._id) } });
     const correct = answers.filter((a) => a.isCorrect).length;
 
