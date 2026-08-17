@@ -60,6 +60,11 @@ function isRepeatedSourceHeading(line: string, blockTitle: string, lessonTitle: 
   return normalizedWithoutNumber === normalizedBlock || normalizedWithoutNumber === normalizedLesson;
 }
 
+function optionTextForDisplay(value: string) {
+  const withoutPrefix = value.replace(/^\s*[a-z]\s*[).:\-]\s*/i, '').trim();
+  return withoutPrefix || value;
+}
+
 export default function BlockDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { reload: reloadCourse } = useCourse();
@@ -249,7 +254,7 @@ export default function BlockDetailScreen() {
                     )}
                   </View>
                   <View style={{ flex: 1, gap: 8 }}>
-                    <Text style={[styles.optionText, { color: colors.text }]}>{option.text}</Text>
+                    <Text style={[styles.optionText, { color: colors.text }]}>{optionTextForDisplay(option.text)}</Text>
                     {option.imageUrl ? <Image source={{ uri: absoluteUrl(option.imageUrl) }} style={styles.optionImage} resizeMode="contain" /> : null}
                   </View>
                 </Pressable>
