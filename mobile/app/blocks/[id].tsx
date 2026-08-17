@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { AudioPlayer } from '@/components/media/AudioPlayer';
+import { SourceImageGallery } from '@/components/media/SourceImageGallery';
 import { VideoPlayer } from '@/components/media/VideoPlayer';
 import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { ProgressBar } from '@/components/ui/ProgressBar';
@@ -196,12 +197,7 @@ export default function BlockDetailScreen() {
         </View>
       ) : null}
 
-      {images.map((asset) => (
-        <View key={asset.id} style={[styles.imageCard, cardStyle]}>
-          {asset.caption ? <Text style={[styles.mediaTitle, { color: colors.text }]}>{asset.caption}</Text> : null}
-          <Image source={{ uri: absoluteUrl(asset.url) }} style={styles.image} resizeMode="contain" />
-        </View>
-      ))}
+      <SourceImageGallery images={images} resolveUrl={absoluteUrl} />
 
       {audios.length ? <Text style={[styles.sectionLabel, { color: colors.primary }]}>TINGLASH</Text> : null}
       {audios.map((asset) => <AudioPlayer key={asset.id} url={absoluteUrl(asset.url)} title={asset.caption} />)}
@@ -336,9 +332,6 @@ const styles = StyleSheet.create({
   positionPercent: { fontSize: 12, fontWeight: '900' },
   theoryCard: { gap: 12, borderRadius: 22, padding: 18, borderWidth: 1 },
   bodyText: { fontSize: 16, lineHeight: 24 },
-  imageCard: { borderRadius: 20, padding: 10, gap: 8, borderWidth: 1 },
-  image: { width: '100%', height: 240, borderRadius: 14 },
-  mediaTitle: { fontWeight: '800', paddingHorizontal: 4 },
   sectionLabel: { fontSize: 11, fontWeight: '900', letterSpacing: .8 },
   questionCard: { borderRadius: 22, padding: 16, gap: 14, borderWidth: 1 },
   question: { fontSize: 18, lineHeight: 25, fontWeight: '900' },
