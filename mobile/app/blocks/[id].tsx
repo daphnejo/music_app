@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { LessonOnePage } from '@/components/lessons/LessonOnePage';
 import { SourceAudioSection } from '@/components/media/SourceAudioSection';
 import { SourceImageGallery } from '@/components/media/SourceImageGallery';
 import { SourceVideoSection } from '@/components/media/SourceVideoSection';
@@ -196,6 +197,30 @@ export default function BlockDetailScreen() {
       : data.block.type === 'practice_acknowledgement'
         ? 'Mashqni bajardim'
         : 'O‘rgandim / Bajarildi';
+
+  const isLessonOnePage = data.block.sourceSlide === 3 && normalizeHeading(data.block.lesson.title) === 'solfedjio';
+
+  if (isLessonOnePage) {
+    const nextBlockId = data.navigation.nextBlockId;
+    return (
+      <Screen>
+        <LessonOnePage
+          lessonTitle={data.block.lesson.title}
+          sectionTitle={data.block.title}
+          lines={lines}
+          images={contentImages}
+          completed={data.progress.state === 'completed'}
+          saving={isSubmitting}
+          onBack={() => router.back()}
+          onNext={nextBlockId
+            ? () => router.replace({ pathname: '/blocks/[id]', params: { id: nextBlockId } })
+            : undefined}
+          onComplete={() => void completeBlock()}
+        />
+        {error ? <ErrorState message={error} /> : null}
+      </Screen>
+    );
+  }
 
   return (
     <Screen>
