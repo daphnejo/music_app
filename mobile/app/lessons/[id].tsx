@@ -17,6 +17,12 @@ const blockIcon = (type: string) => {
   return 'book-outline';
 };
 
+function blockTitleForDisplay(value: string) {
+  const trimmed = value.trim();
+  const withoutLessonPrefix = trimmed.replace(/^\s*\d+\s*[-.]?\s*dars\s*[.:'’\-–—]*\s*/i, '').trim();
+  return withoutLessonPrefix || trimmed;
+}
+
 export default function LessonDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data, isLoading, error, reload } = useCourse();
@@ -29,7 +35,13 @@ export default function LessonDetailScreen() {
   if (!lesson) return <Screen><ErrorState message="Dars topilmadi." onRetry={() => void reload()} /></Screen>;
 
   const progress = lessonProgress(lesson);
-  const firstPending = lesson.blocks.find((block) => block.state !== 'completed') ?? lesson.blocks[0];
+  const firstPending = lesson.blocks.find((block) => block.state !== 'completed');
+  const ctaBlock = firstPending ?? lesson.blocks[0];
+  const ctaLabel = progress >= 100
+    ? 'Darsni qayta ko‘rish'
+    : progress > 0
+      ? 'Darsni davom ettirish'
+      : 'Darsni boshlash';
   const cardStyle = { backgroundColor: colors.surface, borderColor: colors.border };
 
   return (
@@ -68,7 +80,7 @@ export default function LessonDetailScreen() {
               </View>
               <Ionicons name={blockIcon(block.type) as never} size={22} color={colors.primary} />
               <View style={{ flex: 1 }}>
-                <Text style={[styles.sectionTitle, { color: colors.text }]}>{block.title}</Text>
+                <Text style={[styles.sectionTitle, { color: colors.text }]}>{blockTitleForDisplay(block.title)}</Text>
                 <Text style={[styles.sectionText, { color: colors.muted }]}>
                   {done ? 'Bajarildi' : block.state === 'in_progress' ? 'Davom etmoqda' : 'Boshlanmagan'}
                 </Text>
@@ -79,12 +91,12 @@ export default function LessonDetailScreen() {
         })}
       </View>
 
-      {firstPending ? (
+      {ctaBlock ? (
         <Pressable
           style={[styles.cta, { backgroundColor: colors.primary }]}
-          onPress={() => router.push({ pathname: '/blocks/[id]', params: { id: firstPending.id } })}
+          onPress={() => router.push({ pathname: '/blocks/[id]', params: { id: ctaBlock.id } })}
         >
-          <Text style={styles.ctaText}>{progress > 0 ? 'Darsni davom ettirish' : 'Darsni boshlash'}</Text>
+          <Text style={styles.ctaText}>{ctaLabel}</Text>
         </Pressable>
       ) : null}
     </Screen>
