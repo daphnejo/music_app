@@ -17,10 +17,17 @@ const blockIcon = (type: string) => {
   return 'book-outline';
 };
 
-function blockTitleForDisplay(value: string) {
+function blockTitleForDisplay(value: string, lessonTitle: string) {
   const trimmed = value.trim();
   const withoutLessonPrefix = trimmed.replace(/^\s*\d+\s*[-.]?\s*dars\s*[.:'’\-–—]*\s*/i, '').trim();
-  return withoutLessonPrefix || trimmed;
+  const cleaned = withoutLessonPrefix || trimmed;
+  const completeLessonTitle = lessonTitle.trim();
+
+  if (cleaned.endsWith('…') && completeLessonTitle && !completeLessonTitle.endsWith('…') && cleaned.startsWith(completeLessonTitle)) {
+    return completeLessonTitle;
+  }
+
+  return cleaned;
 }
 
 export default function LessonDetailScreen() {
@@ -80,7 +87,7 @@ export default function LessonDetailScreen() {
               </View>
               <Ionicons name={blockIcon(block.type) as never} size={22} color={colors.primary} />
               <View style={{ flex: 1 }}>
-                <Text style={[styles.sectionTitle, { color: colors.text }]}>{blockTitleForDisplay(block.title)}</Text>
+                <Text style={[styles.sectionTitle, { color: colors.text }]}>{blockTitleForDisplay(block.title, lesson.title)}</Text>
                 <Text style={[styles.sectionText, { color: colors.muted }]}>
                   {done ? 'Bajarildi' : block.state === 'in_progress' ? 'Davom etmoqda' : 'Boshlanmagan'}
                 </Text>
