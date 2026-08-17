@@ -9,9 +9,19 @@ export function LessonCard({ lesson }: { lesson: CourseLessonSummary }) {
   const { colors } = useTheme();
   const progress = lessonProgress(lesson);
   const numberLabel = lesson.declaredNumber ? `${lesson.declaredNumber}` : '•';
+
+  const openLesson = () => {
+    const firstBlock = lesson.blocks[0];
+    if (lesson.declaredNumber === 1 && firstBlock) {
+      router.push({ pathname: '/blocks/[id]', params: { id: firstBlock.id } });
+      return;
+    }
+    router.push({ pathname: '/lessons/[id]', params: { id: lesson.id } });
+  };
+
   return (
     <Pressable
-      onPress={() => router.push({ pathname: '/lessons/[id]', params: { id: lesson.id } })}
+      onPress={openLesson}
       style={({ pressed }) => [styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, pressed && styles.pressed]}
     >
       <View style={styles.top}>
