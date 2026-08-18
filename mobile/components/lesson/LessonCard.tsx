@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useStars } from '@/context/StarsContext';
 import { lessonProgress, type CourseLessonSummary } from '@/types/content';
 import { childLessonTitle } from '@/utils/lesson-display';
 
@@ -22,11 +23,13 @@ const LESSON_ICONS: Array<keyof typeof Ionicons.glyphMap> = [
 ];
 
 export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary; index?: number }) {
+  const { getLessonStars } = useStars();
   const progress = lessonProgress(lesson);
   const palette = CARD_PALETTES[index % CARD_PALETTES.length];
   const iconName = LESSON_ICONS[index % LESSON_ICONS.length];
   const nextBlock = lesson.blocks.find((block) => block.state !== 'completed') ?? lesson.blocks[0];
-  const stars = progress >= 100 ? 3 : progress >= 66 ? 2 : progress > 0 ? 1 : 0;
+  const savedStars = getLessonStars(lesson.declaredNumber);
+  const stars = savedStars || (progress >= 100 ? 3 : 0);
   const title = childLessonTitle(lesson);
 
   const openLesson = () => {
@@ -41,7 +44,7 @@ export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary;
     router.push({ pathname: '/lessons/[id]', params: { id: lesson.id } });
   };
 
-  const statusLabel = progress >= 100 ? 'Barakalla!' : progress > 0 ? 'Davom etamiz' : 'Boshlaymiz';
+  const statusLabel = stars > 0 ? `${stars} yulduz` : progress > 0 ? 'Davom etamiz' : 'Boshlaymiz';
 
   return (
     <Pressable
