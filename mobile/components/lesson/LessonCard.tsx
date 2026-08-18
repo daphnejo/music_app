@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useStars } from '@/context/StarsContext';
 import { lessonProgress, type CourseLessonSummary } from '@/types/content';
@@ -22,6 +22,10 @@ const LESSON_ICONS: Array<keyof typeof Ionicons.glyphMap> = [
   'headset',
 ];
 
+function customLessonHref(pathname: '/lesson-three' | '/lesson-four', blockId: string): Href {
+  return `${pathname}?blockId=${encodeURIComponent(blockId)}` as Href;
+}
+
 export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary; index?: number }) {
   const { getLessonStars } = useStars();
   const progress = lessonProgress(lesson);
@@ -38,11 +42,11 @@ export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary;
       return;
     }
     if (lesson.declaredNumber === 3 && nextBlock) {
-      router.push({ pathname: '/lesson-three', params: { blockId: nextBlock.id } });
+      router.push(customLessonHref('/lesson-three', nextBlock.id));
       return;
     }
     if (lesson.declaredNumber === 4 && nextBlock) {
-      router.push({ pathname: '/lesson-four', params: { blockId: nextBlock.id } });
+      router.push(customLessonHref('/lesson-four', nextBlock.id));
       return;
     }
     if (nextBlock) {
