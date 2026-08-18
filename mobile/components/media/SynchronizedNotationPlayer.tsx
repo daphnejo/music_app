@@ -7,8 +7,8 @@ const NOTE_COUNT = 5;
 const VISUAL_LEAD_SECONDS = 0.14;
 const STATUS_INTERVAL_MS = 70;
 
-const NOTE_TOPS = [62, 52, 42, 32, 22];
-const NOTE_LEFTS = ['8%', '27%', '46%', '65%', '84%'];
+const NOTE_TOPS = [62, 52, 42, 32, 22] as const;
+const NOTE_LEFTS = ['8%', '27%', '46%', '65%', '84%'] as const;
 
 function formatTime(seconds: number) {
   if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
