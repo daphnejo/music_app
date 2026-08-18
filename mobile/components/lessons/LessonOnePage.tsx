@@ -38,7 +38,8 @@ export function LessonOnePage({
   const { colors } = useTheme();
   const [step, setStep] = useState(0);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
-  const [quizPassed, setQuizPassed] = useState(completed);
+  const [quizChecked, setQuizChecked] = useState(false);
+  const [rewardStars, setRewardStars] = useState<2 | 3>(3);
   const rewardScale = useRef(new Animated.Value(0.82)).current;
   const mainImage = images.find((asset) => /\.jpe?g(?:$|\?)/i.test(asset.file)) ?? images[0] ?? null;
   const isFinalStep = step === REWARD_STEP;
@@ -63,7 +64,11 @@ export function LessonOnePage({
   }
 
   function goForward() {
-    if (step === QUIZ_STEP && !quizPassed) return;
+    if (step === QUIZ_STEP) {
+      if (!quizChecked) return;
+      setStep(REWARD_STEP);
+      return;
+    }
 
     if (!isFinalStep) {
       setStep((value) => Math.min(REWARD_STEP, value + 1));
@@ -78,21 +83,38 @@ export function LessonOnePage({
     onNext?.();
   }
 
-  function chooseQuizOption(optionId: string, correct: boolean) {
-    if (quizPassed) return;
+  function chooseQuizOption(optionId: string) {
+    if (quizChecked) return;
     setSelectedQuizId(optionId);
-    setQuizPassed(correct);
   }
 
-  const quizSelected = QUIZ_OPTIONS.find((option) => option.id === selectedQuizId) ?? null;
-  const buttonDisabled = saving || (step === QUIZ_STEP && !quizPassed) || (isFinalStep && completed && !onNext);
+  function checkQuiz() {
+    if (!selectedQuizId || quizChecked) return;
+    const selected = QUIZ_OPTIONS.find((option) => option.id === selectedQuizId);
+    setRewardStars(selected?.correct ? 3 : 2);
+    setQuizChecked(true);
+  }
+
+  function handlePrimaryAction() {
+    if (step === QUIZ_STEP && !quizChecked) {
+      checkQuiz();
+      return;
+    }
+    goForward();
+  }
+
+  const selectedQuiz = QUIZ_OPTIONS.find((option) => option.id === selectedQuizId) ?? null;
+  const answerCorrect = !!selectedQuiz?.correct;
+  const buttonDisabled = saving
+    || (step === QUIZ_STEP && !selectedQuizId)
+    || (isFinalStep && completed && !onNext);
 
   const buttonLabel = step === QUIZ_STEP
-    ? quizPassed
-      ? 'Barakalla! Davom et 🎉'
-      : selectedQuizId
-        ? 'Yana urinib ko‘r 😊'
-        : 'Javobni tanla'
+    ? !selectedQuizId
+      ? 'Javobni tanla'
+      : !quizChecked
+        ? 'Javobni tekshirish'
+        : `${rewardStars} yulduz! Natijani ko‘r`
     : !isFinalStep
       ? 'Davom etish'
       : saving
@@ -101,7 +123,7 @@ export function LessonOnePage({
           ? 'Keyingi qadam'
           : completed
             ? 'Barakalla! ⭐'
-            : 'Yulduzlarni olish ⭐';
+            : 'Darsni yakunlash';
 
   return (
     <View style={styles.page}>
@@ -139,7 +161,7 @@ export function LessonOnePage({
       </View>
 
       {step === 0 ? (
-        <View style={[styles.hero, { backgroundColor: colors.primary }]}> 
+        <View style={[styles.hero, { backgroundColor: colors.primary }]}>
           <View style={styles.heroBubble}>
             <Ionicons name="musical-note" size={42} color="#FFFFFF" />
           </View>
@@ -150,7 +172,7 @@ export function LessonOnePage({
       ) : null}
 
       {step === 1 ? (
-        <View style={[styles.focusCard, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
+        <View style={[styles.focusCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={[styles.largeIcon, { backgroundColor: colors.primarySoft }]}>
             <Ionicons name="book" size={36} color={colors.primary} />
           </View>
@@ -161,7 +183,7 @@ export function LessonOnePage({
       ) : null}
 
       {step === 2 ? (
-        <View style={[styles.factFocus, { backgroundColor: '#FFF1B9' }]}> 
+        <View style={[styles.factFocus, { backgroundColor: '#FFF1B9' }]}>
           <View style={styles.factIcon}><Text style={styles.factEmoji}>💡</Text></View>
           <Text style={styles.factLabel}>BILASANMI?</Text>
           <Text style={styles.factTitle}>“Solfedjio” nomi qayerdan kelgan?</Text>
@@ -175,7 +197,7 @@ export function LessonOnePage({
       ) : null}
 
       {step === 3 ? (
-        <View style={[styles.historyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
+        <View style={[styles.historyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={styles.historyHead}>
             <View style={[styles.smallIcon, { backgroundColor: colors.primarySoft }]}>
               <Ionicons name="sparkles" size={24} color={colors.primary} />
@@ -203,59 +225,82 @@ export function LessonOnePage({
       ) : null}
 
       {step === QUIZ_STEP ? (
-        <View style={[styles.quizCard, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
+        <View style={[styles.quizCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={[styles.quizIcon, { backgroundColor: colors.primarySoft }]}>
             <Ionicons name="help" size={34} color={colors.primary} />
           </View>
           <Text style={[styles.stepLabel, { color: colors.primary }]}>MINI SAVOL</Text>
           <Text style={[styles.quizTitle, { color: colors.text }]}>Solfedjioda nimani o‘rganamiz?</Text>
+          <Text style={[styles.quizHint, { color: colors.muted }]}>Javob kartasini bosib tanla, keyin tekshir.</Text>
 
           <View style={styles.quizOptions}>
             {QUIZ_OPTIONS.map((option) => {
               const selected = selectedQuizId === option.id;
-              const correctSelected = selected && option.correct;
-              const wrongSelected = selected && !option.correct;
-              const optionStyle = correctSelected
+              const revealCorrect = quizChecked && option.correct;
+              const wrongSelected = quizChecked && selected && !option.correct;
+              const optionStyle = revealCorrect
                 ? { backgroundColor: colors.successSurface, borderColor: colors.success }
                 : wrongSelected
                   ? { backgroundColor: '#FFF3D5', borderColor: '#E2A93B' }
-                  : { backgroundColor: colors.surface, borderColor: colors.border };
-              const iconBackground = correctSelected
-                ? colors.success
-                : wrongSelected
-                  ? '#E2A93B'
-                  : colors.primarySoft;
-              const iconColor = correctSelected || wrongSelected ? '#FFFFFF' : colors.primary;
+                  : selected
+                    ? { backgroundColor: colors.primarySoft, borderColor: colors.primary }
+                    : { backgroundColor: colors.surface, borderColor: colors.border };
 
               return (
                 <Pressable
                   key={option.id}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected, disabled: quizPassed }}
-                  disabled={quizPassed}
-                  onPress={() => chooseQuizOption(option.id, option.correct)}
-                  style={({ pressed }) => [styles.quizOption, optionStyle, pressed && !quizPassed && styles.pressed]}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected, disabled: quizChecked }}
+                  disabled={quizChecked}
+                  onPress={() => chooseQuizOption(option.id)}
+                  style={({ pressed }) => [
+                    styles.quizOption,
+                    optionStyle,
+                    selected && !quizChecked && styles.quizOptionSelected,
+                    pressed && !quizChecked && styles.pressed,
+                  ]}
                 >
-                  <View style={[styles.quizOptionIcon, { backgroundColor: iconBackground }]}>
-                    <Ionicons
-                      name={correctSelected ? 'checkmark' : wrongSelected ? 'refresh' : option.icon}
-                      size={21}
-                      color={iconColor}
-                    />
+                  <View style={styles.quizOptionLead}>
+                    <View
+                      style={[
+                        styles.quizOptionIcon,
+                        { backgroundColor: selected ? colors.primary : colors.primarySoft },
+                        revealCorrect && { backgroundColor: colors.success },
+                        wrongSelected && { backgroundColor: '#E2A93B' },
+                      ]}
+                    >
+                      <Ionicons
+                        name={revealCorrect ? 'checkmark' : wrongSelected ? 'close' : option.icon}
+                        size={21}
+                        color={selected || revealCorrect || wrongSelected ? '#FFFFFF' : colors.primary}
+                      />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={[styles.quizOptionText, { color: colors.text }]}>{option.text}</Text>
+                      {selected && !quizChecked ? <Text style={[styles.selectedLabel, { color: colors.primary }]}>Tanlandi</Text> : null}
+                    </View>
                   </View>
-                  <Text style={[styles.quizOptionText, { color: colors.text }]}>{option.text}</Text>
+                  <Ionicons
+                    name={revealCorrect ? 'checkmark-circle' : wrongSelected ? 'close-circle' : selected ? 'radio-button-on' : 'radio-button-off'}
+                    size={25}
+                    color={revealCorrect ? colors.success : wrongSelected ? '#E2A93B' : selected ? colors.primary : colors.muted}
+                  />
                 </Pressable>
               );
             })}
           </View>
 
-          {quizSelected ? (
-            <View style={[styles.quizFeedback, { backgroundColor: quizPassed ? colors.successSurface : '#FFF3D5' }]}>
-              <Text style={styles.quizFeedbackEmoji}>{quizPassed ? '🎉' : '😊'}</Text>
+          {quizChecked ? (
+            <View style={[styles.quizFeedback, { backgroundColor: answerCorrect ? colors.successSurface : '#FFF3D5' }]}>
+              <Text style={styles.quizFeedbackEmoji}>{answerCorrect ? '🎉' : '🌟'}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={[styles.quizFeedbackTitle, { color: colors.text }]}>{quizPassed ? 'Barakalla!' : 'Yana bir bor urinib ko‘r'}</Text>
+                <Text style={[styles.quizFeedbackTitle, { color: colors.text }]}>
+                  {answerCorrect ? 'To‘g‘ri! 3 yulduz!' : 'Yaxshi urinish! 2 yulduz!'}
+                </Text>
                 <Text style={[styles.quizFeedbackText, { color: colors.muted }]}>
-                  {quizPassed ? 'To‘g‘ri! Solfedjio bizga notaga qarab kuylashni o‘rgatadi.' : 'Boshqa javobni tanlab ko‘r. Sen uddalaysan!'}
+                  {answerCorrect
+                    ? 'Solfedjio bizga notaga qarab kuylashni o‘rgatadi.'
+                    : 'To‘g‘ri javob — notaga qarab kuylashni o‘rganamiz.'}
                 </Text>
               </View>
             </View>
@@ -264,19 +309,24 @@ export function LessonOnePage({
       ) : null}
 
       {step === REWARD_STEP ? (
-        <View style={[styles.rewardCard, { backgroundColor: colors.primarySoft }]}> 
+        <View style={[styles.rewardCard, { backgroundColor: colors.primarySoft }]}>
           <Animated.View style={{ alignItems: 'center', transform: [{ scale: rewardScale }] }}>
-            <Text style={styles.rewardEmoji}>{completed ? '🌟' : '🎉'}</Text>
-            <Text style={[styles.rewardTitle, { color: colors.text }]}>{completed ? 'Barakalla!' : 'Ajoyib!'}</Text>
+            <Text style={styles.rewardEmoji}>{rewardStars === 3 ? '🎉' : '🌟'}</Text>
+            <Text style={[styles.rewardTitle, { color: colors.text }]}>{rewardStars === 3 ? 'Ajoyib!' : 'Yaxshi!'}</Text>
             <Text style={[styles.rewardText, { color: colors.muted }]}>Solfedjio nima ekanini bilib olding va mini savolni ham bajarding!</Text>
             <View style={styles.starsRow}>
               {[0, 1, 2].map((value) => (
-                <Ionicons key={value} name="star" size={38} color="#F2B01E" />
+                <Ionicons
+                  key={value}
+                  name={value < rewardStars ? 'star' : 'star-outline'}
+                  size={38}
+                  color={value < rewardStars ? '#F2B01E' : '#B8B1C8'}
+                />
               ))}
             </View>
             <View style={[styles.rewardPill, { backgroundColor: '#FFFFFFAA' }]}>
               <Ionicons name="trophy" size={20} color="#A66A00" />
-              <Text style={styles.rewardPillText}>+3 yulduz</Text>
+              <Text style={styles.rewardPillText}>+{rewardStars} yulduz</Text>
             </View>
           </Animated.View>
         </View>
@@ -286,7 +336,7 @@ export function LessonOnePage({
         accessibilityRole="button"
         accessibilityState={{ disabled: buttonDisabled }}
         disabled={buttonDisabled}
-        onPress={goForward}
+        onPress={handlePrimaryAction}
         style={({ pressed }) => [
           styles.completeButton,
           { backgroundColor: isFinalStep ? colors.success : colors.primary },
@@ -296,7 +346,7 @@ export function LessonOnePage({
       >
         <Text style={styles.completeText}>{buttonLabel}</Text>
         <Ionicons
-          name={step === QUIZ_STEP ? (quizPassed ? 'arrow-forward' : 'sparkles') : isFinalStep ? (completed ? 'arrow-forward' : 'star') : 'arrow-forward'}
+          name={step === QUIZ_STEP ? (quizChecked ? 'arrow-forward' : 'checkmark-circle') : isFinalStep ? (completed ? 'arrow-forward' : 'star') : 'arrow-forward'}
           size={21}
           color="#FFFFFF"
         />
@@ -345,11 +395,15 @@ const styles = StyleSheet.create({
   historyText: { fontSize: 15, lineHeight: 22, fontWeight: '700', marginTop: 13 },
   quizCard: { minHeight: 410, borderRadius: 32, padding: 20, borderWidth: 1, justifyContent: 'center' },
   quizIcon: { width: 64, height: 64, borderRadius: 23, alignItems: 'center', justifyContent: 'center', marginBottom: 17 },
-  quizTitle: { fontSize: 28, lineHeight: 34, fontWeight: '900', marginTop: 7, marginBottom: 18 },
+  quizTitle: { fontSize: 28, lineHeight: 34, fontWeight: '900', marginTop: 7 },
+  quizHint: { fontSize: 12, lineHeight: 17, fontWeight: '600', marginTop: 7, marginBottom: 18 },
   quizOptions: { gap: 10 },
-  quizOption: { minHeight: 66, borderRadius: 20, borderWidth: 1.5, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  quizOption: { minHeight: 68, borderRadius: 20, borderWidth: 1.5, padding: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
+  quizOptionSelected: { borderWidth: 2.5 },
+  quizOptionLead: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12 },
   quizOptionIcon: { width: 42, height: 42, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
-  quizOptionText: { flex: 1, fontSize: 15, lineHeight: 21, fontWeight: '800' },
+  quizOptionText: { fontSize: 15, lineHeight: 21, fontWeight: '800' },
+  selectedLabel: { fontSize: 10, fontWeight: '900', marginTop: 2 },
   quizFeedback: { marginTop: 14, borderRadius: 19, padding: 13, flexDirection: 'row', alignItems: 'center', gap: 10 },
   quizFeedbackEmoji: { fontSize: 28 },
   quizFeedbackTitle: { fontSize: 15, fontWeight: '900' },
