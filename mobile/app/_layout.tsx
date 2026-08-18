@@ -9,6 +9,7 @@ import { AnimatedBrandIntro } from '@/components/brand/AnimatedBrandIntro';
 import { BrandMark } from '@/components/brand/BrandMark';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { CourseProvider } from '@/context/CourseContext';
+import { StarsProvider } from '@/context/StarsContext';
 import { ThemeProvider, useTheme } from '@/context/ThemeContext';
 import type { ThemeColors } from '@/theme/colors';
 
@@ -70,6 +71,7 @@ function RootNavigator() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="lessons/[id]" />
         <Stack.Screen name="blocks/[id]" />
+        <Stack.Screen name="lesson-two" />
         <Stack.Screen name="piano" options={{ orientation: 'landscape' }} />
         <Stack.Screen name="profile-info" />
         <Stack.Screen name="change-password" />
@@ -94,9 +96,11 @@ function AppProviders() {
     <>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <AuthProvider>
-        <CourseProvider>
-          <RootNavigator />
-        </CourseProvider>
+        <StarsProvider>
+          <CourseProvider>
+            <RootNavigator />
+          </CourseProvider>
+        </StarsProvider>
       </AuthProvider>
     </>
   );
