@@ -70,7 +70,7 @@ function RootNavigator() {
       <Stack.Protected guard={!!user}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="lessons/[id]" />
-        <Stack.Screen name="blocks/[id]" />
+        <Stack.Screen name="blocks" />
         <Stack.Screen name="lesson-two" />
         <Stack.Screen name="lesson-three" />
         <Stack.Screen name="lesson-four" />
