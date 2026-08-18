@@ -3,6 +3,9 @@ import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 
+const NOTATION_STATUS_INTERVAL_MS = 60;
+const NOTATION_VISUAL_LEAD_SECONDS = 0.1;
+
 function formatTime(seconds: number) {
   if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
   const whole = Math.floor(seconds);
@@ -94,9 +97,12 @@ function AnimatedStaff({ sequence, progress }: { sequence: StaffNote[]; progress
 
 export function AudioPlayer({ url, title }: { url: string; title?: string | null }) {
   const { colors } = useTheme();
-  const player = useAudioPlayer(url, { updateInterval: 200 });
-  const status = useAudioPlayerStatus(player);
   const displayTitle = title?.trim() || fallbackAudioTitle(url);
+  const staffSequence = lessonFourStaffSequence(displayTitle);
+  const player = useAudioPlayer(url, {
+    updateInterval: staffSequence ? NOTATION_STATUS_INTERVAL_MS : 500,
+  });
+  const status = useAudioPlayerStatus(player);
 
   const toggle = () => {
     if (status.playing) player.pause();
@@ -107,10 +113,13 @@ export function AudioPlayer({ url, title }: { url: string; title?: string | null
   };
 
   const progress = status.duration > 0 ? Math.min(1, status.currentTime / status.duration) : 0;
-  const staffSequence = lessonFourStaffSequence(displayTitle);
+  const notationCurrentTime = status.currentTime + (status.playing ? NOTATION_VISUAL_LEAD_SECONDS : 0);
+  const notationProgress = status.duration > 0
+    ? Math.min(1, notationCurrentTime / status.duration)
+    : 0;
 
   return (
-    <View style={[styles.shell, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+    <View style={[styles.shell, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
       <View style={styles.card}>
         <View style={[styles.icon, { backgroundColor: colors.primarySoft }]}><Ionicons name="musical-note" size={22} color={colors.primary} /></View>
         <View style={styles.body}>
@@ -125,7 +134,7 @@ export function AudioPlayer({ url, title }: { url: string; title?: string | null
           <Ionicons name="refresh" size={18} color={colors.primary} />
         </Pressable>
       </View>
-      {staffSequence ? <AnimatedStaff sequence={staffSequence} progress={progress} /> : null}
+      {staffSequence ? <AnimatedStaff sequence={staffSequence} progress={notationProgress} /> : null}
     </View>
   );
 }
