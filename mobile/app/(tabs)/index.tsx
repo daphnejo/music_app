@@ -6,12 +6,14 @@ import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { Screen } from '@/components/ui/Screen';
 import { useAuth } from '@/context/AuthContext';
 import { useCourse } from '@/context/CourseContext';
+import { useStars } from '@/context/StarsContext';
 import { useTheme } from '@/context/ThemeContext';
 import { lessonProgress } from '@/types/content';
 
 export default function HomeScreen() {
   const { user } = useAuth();
   const { data, isLoading, error, reload } = useCourse();
+  const { totalStars } = useStars();
   const { colors } = useTheme();
   const firstName = user?.fullName?.trim().split(/\s+/)[0] || 'do‘stim';
   const initial = firstName.charAt(0).toUpperCase();
@@ -24,8 +26,6 @@ export default function HomeScreen() {
     ? lessons.find((lesson) => lesson.blocks.some((block) => block.id === data.lastBlockId))
     : null;
   const current = lastLesson ?? lessons.find((lesson) => lessonProgress(lesson) < 100) ?? lessons[0];
-  const allBlocks = lessons.flatMap((lesson) => lesson.blocks);
-  const completedBlocks = allBlocks.filter((block) => block.state === 'completed').length;
   const completedLessons = lessons.filter((lesson) => lesson.blockCount > 0 && lesson.completed === lesson.blockCount).length;
 
   return (
@@ -59,7 +59,7 @@ export default function HomeScreen() {
           <View style={[styles.rewardIcon, { backgroundColor: '#FFE27A' }]}>
             <Ionicons name="star" size={26} color="#A66A00" />
           </View>
-          <Text style={styles.rewardValue}>{completedBlocks}</Text>
+          <Text style={styles.rewardValue}>{totalStars}</Text>
           <Text style={styles.rewardLabel}>yulduz</Text>
         </View>
 
