@@ -5,7 +5,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { lessonProgress, type CourseLessonSummary } from '@/types/content';
 import { childLessonTitle } from '@/utils/lesson-display';
 
-function customLessonHref(pathname: '/lesson-three' | '/lesson-four', blockId: string): Href {
+function customLessonHref(pathname: '/lesson-three' | '/lesson-four' | '/lesson-five', blockId: string): Href {
   return `${pathname}?blockId=${encodeURIComponent(blockId)}` as Href;
 }
 
@@ -28,6 +28,10 @@ export function ContinueCard({ lesson }: { lesson: CourseLessonSummary }) {
     }
     if (lesson.declaredNumber === 4 && nextBlock) {
       router.push(customLessonHref('/lesson-four', nextBlock.id));
+      return;
+    }
+    if (lesson.declaredNumber === 5 && nextBlock) {
+      router.push(customLessonHref('/lesson-five', nextBlock.id));
       return;
     }
     if (nextBlock) {
