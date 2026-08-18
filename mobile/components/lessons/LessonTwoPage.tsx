@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { AudioPlayer } from '@/components/media/AudioPlayer';
+import { useStars } from '@/context/StarsContext';
 import { useTheme } from '@/context/ThemeContext';
 import type { BlockAsset } from '@/types/content';
 
@@ -35,6 +36,7 @@ export function LessonTwoPage({
   resolveUrl,
 }: LessonTwoPageProps) {
   const { colors } = useTheme();
+  const { awardLessonStars } = useStars();
   const [step, setStep] = useState(0);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
   const [quizChecked, setQuizChecked] = useState(false);
@@ -92,7 +94,9 @@ export function LessonTwoPage({
   function checkQuiz() {
     if (!selectedQuizId || quizChecked) return;
     const selected = QUIZ_OPTIONS.find((option) => option.id === selectedQuizId);
-    setRewardStars(selected?.correct ? 3 : 2);
+    const stars: 2 | 3 = selected?.correct ? 3 : 2;
+    setRewardStars(stars);
+    awardLessonStars(2, stars);
     setQuizChecked(true);
   }
 
@@ -289,25 +293,9 @@ export function LessonTwoPage({
                   </View>
 
                   <Ionicons
-                    name={
-                      revealCorrect
-                        ? 'checkmark-circle'
-                        : wrongSelected
-                          ? 'close-circle'
-                          : selected
-                            ? 'radio-button-on'
-                            : 'radio-button-off'
-                    }
+                    name={revealCorrect ? 'checkmark-circle' : wrongSelected ? 'close-circle' : selected ? 'radio-button-on' : 'radio-button-off'}
                     size={26}
-                    color={
-                      revealCorrect
-                        ? colors.success
-                        : wrongSelected
-                          ? '#E2A93B'
-                          : selected
-                            ? '#2483C5'
-                            : colors.muted
-                    }
+                    color={revealCorrect ? colors.success : wrongSelected ? '#E2A93B' : selected ? '#2483C5' : colors.muted}
                   />
                 </Pressable>
               );
@@ -318,13 +306,9 @@ export function LessonTwoPage({
             <View style={[styles.feedback, { backgroundColor: answerCorrect ? colors.successSurface : '#FFF3D5' }]}>
               <Text style={styles.feedbackEmoji}>{answerCorrect ? '🎉' : '🌟'}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={[styles.feedbackTitle, { color: colors.text }]}>
-                  {answerCorrect ? 'To‘g‘ri! 3 yulduz!' : 'Yaxshi urinish! 2 yulduz!'}
-                </Text>
+                <Text style={[styles.feedbackTitle, { color: colors.text }]}>{answerCorrect ? 'To‘g‘ri! 3 yulduz!' : 'Yaxshi urinish! 2 yulduz!'}</Text>
                 <Text style={[styles.feedbackText, { color: colors.muted }]}>
-                  {answerCorrect
-                    ? 'Qushlar sayrashi yuqori registrga mos.'
-                    : 'To‘g‘ri javob — Yuqori registr. Endi buni eslab qolamiz!'}
+                  {answerCorrect ? 'Qushlar sayrashi yuqori registrga mos.' : 'To‘g‘ri javob — Yuqori registr. Endi buni eslab qolamiz!'}
                 </Text>
               </View>
             </View>
@@ -340,12 +324,7 @@ export function LessonTwoPage({
             <Text style={[styles.rewardText, { color: colors.muted }]}>Past, o‘rta va yuqori registrni ajratishni o‘rganding!</Text>
             <View style={styles.starsRow}>
               {[0, 1, 2].map((star) => (
-                <Ionicons
-                  key={star}
-                  name={star < rewardStars ? 'star' : 'star-outline'}
-                  size={38}
-                  color={star < rewardStars ? '#F2B01E' : '#B8B1C8'}
-                />
+                <Ionicons key={star} name={star < rewardStars ? 'star' : 'star-outline'} size={38} color={star < rewardStars ? '#F2B01E' : '#B8B1C8'} />
               ))}
             </View>
             <View style={styles.rewardPill}>
@@ -369,11 +348,7 @@ export function LessonTwoPage({
         ]}
       >
         <Text style={styles.completeText}>{buttonLabel}</Text>
-        <Ionicons
-          name={step === QUIZ_STEP ? (quizChecked ? 'arrow-forward' : 'checkmark-circle') : isFinalStep ? 'star' : 'arrow-forward'}
-          size={21}
-          color="#FFFFFF"
-        />
+        <Ionicons name={step === QUIZ_STEP ? (quizChecked ? 'arrow-forward' : 'checkmark-circle') : isFinalStep ? 'star' : 'arrow-forward'} size={21} color="#FFFFFF" />
       </Pressable>
     </View>
   );
