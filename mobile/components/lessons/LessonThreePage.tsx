@@ -38,8 +38,7 @@ function NoteSoundButton({ label, url, index }: { label: string; url?: string; i
 
   const play = () => {
     if (!playable) return;
-    if (status.duration > 0 && status.currentTime >= status.duration - 0.05) player.seekTo(0);
-    else player.seekTo(0);
+    player.seekTo(0);
     player.play();
   };
 
@@ -75,6 +74,65 @@ function NoteSoundButton({ label, url, index }: { label: string; url?: string; i
   );
 }
 
+function PianoWhiteKey({ label, url, first = false }: { label: string; url?: string; first?: boolean }) {
+  const player = useAudioPlayer(url ?? null);
+  const status = useAudioPlayerStatus(player);
+  const playable = !!url;
+
+  const play = () => {
+    if (!playable) return;
+    player.seekTo(0);
+    player.play();
+  };
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${label} klavishi`}
+      accessibilityState={{ disabled: !playable }}
+      disabled={!playable}
+      onPress={play}
+      style={({ pressed }) => [
+        styles.whiteMiniKey,
+        first && styles.whiteMiniKeyFirst,
+        (pressed || status.playing) && styles.whiteMiniKeyActive,
+        !playable && styles.pianoKeyDisabled,
+      ]}
+    >
+      {status.playing ? <Ionicons name="volume-high" size={15} color="#A66A00" /> : null}
+      <Text style={[styles.whiteMiniLabel, status.playing && styles.whiteMiniLabelActive]}>{label}</Text>
+    </Pressable>
+  );
+}
+
+function InlinePiano({ noteAudios, resolveUrl, dark = false }: { noteAudios: BlockAsset[]; resolveUrl: (url: string) => string; dark?: boolean }) {
+  return (
+    <View style={[styles.inlinePianoWrap, dark && styles.inlinePianoWrapDark]}>
+      <View style={styles.miniKeyboard}>
+        {NOTES.map((note, index) => (
+          <PianoWhiteKey
+            key={note}
+            label={note}
+            first={index === 0}
+            url={noteAudios[index] ? resolveUrl(noteAudios[index].url) : undefined}
+          />
+        ))}
+        {[0, 1, 3, 4, 5].map((afterWhite) => (
+          <View
+            key={afterWhite}
+            pointerEvents="none"
+            style={[styles.blackMiniKey, { left: `${((afterWhite + 1) / 7) * 100 - 4}%` }]}
+          />
+        ))}
+      </View>
+      <View style={[styles.pianoHint, dark && styles.pianoHintDark]}>
+        <Ionicons name="hand-left" size={17} color={dark ? '#FFD76A' : '#A66A00'} />
+        <Text style={[styles.pianoHintText, dark && styles.pianoHintTextDark]}>Oq klavishlarni bos — nota shu yerning o‘zida yangraydi.</Text>
+      </View>
+    </View>
+  );
+}
+
 export function LessonThreePage({
   noteAudios,
   melodyAudios,
@@ -83,7 +141,6 @@ export function LessonThreePage({
   onBack,
   onNext,
   onComplete,
-  onOpenPiano,
   resolveUrl,
 }: LessonThreePageProps) {
   const { colors } = useTheme();
@@ -230,19 +287,7 @@ export function LessonThreePage({
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Klaviatura nima?</Text>
           <Text style={[styles.sectionText, { color: colors.muted }]}>Klaviatura — musiqa cholg‘usidagi tartib bilan joylashgan oq va qora klavishlar majmui.</Text>
 
-          <View style={styles.miniKeyboard}>
-            {Array.from({ length: 7 }).map((_, index) => (
-              <View key={index} style={[styles.whiteMiniKey, index === 0 && styles.whiteMiniKeyFirst]}>
-                <Text style={styles.whiteMiniLabel}>{NOTES[index]}</Text>
-              </View>
-            ))}
-            {[0, 1, 3, 4, 5].map((afterWhite) => (
-              <View
-                key={afterWhite}
-                style={[styles.blackMiniKey, { left: `${((afterWhite + 1) / 7) * 100 - 4}%` }]}
-              />
-            ))}
-          </View>
+          <InlinePiano noteAudios={noteAudios} resolveUrl={resolveUrl} />
 
           <View style={styles.tipBox}>
             <Text style={styles.tipEmoji}>👀</Text>
@@ -309,16 +354,12 @@ export function LessonThreePage({
           <View style={styles.practicePiano}><Text style={styles.practicePianoEmoji}>🎹</Text></View>
           <Text style={styles.practiceKicker}>ENDI O‘ZING CHAL!</Text>
           <Text style={styles.practiceTitle}>Do → Re → Mi → Fa → Sol</Text>
-          <Text style={styles.practiceText}>Pianinoni ochib, shu beshta notani ketma-ket bosib ko‘r.</Text>
+          <Text style={styles.practiceText}>Pastdagi klavishlarda shu beshta notani ketma-ket bosib ko‘r.</Text>
 
-          <Pressable onPress={onOpenPiano} style={({ pressed }) => [styles.pianoButton, pressed && styles.pressed]}>
-            <Ionicons name="musical-notes" size={22} color="#FFFFFF" />
-            <Text style={styles.pianoButtonText}>Pianinoni ochish</Text>
-            <Ionicons name="arrow-forward" size={20} color="#FFFFFF" />
-          </Pressable>
+          <InlinePiano noteAudios={noteAudios} resolveUrl={resolveUrl} dark />
 
           <View style={styles.practiceTip}>
-            <Text style={styles.practiceTipText}>Pianinodan qaytgach, pastdagi “Davom etish”ni bos.</Text>
+            <Text style={styles.practiceTipText}>Vazifa: Do, Re, Mi, Fa va Solni chapdan o‘ngga ketma-ket chal.</Text>
           </View>
         </View>
       ) : null}
@@ -444,11 +485,20 @@ const styles = StyleSheet.create({
   keyboardInfoCard: { minHeight: 410, borderRadius: 32, padding: 20, borderWidth: 1, justifyContent: 'center' },
   sectionTitle: { fontSize: 29, lineHeight: 35, fontWeight: '900', marginTop: 7 },
   sectionText: { fontSize: 16, lineHeight: 24, fontWeight: '600', marginTop: 9 },
-  miniKeyboard: { height: 155, borderRadius: 20, marginTop: 22, flexDirection: 'row', overflow: 'hidden', borderWidth: 2, borderColor: '#332E3D', position: 'relative' },
-  whiteMiniKey: { flex: 1, backgroundColor: '#FFFFFF', borderLeftWidth: 1, borderLeftColor: '#A9A3B7', justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 12 },
+  inlinePianoWrap: { marginTop: 20 },
+  inlinePianoWrapDark: { width: '100%' },
+  miniKeyboard: { height: 155, borderRadius: 20, flexDirection: 'row', overflow: 'hidden', borderWidth: 2, borderColor: '#332E3D', position: 'relative', backgroundColor: '#FFFFFF' },
+  whiteMiniKey: { flex: 1, backgroundColor: '#FFFFFF', borderLeftWidth: 1, borderLeftColor: '#A9A3B7', justifyContent: 'flex-end', alignItems: 'center', gap: 4, paddingBottom: 12, zIndex: 1 },
   whiteMiniKeyFirst: { borderLeftWidth: 0 },
+  whiteMiniKeyActive: { backgroundColor: '#FFF1BE' },
   whiteMiniLabel: { color: '#302B3D', fontSize: 11, fontWeight: '900' },
-  blackMiniKey: { position: 'absolute', top: 0, width: '8%', height: 91, backgroundColor: '#302B3D', borderBottomLeftRadius: 8, borderBottomRightRadius: 8, zIndex: 2 },
+  whiteMiniLabelActive: { color: '#A66A00' },
+  pianoKeyDisabled: { opacity: 0.58 },
+  blackMiniKey: { position: 'absolute', top: 0, width: '8%', height: 91, backgroundColor: '#302B3D', borderBottomLeftRadius: 8, borderBottomRightRadius: 8, zIndex: 3 },
+  pianoHint: { marginTop: 9, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, borderRadius: 14, backgroundColor: '#FFF4CE', paddingHorizontal: 10, paddingVertical: 8 },
+  pianoHintDark: { backgroundColor: '#FFFFFF12' },
+  pianoHintText: { flex: 1, color: '#765414', fontSize: 10, lineHeight: 15, fontWeight: '800' },
+  pianoHintTextDark: { color: '#E8E2F0' },
   tipBox: { marginTop: 17, borderRadius: 18, padding: 12, backgroundColor: '#FFF1BE', flexDirection: 'row', alignItems: 'center', gap: 10 },
   tipEmoji: { fontSize: 24 },
   tipText: { flex: 1, color: '#6D5315', fontSize: 11, lineHeight: 17, fontWeight: '700' },
@@ -468,16 +518,14 @@ const styles = StyleSheet.create({
   octaveTitle: { color: '#302B3D', fontSize: 12, fontWeight: '900', textAlign: 'center', marginTop: 7 },
   melodyWrap: { marginTop: 18, gap: 8 },
   melodyLabel: { color: '#A66A00', fontSize: 11, fontWeight: '900', letterSpacing: 0.6 },
-  practiceCard: { minHeight: 410, borderRadius: 32, padding: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2F2B3E' },
-  practicePiano: { width: 88, height: 88, borderRadius: 29, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF15' },
-  practicePianoEmoji: { fontSize: 48 },
-  practiceKicker: { color: '#FFD76A', fontSize: 11, fontWeight: '900', letterSpacing: 0.9, marginTop: 20 },
-  practiceTitle: { color: '#FFFFFF', fontSize: 27, lineHeight: 34, fontWeight: '900', textAlign: 'center', marginTop: 8 },
-  practiceText: { color: '#D9D4E3', fontSize: 15, lineHeight: 22, fontWeight: '600', textAlign: 'center', marginTop: 9 },
-  pianoButton: { marginTop: 24, width: '100%', minHeight: 58, borderRadius: 20, backgroundColor: '#C27A00', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 9, paddingHorizontal: 16 },
-  pianoButtonText: { color: '#FFFFFF', fontSize: 15, fontWeight: '900', flex: 1, textAlign: 'center' },
-  practiceTip: { marginTop: 15, borderRadius: 16, padding: 11, backgroundColor: '#FFFFFF10' },
-  practiceTipText: { color: '#CFC9D9', fontSize: 11, lineHeight: 17, fontWeight: '700', textAlign: 'center' },
+  practiceCard: { minHeight: 470, borderRadius: 32, padding: 21, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2F2B3E' },
+  practicePiano: { width: 72, height: 72, borderRadius: 24, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF15' },
+  practicePianoEmoji: { fontSize: 40 },
+  practiceKicker: { color: '#FFD76A', fontSize: 11, fontWeight: '900', letterSpacing: 0.9, marginTop: 15 },
+  practiceTitle: { color: '#FFFFFF', fontSize: 25, lineHeight: 32, fontWeight: '900', textAlign: 'center', marginTop: 7 },
+  practiceText: { color: '#D9D4E3', fontSize: 14, lineHeight: 21, fontWeight: '600', textAlign: 'center', marginTop: 7 },
+  practiceTip: { marginTop: 12, borderRadius: 16, padding: 10, backgroundColor: '#FFFFFF10', width: '100%' },
+  practiceTipText: { color: '#CFC9D9', fontSize: 10, lineHeight: 16, fontWeight: '700', textAlign: 'center' },
   quizCard: { minHeight: 410, borderRadius: 32, padding: 20, borderWidth: 1, justifyContent: 'center' },
   quizIcon: { width: 68, height: 68, borderRadius: 24, backgroundColor: '#FFF1BE', alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
   quizEmoji: { fontSize: 37 },
