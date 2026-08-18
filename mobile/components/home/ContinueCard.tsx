@@ -22,6 +22,10 @@ export function ContinueCard({ lesson }: { lesson: CourseLessonSummary }) {
       router.push({ pathname: '/lesson-three', params: { blockId: nextBlock.id } });
       return;
     }
+    if (lesson.declaredNumber === 4 && nextBlock) {
+      router.push({ pathname: '/lesson-four', params: { blockId: nextBlock.id } });
+      return;
+    }
     if (nextBlock) {
       router.push({ pathname: '/blocks/[id]', params: { id: nextBlock.id } });
       return;
