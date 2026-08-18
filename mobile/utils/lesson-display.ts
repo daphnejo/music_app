@@ -7,6 +7,7 @@ const FRIENDLY_TITLES: Record<number, string> = {
   1: 'Solfedjio bilan tanishamiz',
   2: 'Baland va past tovushlar',
   3: 'Klaviatura bilan tanishamiz',
+  4: 'Nota yo‘li',
 };
 
 export function childLessonTitle(lesson: LessonDisplayLike): string {
