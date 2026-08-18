@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useStars } from '@/context/StarsContext';
 import { useTheme } from '@/context/ThemeContext';
 import type { BlockAsset } from '@/types/content';
 
@@ -36,6 +37,7 @@ export function LessonOnePage({
   onComplete,
 }: LessonOnePageProps) {
   const { colors } = useTheme();
+  const { awardLessonStars } = useStars();
   const [step, setStep] = useState(0);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
   const [quizChecked, setQuizChecked] = useState(false);
@@ -91,7 +93,9 @@ export function LessonOnePage({
   function checkQuiz() {
     if (!selectedQuizId || quizChecked) return;
     const selected = QUIZ_OPTIONS.find((option) => option.id === selectedQuizId);
-    setRewardStars(selected?.correct ? 3 : 2);
+    const stars: 2 | 3 = selected?.correct ? 3 : 2;
+    setRewardStars(stars);
+    awardLessonStars(1, stars);
     setQuizChecked(true);
   }
 
@@ -253,12 +257,7 @@ export function LessonOnePage({
                   accessibilityState={{ selected, disabled: quizChecked }}
                   disabled={quizChecked}
                   onPress={() => chooseQuizOption(option.id)}
-                  style={({ pressed }) => [
-                    styles.quizOption,
-                    optionStyle,
-                    selected && !quizChecked && styles.quizOptionSelected,
-                    pressed && !quizChecked && styles.pressed,
-                  ]}
+                  style={({ pressed }) => [styles.quizOption, optionStyle, selected && !quizChecked && styles.quizOptionSelected, pressed && !quizChecked && styles.pressed]}
                 >
                   <View style={styles.quizOptionLead}>
                     <View
@@ -294,13 +293,9 @@ export function LessonOnePage({
             <View style={[styles.quizFeedback, { backgroundColor: answerCorrect ? colors.successSurface : '#FFF3D5' }]}>
               <Text style={styles.quizFeedbackEmoji}>{answerCorrect ? '🎉' : '🌟'}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={[styles.quizFeedbackTitle, { color: colors.text }]}>
-                  {answerCorrect ? 'To‘g‘ri! 3 yulduz!' : 'Yaxshi urinish! 2 yulduz!'}
-                </Text>
+                <Text style={[styles.quizFeedbackTitle, { color: colors.text }]}>{answerCorrect ? 'To‘g‘ri! 3 yulduz!' : 'Yaxshi urinish! 2 yulduz!'}</Text>
                 <Text style={[styles.quizFeedbackText, { color: colors.muted }]}>
-                  {answerCorrect
-                    ? 'Solfedjio bizga notaga qarab kuylashni o‘rgatadi.'
-                    : 'To‘g‘ri javob — notaga qarab kuylashni o‘rganamiz.'}
+                  {answerCorrect ? 'Solfedjio bizga notaga qarab kuylashni o‘rgatadi.' : 'To‘g‘ri javob — notaga qarab kuylashni o‘rganamiz.'}
                 </Text>
               </View>
             </View>
@@ -316,12 +311,7 @@ export function LessonOnePage({
             <Text style={[styles.rewardText, { color: colors.muted }]}>Solfedjio nima ekanini bilib olding va mini savolni ham bajarding!</Text>
             <View style={styles.starsRow}>
               {[0, 1, 2].map((value) => (
-                <Ionicons
-                  key={value}
-                  name={value < rewardStars ? 'star' : 'star-outline'}
-                  size={38}
-                  color={value < rewardStars ? '#F2B01E' : '#B8B1C8'}
-                />
+                <Ionicons key={value} name={value < rewardStars ? 'star' : 'star-outline'} size={38} color={value < rewardStars ? '#F2B01E' : '#B8B1C8'} />
               ))}
             </View>
             <View style={[styles.rewardPill, { backgroundColor: '#FFFFFFAA' }]}>
@@ -345,11 +335,7 @@ export function LessonOnePage({
         ]}
       >
         <Text style={styles.completeText}>{buttonLabel}</Text>
-        <Ionicons
-          name={step === QUIZ_STEP ? (quizChecked ? 'arrow-forward' : 'checkmark-circle') : isFinalStep ? (completed ? 'arrow-forward' : 'star') : 'arrow-forward'}
-          size={21}
-          color="#FFFFFF"
-        />
+        <Ionicons name={step === QUIZ_STEP ? (quizChecked ? 'arrow-forward' : 'checkmark-circle') : isFinalStep ? (completed ? 'arrow-forward' : 'star') : 'arrow-forward'} size={21} color="#FFFFFF" />
       </Pressable>
     </View>
   );
