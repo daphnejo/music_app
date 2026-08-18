@@ -37,7 +37,8 @@ export function LessonTwoPage({
   const { colors } = useTheme();
   const [step, setStep] = useState(0);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
-  const [quizPassed, setQuizPassed] = useState(completed);
+  const [quizChecked, setQuizChecked] = useState(false);
+  const [rewardStars, setRewardStars] = useState<2 | 3>(3);
   const rewardScale = useRef(new Animated.Value(0.84)).current;
   const isFinalStep = step === REWARD_STEP;
 
@@ -64,7 +65,11 @@ export function LessonTwoPage({
   }
 
   function goForward() {
-    if (step === QUIZ_STEP && !quizPassed) return;
+    if (step === QUIZ_STEP) {
+      if (!quizChecked) return;
+      setStep(REWARD_STEP);
+      return;
+    }
 
     if (!isFinalStep) {
       setStep((value) => Math.min(REWARD_STEP, value + 1));
@@ -79,19 +84,38 @@ export function LessonTwoPage({
     onNext?.();
   }
 
-  function chooseQuizOption(id: string, correct: boolean) {
-    if (quizPassed) return;
+  function chooseQuizOption(id: string) {
+    if (quizChecked) return;
     setSelectedQuizId(id);
-    setQuizPassed(correct);
   }
 
-  const buttonDisabled = saving || (step === QUIZ_STEP && !quizPassed) || (isFinalStep && completed && !onNext);
+  function checkQuiz() {
+    if (!selectedQuizId || quizChecked) return;
+    const selected = QUIZ_OPTIONS.find((option) => option.id === selectedQuizId);
+    setRewardStars(selected?.correct ? 3 : 2);
+    setQuizChecked(true);
+  }
+
+  function handlePrimaryAction() {
+    if (step === QUIZ_STEP && !quizChecked) {
+      checkQuiz();
+      return;
+    }
+    goForward();
+  }
+
+  const selectedQuiz = QUIZ_OPTIONS.find((option) => option.id === selectedQuizId) ?? null;
+  const answerCorrect = !!selectedQuiz?.correct;
+  const buttonDisabled = saving
+    || (step === QUIZ_STEP && !selectedQuizId)
+    || (isFinalStep && completed && !onNext);
+
   const buttonLabel = step === QUIZ_STEP
-    ? quizPassed
-      ? 'Barakalla! Davom et 🎉'
-      : selectedQuizId
-        ? 'Yana urinib ko‘r 😊'
-        : 'Javobni tanla'
+    ? !selectedQuizId
+      ? 'Javobni tanla'
+      : !quizChecked
+        ? 'Javobni tekshirish'
+        : `${rewardStars} yulduz! Natijani ko‘r`
     : !isFinalStep
       ? 'Davom etish'
       : saving
@@ -100,7 +124,7 @@ export function LessonTwoPage({
           ? 'Keyingi dars'
           : completed
             ? 'Barakalla! ⭐'
-            : 'Yulduzlarni olish ⭐';
+            : 'Darsni yakunlash';
 
   return (
     <View style={styles.page}>
@@ -149,7 +173,7 @@ export function LessonTwoPage({
       ) : null}
 
       {step === 1 ? (
-        <View style={[styles.registerCard, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
+        <View style={[styles.registerCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <Text style={styles.stepLabel}>UCHTA REGISTR</Text>
           <Text style={[styles.registerTitle, { color: colors.text }]}>Tovush qayerda yangrayapti?</Text>
           <Text style={[styles.registerText, { color: colors.muted }]}>Bir-biriga yaqin balandlikdagi tovushlar uch guruhga bo‘linadi.</Text>
@@ -186,7 +210,7 @@ export function LessonTwoPage({
       ) : null}
 
       {step === 2 ? (
-        <View style={[styles.listenCard, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
+        <View style={[styles.listenCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={styles.listenHeading}>
             <View style={styles.listenIcon}>
               <Ionicons name="headset" size={29} color="#2483C5" />
@@ -208,7 +232,7 @@ export function LessonTwoPage({
               ))}
             </View>
           ) : (
-            <View style={[styles.noAudio, { backgroundColor: colors.primarySoft }]}> 
+            <View style={[styles.noAudio, { backgroundColor: colors.primarySoft }]}>
               <Text style={styles.noAudioEmoji}>🎧</Text>
               <Text style={[styles.noAudioText, { color: colors.text }]}>Audio material yuklanganda shu yerda eshitamiz.</Text>
             </View>
@@ -222,47 +246,85 @@ export function LessonTwoPage({
       ) : null}
 
       {step === QUIZ_STEP ? (
-        <View style={[styles.quizCard, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
+        <View style={[styles.quizCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={styles.quizBird}><Text style={styles.quizBirdEmoji}>🐦</Text></View>
           <Text style={styles.stepLabel}>MINI SAVOL</Text>
           <Text style={[styles.quizTitle, { color: colors.text }]}>Qushlar sayrashini qaysi registrda ifoda qilish mumkin?</Text>
+          <Text style={[styles.quizHint, { color: colors.muted }]}>Javob kartasini bosib tanla, keyin tekshir.</Text>
 
           <View style={styles.quizOptions}>
             {QUIZ_OPTIONS.map((option) => {
               const selected = selectedQuizId === option.id;
-              const correctSelected = selected && option.correct;
-              const wrongSelected = selected && !option.correct;
-              const surface = correctSelected
+              const revealCorrect = quizChecked && option.correct;
+              const wrongSelected = quizChecked && selected && !option.correct;
+
+              const surface = revealCorrect
                 ? { backgroundColor: colors.successSurface, borderColor: colors.success }
                 : wrongSelected
                   ? { backgroundColor: '#FFF3D5', borderColor: '#E2A93B' }
-                  : { backgroundColor: colors.surface, borderColor: colors.border };
+                  : selected
+                    ? { backgroundColor: '#E6F5FF', borderColor: '#2483C5' }
+                    : { backgroundColor: colors.surface, borderColor: colors.border };
 
               return (
                 <Pressable
                   key={option.id}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected, disabled: quizPassed }}
-                  disabled={quizPassed}
-                  onPress={() => chooseQuizOption(option.id, option.correct)}
-                  style={({ pressed }) => [styles.quizOption, surface, pressed && !quizPassed && styles.pressed]}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected, disabled: quizChecked }}
+                  disabled={quizChecked}
+                  onPress={() => chooseQuizOption(option.id)}
+                  style={({ pressed }) => [
+                    styles.quizOption,
+                    surface,
+                    selected && !quizChecked && styles.quizOptionSelected,
+                    pressed && !quizChecked && styles.pressed,
+                  ]}
                 >
-                  <Text style={styles.quizOptionEmoji}>{option.emoji}</Text>
-                  <Text style={[styles.quizOptionText, { color: colors.text }]}>{option.label}</Text>
-                  {correctSelected ? <Ionicons name="checkmark-circle" size={24} color={colors.success} /> : null}
-                  {wrongSelected ? <Ionicons name="refresh-circle" size={24} color="#E2A93B" /> : null}
+                  <View style={styles.quizOptionLead}>
+                    <Text style={styles.quizOptionEmoji}>{option.emoji}</Text>
+                    <View style={{ flex: 1 }}>
+                      <Text style={[styles.quizOptionText, { color: colors.text }]}>{option.label}</Text>
+                      {selected && !quizChecked ? <Text style={styles.selectedLabel}>Tanlandi</Text> : null}
+                    </View>
+                  </View>
+
+                  <Ionicons
+                    name={
+                      revealCorrect
+                        ? 'checkmark-circle'
+                        : wrongSelected
+                          ? 'close-circle'
+                          : selected
+                            ? 'radio-button-on'
+                            : 'radio-button-off'
+                    }
+                    size={26}
+                    color={
+                      revealCorrect
+                        ? colors.success
+                        : wrongSelected
+                          ? '#E2A93B'
+                          : selected
+                            ? '#2483C5'
+                            : colors.muted
+                    }
+                  />
                 </Pressable>
               );
             })}
           </View>
 
-          {selectedQuizId ? (
-            <View style={[styles.feedback, { backgroundColor: quizPassed ? colors.successSurface : '#FFF3D5' }]}> 
-              <Text style={styles.feedbackEmoji}>{quizPassed ? '🎉' : '😊'}</Text>
+          {quizChecked ? (
+            <View style={[styles.feedback, { backgroundColor: answerCorrect ? colors.successSurface : '#FFF3D5' }]}>
+              <Text style={styles.feedbackEmoji}>{answerCorrect ? '🎉' : '🌟'}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={[styles.feedbackTitle, { color: colors.text }]}>{quizPassed ? 'Barakalla!' : 'Yana bir bor urinib ko‘r'}</Text>
+                <Text style={[styles.feedbackTitle, { color: colors.text }]}>
+                  {answerCorrect ? 'To‘g‘ri! 3 yulduz!' : 'Yaxshi urinish! 2 yulduz!'}
+                </Text>
                 <Text style={[styles.feedbackText, { color: colors.muted }]}>
-                  {quizPassed ? 'To‘g‘ri! Qushlar sayrashi yuqori registrga mos.' : 'Boshqa javobni tanlab ko‘r. Sen uddalaysan!'}
+                  {answerCorrect
+                    ? 'Qushlar sayrashi yuqori registrga mos.'
+                    : 'To‘g‘ri javob — Yuqori registr. Endi buni eslab qolamiz!'}
                 </Text>
               </View>
             </View>
@@ -273,17 +335,22 @@ export function LessonTwoPage({
       {step === REWARD_STEP ? (
         <View style={styles.rewardCard}>
           <Animated.View style={{ alignItems: 'center', transform: [{ scale: rewardScale }] }}>
-            <Text style={styles.rewardEmoji}>🎉</Text>
-            <Text style={[styles.rewardTitle, { color: colors.text }]}>Ajoyib!</Text>
-            <Text style={[styles.rewardText, { color: colors.muted }]}>Past, o‘rta va yuqori registrni ajrata olding!</Text>
+            <Text style={styles.rewardEmoji}>{rewardStars === 3 ? '🎉' : '🌟'}</Text>
+            <Text style={[styles.rewardTitle, { color: colors.text }]}>{rewardStars === 3 ? 'Ajoyib!' : 'Yaxshi!'}</Text>
+            <Text style={[styles.rewardText, { color: colors.muted }]}>Past, o‘rta va yuqori registrni ajratishni o‘rganding!</Text>
             <View style={styles.starsRow}>
               {[0, 1, 2].map((star) => (
-                <Ionicons key={star} name="star" size={38} color="#F2B01E" />
+                <Ionicons
+                  key={star}
+                  name={star < rewardStars ? 'star' : 'star-outline'}
+                  size={38}
+                  color={star < rewardStars ? '#F2B01E' : '#B8B1C8'}
+                />
               ))}
             </View>
             <View style={styles.rewardPill}>
               <Ionicons name="trophy" size={20} color="#A66A00" />
-              <Text style={styles.rewardPillText}>+3 yulduz</Text>
+              <Text style={styles.rewardPillText}>+{rewardStars} yulduz</Text>
             </View>
           </Animated.View>
         </View>
@@ -293,7 +360,7 @@ export function LessonTwoPage({
         accessibilityRole="button"
         accessibilityState={{ disabled: buttonDisabled }}
         disabled={buttonDisabled}
-        onPress={goForward}
+        onPress={handlePrimaryAction}
         style={({ pressed }) => [
           styles.completeButton,
           { backgroundColor: isFinalStep ? colors.success : '#2483C5' },
@@ -303,7 +370,7 @@ export function LessonTwoPage({
       >
         <Text style={styles.completeText}>{buttonLabel}</Text>
         <Ionicons
-          name={step === QUIZ_STEP ? (quizPassed ? 'arrow-forward' : 'sparkles') : isFinalStep ? 'star' : 'arrow-forward'}
+          name={step === QUIZ_STEP ? (quizChecked ? 'arrow-forward' : 'checkmark-circle') : isFinalStep ? 'star' : 'arrow-forward'}
           size={21}
           color="#FFFFFF"
         />
@@ -350,11 +417,15 @@ const styles = StyleSheet.create({
   quizCard: { minHeight: 410, borderRadius: 32, padding: 20, borderWidth: 1, justifyContent: 'center' },
   quizBird: { width: 68, height: 68, borderRadius: 24, alignItems: 'center', justifyContent: 'center', backgroundColor: '#E8F8EF', marginBottom: 16 },
   quizBirdEmoji: { fontSize: 39 },
-  quizTitle: { fontSize: 27, lineHeight: 33, fontWeight: '900', marginTop: 7, marginBottom: 17 },
+  quizTitle: { fontSize: 27, lineHeight: 33, fontWeight: '900', marginTop: 7 },
+  quizHint: { fontSize: 12, lineHeight: 17, fontWeight: '600', marginTop: 7, marginBottom: 16 },
   quizOptions: { gap: 9 },
-  quizOption: { minHeight: 64, borderRadius: 20, borderWidth: 1.5, padding: 11, flexDirection: 'row', alignItems: 'center', gap: 11 },
+  quizOption: { minHeight: 68, borderRadius: 20, borderWidth: 1.5, padding: 11, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 11 },
+  quizOptionSelected: { borderWidth: 2.5 },
+  quizOptionLead: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 11 },
   quizOptionEmoji: { fontSize: 30 },
-  quizOptionText: { flex: 1, fontSize: 15, fontWeight: '900' },
+  quizOptionText: { fontSize: 15, fontWeight: '900' },
+  selectedLabel: { color: '#2483C5', fontSize: 10, fontWeight: '900', marginTop: 2 },
   feedback: { marginTop: 13, borderRadius: 19, padding: 13, flexDirection: 'row', alignItems: 'center', gap: 10 },
   feedbackEmoji: { fontSize: 27 },
   feedbackTitle: { fontSize: 15, fontWeight: '900' },
