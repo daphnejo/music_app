@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { LessonFivePage } from '@/components/lessons/LessonFivePage';
+import { LessonFivePageV2 } from '@/components/lessons/LessonFivePageV2';
 import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { Screen } from '@/components/ui/Screen';
 import { useCourse } from '@/context/CourseContext';
@@ -44,9 +44,7 @@ export default function LessonFiveScreen() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await Promise.all(
-        sourceBlockIds.map((id) => apiRequest<BlockDetailResponse>(`/api/blocks/${id}`)),
-      );
+      const response = await Promise.all(sourceBlockIds.map((id) => apiRequest<BlockDetailResponse>(`/api/blocks/${id}`)));
       setDetails(response);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : '5-darsni yuklab bo‘lmadi');
@@ -59,11 +57,7 @@ export default function LessonFiveScreen() {
     void load();
   }, [load]);
 
-  const images = useMemo(
-    () => details.flatMap((detail) => detail.assets.filter((asset) => asset.kind === 'image')),
-    [details],
-  );
-
+  const images = useMemo(() => details.flatMap((detail) => detail.assets.filter((asset) => asset.kind === 'image')), [details]);
   const serverCompleted = !!lesson?.blockCount && lesson.completed === lesson.blockCount;
   const completed = localCompleted || serverCompleted;
 
@@ -92,9 +86,7 @@ export default function LessonFiveScreen() {
     setIsSaving(true);
     setError(null);
     try {
-      for (const block of lesson.blocks) {
-        await completeBlock(block);
-      }
+      for (const block of lesson.blocks) await completeBlock(block);
       setLocalCompleted(true);
       await reloadCourse();
     } catch (err) {
@@ -104,21 +96,13 @@ export default function LessonFiveScreen() {
     }
   };
 
-  if (isLoading && !details.length) {
-    return <Screen><LoadingState text="5-dars yuklanmoqda…" /></Screen>;
-  }
-
-  if (error && !details.length) {
-    return <Screen><ErrorState message={error} onRetry={() => void load()} /></Screen>;
-  }
-
-  if (!lesson) {
-    return <Screen><ErrorState message="5-dars materiali topilmadi." /></Screen>;
-  }
+  if (isLoading && !details.length) return <Screen><LoadingState text="5-dars yuklanmoqda…" /></Screen>;
+  if (error && !details.length) return <Screen><ErrorState message={error} onRetry={() => void load()} /></Screen>;
+  if (!lesson) return <Screen><ErrorState message="5-dars materiali topilmadi." /></Screen>;
 
   return (
     <Screen>
-      <LessonFivePage
+      <LessonFivePageV2
         images={images}
         completed={completed}
         saving={isSaving}
