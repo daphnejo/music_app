@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, type Href, useLocalSearchParams } from 'expo-router';
 import { LessonFourPage } from '@/components/lessons/LessonFourPage';
 import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { Screen } from '@/components/ui/Screen';
@@ -67,12 +67,11 @@ export default function LessonFourScreen() {
   const serverCompleted = !!lesson?.blockCount && lesson.completed === lesson.blockCount;
   const completed = localCompleted || serverCompleted;
 
-  const nextLessonBlockId = useMemo(() => {
+  const nextLesson = useMemo(() => {
     if (!courseData) return null;
-    const nextLesson = courseData.lessons
+    return courseData.lessons
       .filter((item) => (item.declaredNumber ?? Number.MAX_SAFE_INTEGER) > 4)
-      .sort((a, b) => (a.declaredNumber ?? a.order) - (b.declaredNumber ?? b.order))[0];
-    return nextLesson?.blocks[0]?.id ?? null;
+      .sort((a, b) => (a.declaredNumber ?? a.order) - (b.declaredNumber ?? b.order))[0] ?? null;
   }, [courseData]);
 
   const completeBlock = async (block: CourseBlockSummary) => {
@@ -126,11 +125,16 @@ export default function LessonFourScreen() {
         onBack={() => router.back()}
         onComplete={() => void completeLesson()}
         onNext={() => {
-          if (nextLessonBlockId) {
-            router.replace({ pathname: '/blocks/[id]', params: { id: nextLessonBlockId } });
+          const nextBlock = nextLesson?.blocks[0];
+          if (!nextBlock) {
+            router.replace('/(tabs)/lessons');
             return;
           }
-          router.replace('/(tabs)/lessons');
+          if (nextLesson?.declaredNumber === 5) {
+            router.replace(`/lesson-five?blockId=${encodeURIComponent(nextBlock.id)}` as Href);
+            return;
+          }
+          router.replace({ pathname: '/blocks/[id]', params: { id: nextBlock.id } });
         }}
         resolveUrl={absoluteUrl}
       />
