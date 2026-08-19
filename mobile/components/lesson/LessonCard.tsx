@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router, type Href } from 'expo-router';
+import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useStars } from '@/context/StarsContext';
 import { lessonProgress, type CourseLessonSummary } from '@/types/content';
 import { childLessonTitle } from '@/utils/lesson-display';
+import { kidLessonHref } from '@/utils/kid-lesson-navigation';
 
 const CARD_PALETTES = [
   { background: '#EEE9FF', icon: '#6C5CE7', bubble: '#DDD4FF' },
@@ -22,10 +23,6 @@ const LESSON_ICONS: Array<keyof typeof Ionicons.glyphMap> = [
   'headset',
 ];
 
-function customLessonHref(pathname: '/lesson-three' | '/lesson-four' | '/lesson-five', blockId: string): Href {
-  return `${pathname}?blockId=${encodeURIComponent(blockId)}` as Href;
-}
-
 export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary; index?: number }) {
   const { getLessonStars } = useStars();
   const progress = lessonProgress(lesson);
@@ -37,20 +34,9 @@ export function LessonCard({ lesson, index = 0 }: { lesson: CourseLessonSummary;
   const title = childLessonTitle(lesson);
 
   const openLesson = () => {
-    if (lesson.declaredNumber === 2 && nextBlock) {
-      router.push({ pathname: '/lesson-two', params: { blockId: nextBlock.id } });
-      return;
-    }
-    if (lesson.declaredNumber === 3 && nextBlock) {
-      router.push(customLessonHref('/lesson-three', nextBlock.id));
-      return;
-    }
-    if (lesson.declaredNumber === 4 && nextBlock) {
-      router.push(customLessonHref('/lesson-four', nextBlock.id));
-      return;
-    }
-    if (lesson.declaredNumber === 5 && nextBlock) {
-      router.push(customLessonHref('/lesson-five', nextBlock.id));
+    const kidHref = kidLessonHref(lesson.declaredNumber, nextBlock?.id);
+    if (kidHref) {
+      router.push(kidHref);
       return;
     }
     if (nextBlock) {
