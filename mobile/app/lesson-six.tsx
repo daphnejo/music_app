@@ -5,6 +5,7 @@ import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { Screen } from '@/components/ui/Screen';
 import { useCourse } from '@/context/CourseContext';
 import { API_BASE_URL, ApiError, apiRequest } from '@/services/api/client';
+import { kidLessonHref } from '@/utils/kid-lesson-navigation';
 import type { BlockDetailResponse, CourseBlockSummary } from '@/types/content';
 
 function absoluteUrl(path: string | null | undefined) {
@@ -65,6 +66,13 @@ export default function LessonSixScreen() {
   const serverCompleted = !!lesson?.blockCount && lesson.completed === lesson.blockCount;
   const completed = localCompleted || serverCompleted;
 
+  const nextLesson = useMemo(() => {
+    if (!courseData) return null;
+    return courseData.lessons
+      .filter((item) => (item.declaredNumber ?? Number.MAX_SAFE_INTEGER) > 6)
+      .sort((a, b) => (a.declaredNumber ?? a.order) - (b.declaredNumber ?? b.order))[0] ?? null;
+  }, [courseData]);
+
   const completeBlock = async (block: CourseBlockSummary) => {
     if (block.state === 'completed') return;
     if (block.type === 'practice_acknowledgement') {
@@ -105,7 +113,19 @@ export default function LessonSixScreen() {
         saving={isSaving}
         onBack={() => router.back()}
         onComplete={() => void completeLesson()}
-        onNext={() => router.replace('/(tabs)/lessons')}
+        onNext={() => {
+          const nextBlock = nextLesson?.blocks[0];
+          if (!nextBlock) {
+            router.replace('/(tabs)/lessons');
+            return;
+          }
+          const href = kidLessonHref(nextLesson?.declaredNumber, nextBlock.id);
+          if (href) {
+            router.replace(href);
+            return;
+          }
+          router.replace('/(tabs)/lessons');
+        }}
         resolveUrl={absoluteUrl}
       />
       {error ? <ErrorState message={error} /> : null}
