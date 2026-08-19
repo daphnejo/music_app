@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { LessonFivePageV2 } from '@/components/lessons/LessonFivePageV2';
+import { LessonFivePageV3 } from '@/components/lessons/LessonFivePageV3';
 import { ErrorState, LoadingState } from '@/components/ui/DataState';
 import { Screen } from '@/components/ui/Screen';
 import { useCourse } from '@/context/CourseContext';
@@ -102,7 +102,7 @@ export default function LessonFiveScreen() {
 
   return (
     <Screen>
-      <LessonFivePageV2
+      <LessonFivePageV3
         images={images}
         completed={completed}
         saving={isSaving}
