@@ -20,6 +20,7 @@ const NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'Lya', 'Si'] as const;
 const QUIZ_STEP = 4;
 const REWARD_STEP = 5;
 const TOTAL_STEPS = 6;
+const BLACK_KEY_POSITIONS = ['10.3%', '24.6%', '53.1%', '67.4%', '81.7%'] as const;
 
 const QUIZ_OPTIONS = [
   { id: 'ordered', label: 'Tovushlarning balandlik bo‘yicha tartibi', emoji: '📈', correct: true },
@@ -82,6 +83,53 @@ function SoundNote({
       </View>
       <Text style={styles.noteName}>{label}</Text>
       <Text style={styles.noteNumber}>{index + 1}</Text>
+    </Pressable>
+  );
+}
+
+function PianoKey({
+  label,
+  index,
+  url,
+  active,
+  done,
+  onPress,
+}: {
+  label: string;
+  index: number;
+  url?: string;
+  active: boolean;
+  done: boolean;
+  onPress: (index: number) => void;
+}) {
+  const player = useAudioPlayer(url ?? null);
+  const status = useAudioPlayerStatus(player);
+  const playable = !!url;
+
+  const play = () => {
+    if (playable) {
+      player.seekTo(0);
+      player.play();
+    }
+    onPress(index);
+  };
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${label} pianino klavishi`}
+      onPress={play}
+      style={({ pressed }) => [
+        styles.whiteKey,
+        done && styles.whiteKeyDone,
+        active && styles.whiteKeyActive,
+        status.playing && styles.whiteKeyPlaying,
+        pressed && styles.whiteKeyPressed,
+      ]}
+    >
+      {done ? <Ionicons name="checkmark-circle" size={17} color="#16805A" style={styles.keyCheck} /> : null}
+      <Text style={[styles.whiteKeyLabel, active && styles.whiteKeyLabelActive]}>{label}</Text>
+      <Text style={styles.whiteKeyNumber}>{index + 1}</Text>
     </Pressable>
   );
 }
@@ -161,7 +209,7 @@ export function LessonSixPage({ audios, completed, saving, onBack, onNext, onCom
     || (isFinalStep && completed && !onNext);
 
   const buttonLabel = step === 3 && !sequenceComplete
-    ? `Navbatdagi nota: ${NOTES[Math.min(sequenceIndex, NOTES.length - 1)]}`
+    ? `Navbatdagi klavish: ${NOTES[Math.min(sequenceIndex, NOTES.length - 1)]}`
     : step === QUIZ_STEP
       ? !selectedQuizId
         ? 'Javobni tanla'
@@ -236,28 +284,50 @@ export function LessonSixPage({ audios, completed, saving, onBack, onNext, onCom
       ) : null}
 
       {step === 3 ? (
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
-          <Text style={styles.stepLabel}>MINI O‘YIN</Text>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Tovush qatorni tuz 🎯</Text>
-          <Text style={[styles.sectionText, { color: colors.muted }]}>Notalarni 1 dan 7 gacha to‘g‘ri tartibda bos. Har bosganda tovushini ham eshitasan.</Text>
+        <View style={[styles.pianoCard, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
+          <Text style={styles.stepLabel}>PIANINO O‘YINI 🎹</Text>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Tovush qatorni chal</Text>
+          <Text style={[styles.sectionText, { color: colors.muted }]}>Do dan Si gacha oq klavishlarni tartib bilan bos. Har klavish haqiqiy nota ovozini beradi.</Text>
+
           <View style={styles.sequenceStatus}>
-            <View style={[styles.sequenceCircle, sequenceComplete && styles.sequenceCircleDone]}><Text style={styles.sequenceCircleText}>{sequenceComplete ? '✓' : `${Math.min(sequenceIndex, 7)}/7`}</Text></View>
-            <View style={{ flex: 1 }}><Text style={styles.sequenceTitle}>{sequenceComplete ? 'Ajoyib! Qator tayyor.' : `Navbat: ${NOTES[Math.min(sequenceIndex, NOTES.length - 1)]}`}</Text><Text style={styles.sequenceSub}>{sequenceMistakes > 0 ? `${sequenceMistakes} marta qayta urinib ko‘rding — davom et!` : 'Pastdan yuqoriga ketamiz.'}</Text></View>
+            <View style={[styles.sequenceCircle, sequenceComplete && styles.sequenceCircleDone]}>
+              <Text style={styles.sequenceCircleText}>{sequenceComplete ? '✓' : `${Math.min(sequenceIndex, 7)}/7`}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.sequenceTitle}>{sequenceComplete ? 'Ajoyib! Tovush qatorni chalding.' : `Navbat: ${NOTES[Math.min(sequenceIndex, NOTES.length - 1)]}`}</Text>
+              <Text style={styles.sequenceSub}>{sequenceMistakes > 0 ? `${sequenceMistakes} marta qayta urinib ko‘rding — davom et!` : 'Chapdan o‘ngga chalib bor.'}</Text>
+            </View>
           </View>
-          <View style={styles.notesGrid}>
-            {NOTES.map((note, index) => (
-              <SoundNote
-                key={note}
-                label={note}
-                index={index}
-                url={audios[index] ? resolveUrl(audios[index].url) : undefined}
-                active={!sequenceComplete && index === sequenceIndex}
-                done={index < sequenceIndex || sequenceComplete}
-                onPress={handleSequencePress}
-              />
-            ))}
+
+          <View style={styles.pianoShell}>
+            <View style={styles.pianoTop}><View style={styles.pianoLight} /><Text style={styles.pianoBrand}>D-SOLFEDJIO PIANO</Text><View style={styles.pianoLight} /></View>
+            <View style={styles.pianoKeys}>
+              {NOTES.map((note, index) => (
+                <PianoKey
+                  key={note}
+                  label={note}
+                  index={index}
+                  url={audios[index] ? resolveUrl(audios[index].url) : undefined}
+                  active={!sequenceComplete && index === sequenceIndex}
+                  done={index < sequenceIndex || sequenceComplete}
+                  onPress={handleSequencePress}
+                />
+              ))}
+              {BLACK_KEY_POSITIONS.map((left, index) => (
+                <View key={`${left}-${index}`} pointerEvents="none" style={[styles.blackKey, { left }]} />
+              ))}
+            </View>
           </View>
-          <Pressable onPress={() => { setSequenceIndex(0); setSequenceMistakes(0); }} style={styles.resetButton}><Ionicons name="refresh" size={18} color="#7C52B8" /><Text style={styles.resetText}>Qaytadan boshlash</Text></Pressable>
+
+          <View style={styles.pianoHint}>
+            <Ionicons name="finger-print" size={20} color="#7C52B8" />
+            <Text style={styles.pianoHintText}>{sequenceComplete ? 'Zo‘r! Endi tovush qatorni pianinoda ham bilasan.' : `Hozir ${NOTES[Math.min(sequenceIndex, NOTES.length - 1)]} klavishini bos.`}</Text>
+          </View>
+
+          <Pressable onPress={() => { setSequenceIndex(0); setSequenceMistakes(0); }} style={styles.resetButton}>
+            <Ionicons name="refresh" size={18} color="#7C52B8" />
+            <Text style={styles.resetText}>Qaytadan chalish</Text>
+          </Pressable>
         </View>
       ) : null}
 
@@ -306,7 +376,7 @@ export function LessonSixPage({ audios, completed, saving, onBack, onNext, onCom
           <Animated.View style={{ alignItems: 'center', transform: [{ scale: rewardScale }] }}>
             <Text style={styles.rewardEmoji}>{rewardStars === 3 ? '🎉' : '🌟'}</Text>
             <Text style={[styles.rewardTitle, { color: colors.text }]}>{rewardStars === 3 ? 'Ajoyib!' : 'Barakalla!'}</Text>
-            <Text style={[styles.rewardText, { color: colors.muted }]}>Do dan Si gacha tovush qatorni tuza olding!</Text>
+            <Text style={[styles.rewardText, { color: colors.muted }]}>Do dan Si gacha tovush qatorni tuza va pianinoda chala olding!</Text>
             <View style={styles.starsRow}>{[0, 1, 2].map((star) => <Ionicons key={star} name={star < rewardStars ? 'star' : 'star-outline'} size={40} color={star < rewardStars ? '#F2B01E' : '#B9B2C7'} />)}</View>
             <View style={styles.rewardPill}><Ionicons name="trophy" size={20} color="#A66A00" /><Text style={styles.rewardPillText}>+{rewardStars} yulduz</Text></View>
           </Animated.View>
@@ -338,6 +408,7 @@ const styles = StyleSheet.create({
   heroTitle: { color: '#FFFFFF', fontSize: 36, lineHeight: 42, fontWeight: '900', marginTop: 9 },
   heroText: { color: 'rgba(255,255,255,0.92)', fontSize: 17, lineHeight: 25, fontWeight: '700', marginTop: 12 },
   card: { minHeight: 410, borderRadius: 32, padding: 20, borderWidth: 1, justifyContent: 'center' },
+  pianoCard: { minHeight: 500, borderRadius: 32, padding: 20, borderWidth: 1, justifyContent: 'center' },
   stepLabel: { color: '#7C52B8', fontSize: 11, fontWeight: '900', letterSpacing: 0.9 },
   sectionTitle: { fontSize: 29, lineHeight: 35, fontWeight: '900', marginTop: 7 },
   sectionText: { fontSize: 16, lineHeight: 24, fontWeight: '600', marginTop: 9 },
@@ -362,7 +433,24 @@ const styles = StyleSheet.create({
   sequenceCircleText: { color: '#FFFFFF', fontSize: 13, fontWeight: '900' },
   sequenceTitle: { color: '#302B3D', fontSize: 13, fontWeight: '900' },
   sequenceSub: { color: '#716A80', fontSize: 10, fontWeight: '700', marginTop: 2 },
-  resetButton: { marginTop: 13, minHeight: 44, borderRadius: 15, backgroundColor: '#F2E9FF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 },
+  pianoShell: { marginTop: 16, borderRadius: 22, backgroundColor: '#282431', padding: 9, paddingTop: 0, overflow: 'hidden', borderWidth: 2, borderColor: '#4B4459' },
+  pianoTop: { height: 34, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+  pianoBrand: { color: '#D9D3E5', fontSize: 8, fontWeight: '900', letterSpacing: 1 },
+  pianoLight: { width: 5, height: 5, borderRadius: 3, backgroundColor: '#A781E8' },
+  pianoKeys: { height: 190, borderRadius: 14, overflow: 'hidden', flexDirection: 'row', position: 'relative', backgroundColor: '#FFFFFF' },
+  whiteKey: { flex: 1, backgroundColor: '#FFFFFF', borderLeftWidth: 1, borderLeftColor: '#C8C3CF', justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 12, position: 'relative' },
+  whiteKeyDone: { backgroundColor: '#EAF9F2' },
+  whiteKeyActive: { backgroundColor: '#F2E9FF', borderWidth: 2, borderColor: '#7C52B8', zIndex: 3 },
+  whiteKeyPlaying: { backgroundColor: '#E9DFFF' },
+  whiteKeyPressed: { backgroundColor: '#DED0FA' },
+  whiteKeyLabel: { color: '#302B3D', fontSize: 10, fontWeight: '900' },
+  whiteKeyLabelActive: { color: '#6A43A0' },
+  whiteKeyNumber: { color: '#9A94A5', fontSize: 8, fontWeight: '800', marginTop: 2 },
+  keyCheck: { position: 'absolute', bottom: 36 },
+  blackKey: { position: 'absolute', top: 0, width: '8%', height: 110, backgroundColor: '#302B3D', borderBottomLeftRadius: 7, borderBottomRightRadius: 7, zIndex: 6, borderWidth: 1, borderColor: '#16131C' },
+  pianoHint: { marginTop: 12, minHeight: 50, borderRadius: 17, backgroundColor: '#F2E9FF', flexDirection: 'row', alignItems: 'center', gap: 9, paddingHorizontal: 12 },
+  pianoHintText: { flex: 1, color: '#604487', fontSize: 11, lineHeight: 17, fontWeight: '800' },
+  resetButton: { marginTop: 10, minHeight: 44, borderRadius: 15, backgroundColor: '#F2E9FF', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 },
   resetText: { color: '#7C52B8', fontSize: 11, fontWeight: '900' },
   quizIcon: { width: 68, height: 68, borderRadius: 24, backgroundColor: '#F2E9FF', alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
   quizEmoji: { fontSize: 36 },
