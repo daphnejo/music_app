@@ -1,13 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router, type Href } from 'expo-router';
+import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 import { lessonProgress, type CourseLessonSummary } from '@/types/content';
 import { childLessonTitle } from '@/utils/lesson-display';
-
-function customLessonHref(pathname: '/lesson-three' | '/lesson-four' | '/lesson-five', blockId: string): Href {
-  return `${pathname}?blockId=${encodeURIComponent(blockId)}` as Href;
-}
+import { kidLessonHref } from '@/utils/kid-lesson-navigation';
 
 export function ContinueCard({ lesson }: { lesson: CourseLessonSummary }) {
   const { colors } = useTheme();
@@ -18,20 +15,9 @@ export function ContinueCard({ lesson }: { lesson: CourseLessonSummary }) {
   const title = childLessonTitle(lesson);
 
   const openLesson = () => {
-    if (lesson.declaredNumber === 2 && nextBlock) {
-      router.push({ pathname: '/lesson-two', params: { blockId: nextBlock.id } });
-      return;
-    }
-    if (lesson.declaredNumber === 3 && nextBlock) {
-      router.push(customLessonHref('/lesson-three', nextBlock.id));
-      return;
-    }
-    if (lesson.declaredNumber === 4 && nextBlock) {
-      router.push(customLessonHref('/lesson-four', nextBlock.id));
-      return;
-    }
-    if (lesson.declaredNumber === 5 && nextBlock) {
-      router.push(customLessonHref('/lesson-five', nextBlock.id));
+    const kidHref = kidLessonHref(lesson.declaredNumber, nextBlock?.id);
+    if (kidHref) {
+      router.push(kidHref);
       return;
     }
     if (nextBlock) {
