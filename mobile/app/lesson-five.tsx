@@ -6,6 +6,7 @@ import { Screen } from '@/components/ui/Screen';
 import { useCourse } from '@/context/CourseContext';
 import { API_BASE_URL, ApiError, apiRequest } from '@/services/api/client';
 import type { BlockDetailResponse, CourseBlockSummary } from '@/types/content';
+import { kidLessonHref } from '@/utils/kid-lesson-navigation';
 
 function absoluteUrl(path: string | null | undefined) {
   if (!path) return '';
@@ -114,7 +115,12 @@ export default function LessonFiveScreen() {
             router.replace('/(tabs)/lessons');
             return;
           }
-          router.replace({ pathname: '/blocks/[id]', params: { id: nextBlock.id } });
+          const kidHref = kidLessonHref(nextLesson?.declaredNumber, nextBlock.id);
+          if (kidHref) {
+            router.replace(kidHref);
+            return;
+          }
+          router.replace('/(tabs)/lessons');
         }}
         resolveUrl={absoluteUrl}
       />
