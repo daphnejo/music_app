@@ -80,6 +80,7 @@ function RootNavigator() {
         <Stack.Screen name="lesson-eight" />
         <Stack.Screen name="lesson-nine" />
         <Stack.Screen name="lesson-ten" />
+        <Stack.Screen name="lesson-eleven" />
         <Stack.Screen name="piano" options={{ orientation: 'landscape' }} />
         <Stack.Screen name="profile-info" />
         <Stack.Screen name="change-password" />
