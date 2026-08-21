@@ -9,6 +9,7 @@ const KID_LESSON_ROUTES: Record<number, string> = {
   7: '/lesson-seven',
   8: '/lesson-eight',
   9: '/lesson-nine',
+  10: '/lesson-ten',
 };
 
 export function kidLessonHref(declaredNumber: number | null | undefined, blockId: string | null | undefined): Href | null {
