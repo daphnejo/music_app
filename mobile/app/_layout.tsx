@@ -9,6 +9,7 @@ import { AnimatedBrandIntro } from '@/components/brand/AnimatedBrandIntro';
 import { BrandMark } from '@/components/brand/BrandMark';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { CourseProvider } from '@/context/CourseContext';
+import { StarsProvider } from '@/context/StarsContext';
 import { ThemeProvider, useTheme } from '@/context/ThemeContext';
 import type { ThemeColors } from '@/theme/colors';
 
@@ -69,7 +70,24 @@ function RootNavigator() {
       <Stack.Protected guard={!!user}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="lessons/[id]" />
-        <Stack.Screen name="blocks/[id]" />
+        <Stack.Screen name="blocks" />
+        <Stack.Screen name="lesson-two" />
+        <Stack.Screen name="lesson-three" />
+        <Stack.Screen name="lesson-four" />
+        <Stack.Screen name="lesson-five" />
+        <Stack.Screen name="lesson-six" />
+        <Stack.Screen name="lesson-seven" />
+        <Stack.Screen name="lesson-eight" />
+        <Stack.Screen name="lesson-nine" />
+        <Stack.Screen name="lesson-ten" />
+        <Stack.Screen name="lesson-eleven" />
+        <Stack.Screen name="lesson-twelve" />
+        <Stack.Screen name="lesson-thirteen" />
+        <Stack.Screen name="lesson-fifteen" />
+        <Stack.Screen name="lesson-sixteen" />
+        <Stack.Screen name="lesson-seventeen" />
+        <Stack.Screen name="lesson-eighteen" />
+        <Stack.Screen name="lesson-nineteen" />
         <Stack.Screen name="piano" options={{ orientation: 'landscape' }} />
         <Stack.Screen name="profile-info" />
         <Stack.Screen name="change-password" />
@@ -94,9 +112,11 @@ function AppProviders() {
     <>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <AuthProvider>
-        <CourseProvider>
-          <RootNavigator />
-        </CourseProvider>
+        <StarsProvider>
+          <CourseProvider>
+            <RootNavigator />
+          </CourseProvider>
+        </StarsProvider>
       </AuthProvider>
     </>
   );
