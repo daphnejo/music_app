@@ -19,6 +19,7 @@ const FRIENDLY_TITLES: Record<number, string> = {
   13: 'Gamma',
   15: 'Motiv, ibora va jumla',
   16: 'Major va minor',
+  17: 'Do major tonalligi',
 };
 
 export function childLessonTitle(lesson: LessonDisplayLike): string {
