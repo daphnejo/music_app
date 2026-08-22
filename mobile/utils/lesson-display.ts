@@ -18,6 +18,7 @@ const FRIENDLY_TITLES: Record<number, string> = {
   12: 'Repriza',
   13: 'Gamma',
   15: 'Motiv, ibora va jumla',
+  16: 'Major va minor',
 };
 
 export function childLessonTitle(lesson: LessonDisplayLike): string {
