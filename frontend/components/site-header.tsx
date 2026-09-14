@@ -7,7 +7,7 @@ import styles from './site-header.module.css';
 type HeaderMode = 'landing' | 'course' | 'lesson';
 type LessonChrome = 'account' | 'auth';
 type LandingSection = 'home' | 'courses' | 'teachers' | 'pricing' | 'contact';
-type LessonNumber = 1 | 2 | 3 | 4 | 5;
+type LessonNumber = 1 | 2 | 3 | 4 | 5 | 6;
 
 type SiteHeaderProps = {
   mode?: HeaderMode;
@@ -29,6 +29,7 @@ const lessonLinks: Array<{ lesson: LessonNumber; href: string; label: string }> 
   { lesson: 3, href: '/dars/3', label: '3-Dars' },
   { lesson: 4, href: '/dars/4', label: '4-Dars' },
   { lesson: 5, href: '/dars/5', label: '5-Dars' },
+  { lesson: 6, href: '/dars/6', label: '6-Dars' },
 ];
 
 export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'account', showLessonHome = false }: SiteHeaderProps) {
@@ -70,6 +71,10 @@ export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'acc
   const lessonClass = (lesson: LessonNumber) =>
     `${styles.navLink} ${activeLesson === lesson ? styles.activeLesson : ''}`;
 
+  const visibleLessonLinks = isLesson && activeLesson && activeLesson >= 5
+    ? lessonLinks.filter((item) => item.lesson >= activeLesson - 2 && item.lesson <= activeLesson)
+    : lessonLinks.filter((item) => item.lesson <= 4);
+
   return (
     <header className={`site-header ${styles.stickyHeader} ${isLesson ? styles.lessonHeader : ''}`}>
       <Link className={`brand ${styles.brandLink}`} href="/" aria-label="Solfedjio bosh sahifa">
@@ -94,7 +99,7 @@ export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'acc
             </Link>
           ))
         ) : (
-          lessonLinks.map((item) => (
+          visibleLessonLinks.map((item) => (
             <Link className={lessonClass(item.lesson)} href={item.href} key={item.lesson}>{item.label}</Link>
           ))
         )}
