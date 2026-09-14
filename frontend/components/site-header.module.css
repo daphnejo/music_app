@@ -2,7 +2,7 @@
   position: sticky !important;
   top: 0;
   z-index: 1000 !important;
-  background: rgba(255, 255, 255, .92) !important;
+  background: rgba(255, 255, 255, .94) !important;
   backdrop-filter: blur(18px) saturate(150%);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   border-bottom-color: rgba(255, 30, 112, .12) !important;
@@ -18,11 +18,7 @@
   justify-content: center;
   border-radius: 12px;
   color: #524354;
-  transition:
-    color .18s ease,
-    background-color .18s ease,
-    transform .18s ease,
-    box-shadow .18s ease;
+  transition: color .18s ease, background-color .18s ease, transform .18s ease, box-shadow .18s ease;
 }
 
 .navLink::after {
@@ -51,7 +47,8 @@
   opacity: 1;
 }
 
-.activeLanding {
+.activeLanding,
+.activeLesson {
   padding: 8px 18px;
   color: #fff !important;
   background: linear-gradient(105deg, #ff1e70, #ff6644);
@@ -59,50 +56,60 @@
 }
 
 .activeLanding::after,
-.activeLesson::after {
-  display: none;
-}
+.activeLesson::after { display: none; }
 
-.activeLanding:hover {
+.activeLanding:hover,
+.activeLesson:hover {
   color: #fff !important;
   transform: translateY(-1px) scale(1.025);
   filter: brightness(1.04);
   box-shadow: 0 8px 17px rgba(255, 30, 112, .27);
 }
 
-.activeLesson {
-  padding: 8px 18px;
-  color: #fff !important;
-  background: linear-gradient(105deg, #2bb1ff, #4fc3f7);
-  box-shadow: 0 5px 12px rgba(43, 177, 255, .20);
+.brandLink { transition: transform .18s ease; }
+.brandLink:hover { transform: translateY(-1px); }
+
+.lessonUser {
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
-.activeLesson:hover {
-  color: #fff !important;
-  transform: translateY(-1px) scale(1.025);
-  filter: brightness(1.04);
-  box-shadow: 0 8px 17px rgba(43, 177, 255, .27);
+.lessonUserName {
+  color: #524354;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.05;
+  text-align: right;
 }
 
-.brandLink {
-  transition: transform .18s ease;
-}
-
-.brandLink:hover {
-  transform: translateY(-1px);
+.lessonAvatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  background: linear-gradient(145deg, #178cf2, #0e6bc5);
+  border: 4px solid #fff;
+  box-shadow: 0 4px 14px rgba(14, 107, 197, .22);
 }
 
 :global(#courses),
 :global(#teachers),
 :global(#pricing),
-:global(#contact) {
-  scroll-margin-top: 110px;
+:global(#contact) { scroll-margin-top: 110px; }
+
+@media (max-width: 900px) {
+  .lessonUser { min-width: auto; }
+  .lessonUserName { display: none; }
+  .lessonAvatar { width: 46px; height: 46px; font-size: 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .navLink,
   .navLink::after,
-  .brandLink {
-    transition: none;
-  }
+  .brandLink { transition: none; }
 }
