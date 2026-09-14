@@ -330,6 +330,44 @@
   cursor: default;
 }
 
+@media (min-width: 1121px) and (max-height: 900px) {
+  .stage { min-height: calc(100dvh - 74px); }
+  .screen {
+    width: min(1240px, calc(100% - 64px));
+    min-height: calc(100dvh - 74px);
+    padding: 18px 0 58px;
+    gap: 12px;
+  }
+  .heading { gap: 5px; }
+  .kicker { font-size: 11px; }
+  .kicker span { width: 30px; height: 30px; font-size: 14px; }
+  .heading h1 { font-size: clamp(36px, 3.4vw, 48px); gap: 10px; }
+  .definition { min-height: 48px; padding: 10px 18px; border-radius: 14px; font-size: 17px; }
+  .whitePanel { min-height: 0; padding: 16px; gap: 12px; border-radius: 24px; }
+  .cardsRow { gap: 10px; }
+  .learningCard { min-height: 300px; padding: 14px 18px; border-radius: 20px; }
+  .cardTop { min-height: 72px; gap: 6px; }
+  .cardTop h2 { font-size: 22px; }
+  .purpleBadge,
+  .badgeSpacer { min-height: 27px; }
+  .purpleBadge { min-width: 118px; padding: 4px 12px; font-size: 15px; }
+  .numberingStaff,
+  .staffGraphic { height: 126px; }
+  .numberingStaff strong { font-size: 26px; }
+  .cardHint { min-height: 54px; font-size: 15px; }
+  .audioSlot { min-height: 58px; }
+  .audioButton { min-width: 176px; height: 50px; padding: 0 14px; gap: 9px; }
+  .audioButton img { width: 30px; height: 28px; flex-basis: 30px; }
+  .audioButton strong { font-size: 17px; }
+  .waveform { width: 34px; height: 26px; gap: 3px; }
+  .rememberBar { min-height: 62px; padding: 8px 16px 8px 20px; gap: 14px; border-radius: 20px; }
+  .rememberBar img { width: 42px; height: 46px; flex-basis: 42px; }
+  .rememberBar p { font-size: 17px; }
+  .ledgerGraphic { min-height: 300px; }
+  .ledgerGraphic img { height: 300px; }
+  .fab { bottom: 16px; }
+}
+
 @media (max-width: 1120px) {
   .screen { width: min(100% - 48px, 980px); }
   .cardsRow { grid-template-columns: 1fr; }
