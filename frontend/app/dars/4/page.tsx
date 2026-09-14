@@ -12,8 +12,8 @@ const FIGMA = {
   audioBlue: 'https://www.figma.com/api/mcp/asset/682b81ed-c35a-4c72-984c-66761011b173/64e34.svg',
   audioGreen: 'https://www.figma.com/api/mcp/asset/682b81ed-c35a-4c72-984c-66761011b173/10f62.svg',
   lightbulb: 'https://www.figma.com/api/mcp/asset/682b81ed-c35a-4c72-984c-66761011b173/5d531.svg',
-  ledgerLines: 'https://www.figma.com/api/mcp/asset/73105071-3932-419c-92f0-094184f9087f/1c5d6.svg',
-  lightbulbLedger: 'https://www.figma.com/api/mcp/asset/73105071-3932-419c-92f0-094184f9087f/5d531.svg',
+  ledgerLines: 'https://www.figma.com/api/mcp/asset/016521d5-365c-4f64-81de-7ba0520cc1d6/1c5d6.svg',
+  lightbulbLedger: 'https://www.figma.com/api/mcp/asset/016521d5-365c-4f64-81de-7ba0520cc1d6/5d531.svg',
 } as const;
 
 function Waveform({ tone }: { tone: 'blue' | 'green' }) {
@@ -27,12 +27,7 @@ function Waveform({ tone }: { tone: 'blue' | 'green' }) {
 function AudioButton({ tone, source }: { tone: 'blue' | 'green'; source: string }) {
   const icon = tone === 'green' ? FIGMA.audioGreen : FIGMA.audioBlue;
   return (
-    <button
-      className={`${styles.audioButton} ${tone === 'green' ? styles.greenAudio : styles.blueAudio}`}
-      type="button"
-      data-source-audio={source}
-      title="Manba audiosi media integratsiyasi bilan ulanadi"
-    >
+    <button className={`${styles.audioButton} ${tone === 'green' ? styles.greenAudio : styles.blueAudio}`} type="button" data-source-audio={source} title="Manba audiosi media integratsiyasi bilan ulanadi">
       <img src={icon} alt="" aria-hidden="true" />
       <Waveform tone={tone} />
       <strong>Tinglash</strong>
@@ -49,9 +44,7 @@ function StaffNumberingCard() {
         <h2>Chiziqlar tartibi</h2>
       </div>
       <div className={styles.numberingStaff} aria-label="Nota yo‘lining besh chizig‘i pastdan yuqoriga 1 dan 5 gacha sanaladi">
-        {positions.map((top, index) => (
-          <img className={styles.staffLine} key={top} src={FIGMA.staffLine} alt="" aria-hidden="true" style={{ top }} />
-        ))}
+        {positions.map((top) => <img className={styles.staffLine} key={top} src={FIGMA.staffLine} alt="" aria-hidden="true" style={{ top }} />)}
         <strong style={{ left: '4%', top: '69%' }}>1</strong>
         <strong style={{ left: '23%', top: '54%' }}>2</strong>
         <strong style={{ left: '43%', top: '39%' }}>3</strong>
@@ -72,14 +65,9 @@ function StaffAudioCard({ kind }: { kind: 'lines' | 'spaces' }) {
         <h2>{onLines ? 'Chiziqlarda' : 'Chiziqlar orasida'}</h2>
       </div>
       <div className={styles.staffGraphic}>
-        <img
-          src={onLines ? FIGMA.notesOnLines : FIGMA.notesInSpaces}
-          alt={onLines ? 'Notalarning nota yo‘li chiziqlarida joylashishi' : 'Notalarning nota yo‘li chiziqlari orasida joylashishi'}
-        />
+        <img src={onLines ? FIGMA.notesOnLines : FIGMA.notesInSpaces} alt={onLines ? 'Notalarning nota yo‘li chiziqlarida joylashishi' : 'Notalarning nota yo‘li chiziqlari orasida joylashishi'} />
       </div>
-      <div className={styles.audioSlot}>
-        <AudioButton tone={onLines ? 'blue' : 'green'} source={onLines ? 'audio15.wav' : 'audio16.wav'} />
-      </div>
+      <div className={styles.audioSlot}><AudioButton tone={onLines ? 'blue' : 'green'} source={onLines ? 'audio15.wav' : 'audio16.wav'} /></div>
     </article>
   );
 }
@@ -91,9 +79,7 @@ function MainStaffScreen() {
         <div className={styles.kicker}><span>♪</span> 4-DARS • MUSIQA NAZARIYASI</div>
         <h1>Nota yo‘li <em>♪</em></h1>
       </div>
-
       <div className={styles.definition}>Notalar musiqa yozuvida 5 ta chiziqdan iborat nota yo‘liga yoziladi.</div>
-
       <div className={styles.whitePanel}>
         <div className={styles.cardsRow}>
           <StaffNumberingCard />
@@ -116,14 +102,34 @@ function LedgerLinesScreen() {
         <div className={styles.kicker}><span>♪</span> 4-DARS • DAVOMI</div>
         <h1>Qo‘shimcha chiziqlar <em>♪</em></h1>
       </div>
-
       <div className={styles.definition}>Shuningdek, notalar qo‘shimcha chiziqlarda ham yoziladi.</div>
 
       <div className={`${styles.whitePanel} ${styles.ledgerPanel}`}>
         <div className={styles.ledgerGraphic}>
-          <img src={FIGMA.ledgerLines} alt="Asosiy besh nota chizig‘i hamda yuqori va pastki qo‘shimcha chiziqlar" />
+          <img className={styles.ledgerBase} src={FIGMA.ledgerLines} alt="Asosiy besh nota chizig‘i hamda yuqori va pastki qo‘shimcha chiziqlar" />
+
+          <div className={`${styles.ledgerZone} ${styles.ledgerTopZone}`}>
+            <strong>Yuqoridagi qo‘shimcha chiziqlar</strong>
+            <span>Nota yo‘lidan yuqoriga sanaladi.</span>
+          </div>
+          <div className={`${styles.ledgerZone} ${styles.ledgerBottomZone}`}>
+            <strong>Pastdagi qo‘shimcha chiziqlar</strong>
+            <span>Nota yo‘lidan pastga sanaladi.</span>
+          </div>
+
+          <div className={`${styles.ledgerNumbers} ${styles.topLedgerNumbers}`} aria-label="Yuqoridagi qo‘shimcha chiziqlar 1 dan 3 gacha sanaladi">
+            <span>3</span><span>2</span><span>1</span>
+          </div>
+          <div className={`${styles.ledgerNumbers} ${styles.bottomLedgerNumbers}`} aria-label="Pastdagi qo‘shimcha chiziqlar 1 dan 3 gacha sanaladi">
+            <span>1</span><span>2</span><span>3</span>
+          </div>
+          <div className={styles.mainStaffNumbers} aria-label="Asosiy nota yo‘li 1 dan 5 gacha">
+            <span>5</span><span>4</span><span>3</span><span>2</span><span>1</span>
+          </div>
+          <div className={styles.staffCaption}>Nota yo‘li · 5 ta asosiy chiziq</div>
         </div>
-        <div className={styles.rememberBar}>
+
+        <div className={`${styles.rememberBar} ${styles.ledgerReminder}`}>
           <img src={FIGMA.lightbulbLedger} alt="" aria-hidden="true" />
           <p>Eslab qoling: qo‘shimcha chiziqlar nota yo‘liga eng yaqin chiziqdan boshlab sanaladi.</p>
         </div>
@@ -134,26 +140,12 @@ function LedgerLinesScreen() {
 
 export default function LessonFourPage() {
   const [step, setStep] = useState(0);
-
   return (
     <main className={styles.page}>
       <SiteHeader mode="lesson" activeLesson={4} showLessonHome />
-
-      <div className={styles.stage}>
-        {step === 0 ? <MainStaffScreen /> : <LedgerLinesScreen />}
-      </div>
-
-      {step === 0 ? (
-        <Link className={`${styles.fab} ${styles.prev}`} href="/dars/3" aria-label="3-darsga qaytish">←</Link>
-      ) : (
-        <button className={`${styles.fab} ${styles.prev}`} type="button" onClick={() => setStep(0)} aria-label="Oldingi bosqich">←</button>
-      )}
-
-      {step === 0 ? (
-        <button className={`${styles.fab} ${styles.next}`} type="button" onClick={() => setStep(1)} aria-label="Qo‘shimcha chiziqlarga o‘tish">→</button>
-      ) : (
-        <Link className={`${styles.fab} ${styles.next}`} href="/dars/5" aria-label="5-darsga o‘tish">→</Link>
-      )}
+      <div className={styles.stage}>{step === 0 ? <MainStaffScreen /> : <LedgerLinesScreen />}</div>
+      {step === 0 ? <Link className={`${styles.fab} ${styles.prev}`} href="/dars/3" aria-label="3-darsga qaytish">←</Link> : <button className={`${styles.fab} ${styles.prev}`} type="button" onClick={() => setStep(0)} aria-label="Oldingi bosqich">←</button>}
+      {step === 0 ? <button className={`${styles.fab} ${styles.next}`} type="button" onClick={() => setStep(1)} aria-label="Qo‘shimcha chiziqlarga o‘tish">→</button> : <Link className={`${styles.fab} ${styles.next}`} href="/dars/5" aria-label="5-darsga o‘tish">→</Link>}
     </main>
   );
 }
