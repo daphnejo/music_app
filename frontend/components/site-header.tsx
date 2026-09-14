@@ -5,11 +5,13 @@ import { useEffect, useState } from 'react';
 import styles from './site-header.module.css';
 
 type HeaderMode = 'landing' | 'course' | 'lesson';
+type LessonChrome = 'account' | 'auth';
 type LandingSection = 'home' | 'courses' | 'teachers' | 'pricing' | 'contact';
 
 type SiteHeaderProps = {
   mode?: HeaderMode;
   activeLesson?: 1 | 2 | 3;
+  lessonChrome?: LessonChrome;
 };
 
 const landingSections: Array<{ id: Exclude<LandingSection, 'home'>; href: string; label: string }> = [
@@ -19,7 +21,7 @@ const landingSections: Array<{ id: Exclude<LandingSection, 'home'>; href: string
   { id: 'contact', href: '/#contact', label: "Bog'lanish" },
 ];
 
-export function SiteHeader({ mode = 'landing', activeLesson }: SiteHeaderProps) {
+export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'account' }: SiteHeaderProps) {
   const isLanding = mode === 'landing';
   const isLesson = mode === 'lesson';
   const [activeSection, setActiveSection] = useState<LandingSection>('home');
@@ -66,7 +68,7 @@ export function SiteHeader({ mode = 'landing', activeLesson }: SiteHeaderProps) 
       </Link>
 
       <nav className="main-nav" aria-label="Asosiy navigatsiya">
-        {isLesson ? null : (
+        {isLesson && lessonChrome === 'account' ? null : (
           <Link
             className={isLanding ? landingClass('home') : `${styles.navLink} ${!activeLesson ? styles.activeLanding : ''}`}
             href="/"
@@ -90,7 +92,7 @@ export function SiteHeader({ mode = 'landing', activeLesson }: SiteHeaderProps) 
         )}
       </nav>
 
-      {isLesson ? (
+      {isLesson && lessonChrome === 'account' ? (
         <div className={styles.lessonUser} aria-label="Foydalanuvchi profili">
           <span className={styles.lessonUserName}>Abdulaziz<br />Khamidov</span>
           <span className={styles.lessonAvatar} aria-hidden="true">🐻</span>
