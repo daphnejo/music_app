@@ -7,11 +7,13 @@ import styles from './site-header.module.css';
 type HeaderMode = 'landing' | 'course' | 'lesson';
 type LessonChrome = 'account' | 'auth';
 type LandingSection = 'home' | 'courses' | 'teachers' | 'pricing' | 'contact';
+type LessonNumber = 1 | 2 | 3 | 4;
 
 type SiteHeaderProps = {
   mode?: HeaderMode;
-  activeLesson?: 1 | 2 | 3;
+  activeLesson?: LessonNumber;
   lessonChrome?: LessonChrome;
+  showLessonHome?: boolean;
 };
 
 const landingSections: Array<{ id: Exclude<LandingSection, 'home'>; href: string; label: string }> = [
@@ -21,7 +23,14 @@ const landingSections: Array<{ id: Exclude<LandingSection, 'home'>; href: string
   { id: 'contact', href: '/#contact', label: "Bog'lanish" },
 ];
 
-export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'account' }: SiteHeaderProps) {
+const lessonLinks: Array<{ lesson: LessonNumber; href: string; label: string }> = [
+  { lesson: 1, href: '/dars/1', label: '1-Dars' },
+  { lesson: 2, href: '/dars/2', label: '2-Dars' },
+  { lesson: 3, href: '/dars/3', label: '3-Dars' },
+  { lesson: 4, href: '/dars/4', label: '4-Dars' },
+];
+
+export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'account', showLessonHome = false }: SiteHeaderProps) {
   const isLanding = mode === 'landing';
   const isLesson = mode === 'lesson';
   const [activeSection, setActiveSection] = useState<LandingSection>('home');
@@ -57,7 +66,7 @@ export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'acc
 
   const landingClass = (section: LandingSection) =>
     `${styles.navLink} ${activeSection === section ? styles.activeLanding : ''}`;
-  const lessonClass = (lesson: 1 | 2 | 3) =>
+  const lessonClass = (lesson: LessonNumber) =>
     `${styles.navLink} ${activeLesson === lesson ? styles.activeLesson : ''}`;
 
   return (
@@ -68,7 +77,7 @@ export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'acc
       </Link>
 
       <nav className="main-nav" aria-label="Asosiy navigatsiya">
-        {isLesson && lessonChrome === 'account' ? null : (
+        {isLesson && lessonChrome === 'account' && !showLessonHome ? null : (
           <Link
             className={isLanding ? landingClass('home') : `${styles.navLink} ${!activeLesson ? styles.activeLanding : ''}`}
             href="/"
@@ -84,11 +93,9 @@ export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'acc
             </Link>
           ))
         ) : (
-          <>
-            <Link className={lessonClass(1)} href="/dars/1">1-Dars</Link>
-            <Link className={lessonClass(2)} href="/dars/2">2-Dars</Link>
-            <Link className={lessonClass(3)} href="/dars/3">3-Dars</Link>
-          </>
+          lessonLinks.map((item) => (
+            <Link className={lessonClass(item.lesson)} href={item.href} key={item.lesson}>{item.label}</Link>
+          ))
         )}
       </nav>
 
