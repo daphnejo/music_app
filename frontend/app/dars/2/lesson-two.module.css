@@ -1,228 +1,225 @@
 .page {
   min-height: 100vh;
-  background: #f5fbff;
   position: relative;
-  color: var(--ink);
+  color: #24132f;
+  background: #fff7fa;
+  border-bottom: 3px solid #ff1e70;
 }
 
-.strip {
-  min-height: 64px;
-  padding: 10px 24px;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  text-align: center;
-  background: linear-gradient(90deg, var(--pink), var(--coral) 55%, var(--orange));
-  box-shadow: 0 4px 8px rgba(255, 30, 112, .19);
-}
-
-.strip small {
-  opacity: .75;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.strip strong {
-  font-size: 22px;
-  line-height: 1.2;
-}
-
-.main {
+.lessonShell {
   width: min(1280px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 28px 0 72px;
+  padding: 24px 0 84px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
-.titleRow {
+.lessonHeader {
+  min-height: 110px;
+  display: grid;
+  grid-template-columns: 480px 2px minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+
+.titleBlock {
   display: flex;
   gap: 20px;
   align-items: center;
 }
 
-.titleIcon {
-  width: 64px;
-  height: 64px;
-  flex: 0 0 64px;
+.lessonIcon {
+  width: 68px;
+  height: 68px;
+  flex: 0 0 68px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #fff;
   font-size: 28px;
-  background: linear-gradient(105deg, var(--pink), var(--coral));
-  box-shadow: 0 4px 6px rgba(255, 30, 112, .25);
+  font-weight: 800;
+  background: linear-gradient(105deg, #ff2478, #ff6958);
+  box-shadow: 0 8px 10px rgba(255, 30, 112, .31);
 }
 
-.titleCopy {
-  min-width: 0;
+.kicker {
+  display: block;
+  margin-bottom: 5px;
+  color: #ff2478;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .02em;
 }
 
-.titleCopy h1 {
-  margin: 0 0 6px;
-  font-size: 26px;
-  line-height: 1.2;
-}
-
-.titleCopy p {
+.titleBlock h1 {
   margin: 0;
-  color: var(--copy);
-  font-size: 16px;
-  line-height: 1.6;
+  color: #24132f;
+  font-size: clamp(34px, 3vw, 44px);
+  line-height: 1.04;
+  font-weight: 800;
 }
 
-.low { color: #c8a227; font-weight: 800; }
-.middle { color: var(--blue); font-weight: 800; }
-.high { color: var(--green); font-weight: 800; }
+.divider {
+  width: 2px;
+  height: 80px;
+  background: linear-gradient(#ff2478, rgba(255, 105, 88, 0));
+}
 
-.animalStage {
-  height: 380px;
+.definitionCard {
+  min-height: 96px;
+  position: relative;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #ffd6e7;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 6px 10px rgba(255, 30, 112, .08);
   overflow: hidden;
-  border: 1.5px solid var(--pink-line);
+}
+
+.definitionCard p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 700;
+}
+
+.decoNotes {
+  position: absolute;
+  right: 18px;
+  top: 7px;
+  color: rgba(255, 36, 120, .18);
+  font-size: 22px;
+}
+
+.registerVisual {
+  width: 100%;
+  height: 323px;
+  margin: 0;
+  overflow: hidden;
+  border: 1.5px solid #f0e0f0;
   border-radius: 28px;
   background: #fff;
-  box-shadow: 0 8px 28px rgba(255, 30, 112, .09);
+  box-shadow: 0 12px 36px rgba(255, 30, 112, .09);
 }
 
-.animalStage img {
+.registerVisual img {
   width: 100%;
   height: 100%;
+  display: block;
   object-fit: cover;
+}
+
+.pianoCard {
+  width: 100%;
+  padding: 10px 16px 12px;
+  border: 1.5px solid #f0e0f0;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .07);
 }
 
 .keyboard {
   position: relative;
-  height: 200px;
-  padding: 8px 12px 20px;
+  height: 147px;
   overflow: hidden;
-  border: 1px solid #e5e7eb;
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 10px 28px -10px rgba(0, 0, 0, .07);
 }
 
 .whiteKeys {
-  height: 172px;
+  height: 100%;
   display: grid;
-  grid-template-columns: repeat(21, minmax(45px, 1fr));
-  align-items: end;
-  overflow: hidden;
+  grid-template-columns: repeat(50, minmax(0, 1fr));
 }
 
 .whiteKey {
-  height: 160px;
-  border: 1px solid #e5e7eb;
-  border-top: 0;
-  border-radius: 0 0 8px 8px;
+  height: 100%;
+  background: #fff;
+  border: 1px solid #cfd0da;
+  border-radius: 0 0 4px 4px;
 }
-
-.whiteKey.lowKeys { background: #ffdbe5; }
-.whiteKey.middleKeys { background: #fff2c7; }
-.whiteKey.highKeys { background: #d1fadb; }
 
 .blackKey {
   position: absolute;
-  top: 10px;
-  width: 32px;
-  height: 100px;
-  margin-left: -16px;
-  border: 1px solid #2b1b33;
-  border-radius: 0 0 5px 5px;
-  background: #1e1224;
-  box-shadow: 0 6px 14px -6px rgba(0, 0, 0, .2);
-  z-index: 2;
+  top: 0;
+  width: 1.35%;
+  height: 72%;
+  transform: translateX(-50%);
+  border-radius: 0 0 4px 4px;
+  background: #5d5a75;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
+  z-index: 3;
 }
 
-.audioRow {
+.listenRow {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  gap: 24px;
 }
 
-.audioCard {
-  min-height: 112px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.listenButton {
+  min-height: 54px;
+  padding: 14px 28px;
   border: 1.5px solid;
-  border-radius: 20px;
-  box-shadow: 0 10px 18px rgba(0, 0, 0, .05);
-}
-
-.audioCard.lowCard {
-  background: #ffe5ed;
-  border-color: #ff738c;
-  box-shadow: 0 10px 18px rgba(255, 30, 112, .1), 0 2px 8px rgba(0, 0, 0, .04);
-}
-
-.audioCard.middleCard {
-  background: #fff5d9;
-  border-color: var(--orange);
-  box-shadow: 0 10px 18px rgba(245, 158, 11, .12), 0 2px 8px rgba(0, 0, 0, .04);
-}
-
-.audioCard.highCard {
-  background: #e0f2ff;
-  border-color: #66bfff;
-  box-shadow: 0 10px 18px rgba(14, 165, 233, .12), 0 2px 8px rgba(0, 0, 0, .04);
-}
-
-.animalCircle {
-  width: 48px;
-  height: 48px;
-  flex: 0 0 48px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 28px;
-}
-
-.lowCard .animalCircle { background: #ff8ca6; }
-.middleCard .animalCircle { background: #ffcc59; }
-.highCard .animalCircle { background: #73c7ff; }
-
-.audioTitle {
-  font-size: 18px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.playPill {
-  margin-left: auto;
-  min-height: 44px;
-  padding: 10px 14px;
-  border: 0;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  color: #fff;
-  font-weight: 800;
+  justify-content: center;
+  gap: 10px;
+  font: inherit;
   font-size: 16px;
-  white-space: nowrap;
-  opacity: 1;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
 }
 
-.lowCard .playPill {
-  background: linear-gradient(105deg, #ff1f70, #ff598c);
-  box-shadow: 0 10px 20px rgba(255, 30, 112, .2), 0 6px 14px rgba(0, 0, 0, .08);
+.listenButton:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.05);
 }
 
-.middleCard .playPill {
-  background: linear-gradient(105deg, #ffb245, #ffd166);
-  box-shadow: 0 10px 20px rgba(245, 158, 11, .2), 0 6px 14px rgba(0, 0, 0, .08);
+.listenLow {
+  color: #8438f5;
+  background: #ede0ff;
+  border-color: #d4b8ff;
 }
 
-.highCard .playPill {
-  background: linear-gradient(105deg, #2bb0ff, #66ccff);
-  box-shadow: 0 10px 20px rgba(14, 165, 233, .2), 0 6px 14px rgba(0, 0, 0, .08);
+.listenMiddle {
+  color: #16b7f5;
+  background: #d8f0ff;
+  border-color: #a8dcff;
 }
+
+.listenHigh {
+  color: #00a970;
+  background: #d0f8ec;
+  border-color: #90edd0;
+}
+
+.speaker {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.hintBar {
+  min-height: 54px;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1.5px solid #ffd6e7;
+  border-radius: 20px;
+  color: #5a4060;
+  background: #ffe8f0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.hintBar > span:first-child { color: #ff2478; }
+.hintBar strong { color: #24132f; }
 
 .fab {
   position: fixed;
@@ -234,38 +231,50 @@
   place-items: center;
   color: #fff;
   font-size: 22px;
-  background: linear-gradient(105deg, var(--pink), var(--coral));
+  background: linear-gradient(105deg, #ff1e70, #ff6644);
   box-shadow: 0 6px 8px rgba(255, 30, 112, .25);
   z-index: 20;
 }
 
-.prev { left: 28px; }
-.next { right: 28px; }
-.nextDisabled { cursor: default; }
+.prev { left: 32px; }
+.next { right: 32px; }
 
-@media (max-width: 1180px) {
-  .main { width: min(900px, calc(100% - 48px)); }
-  .animalStage { height: auto; aspect-ratio: 1196 / 380; }
-  .keyboard { overflow-x: auto; }
-  .whiteKeys { min-width: 1176px; }
-  .blackKey { display: none; }
-  .audioRow { grid-template-columns: 1fr; }
+@media (max-width: 1080px) {
+  .lessonHeader {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .divider { display: none; }
+  .definitionCard { min-height: auto; }
+  .registerVisual { height: auto; aspect-ratio: 1280 / 323; }
+  .keyboard { min-width: 960px; }
+  .pianoCard { overflow-x: auto; }
 }
 
 @media (max-width: 760px) {
-  .main { width: min(100% - 36px, 680px); padding-top: 22px; }
-  .titleRow { align-items: flex-start; gap: 14px; }
-  .titleIcon { width: 52px; height: 52px; flex-basis: 52px; font-size: 23px; }
-  .titleCopy h1 { font-size: 22px; }
-  .titleCopy p { font-size: 15px; }
-  .animalStage { min-height: 220px; aspect-ratio: auto; }
-  .animalStage img { object-position: center; }
-  .keyboard { height: 174px; }
-  .whiteKeys { height: 146px; }
-  .whiteKey { height: 136px; }
-  .audioCard { min-height: 96px; flex-wrap: wrap; }
-  .audioTitle { font-size: 17px; }
-  .playPill { margin-left: 0; font-size: 14px; min-height: 40px; }
+  .lessonShell {
+    width: min(100% - 32px, 680px);
+    padding-top: 18px;
+  }
+
+  .titleBlock {
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .lessonIcon {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+    font-size: 22px;
+  }
+
+  .titleBlock h1 { font-size: 30px; }
+  .definitionCard p { font-size: 16px; }
+  .registerVisual { min-height: 230px; aspect-ratio: auto; }
+  .listenRow { grid-template-columns: 1fr; gap: 10px; }
+  .hintBar { align-items: flex-start; flex-wrap: wrap; padding: 14px 18px; }
   .prev { left: 14px; }
   .next { right: 14px; }
 }
