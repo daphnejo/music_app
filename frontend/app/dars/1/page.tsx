@@ -1,71 +1,101 @@
 import Link from 'next/link';
 import { SiteHeader } from '@/components/site-header';
 import { figmaAssets } from '@/lib/figma-assets';
+import styles from './lesson-one.module.css';
 
-const lessonNotes = [
-  ['do', 'pink'],
-  ['re', 'blue'],
-  ['mi', 'pink'],
-  ['fa', 'green'],
-  ['sol', 'orange'],
-  ['lya', 'blue-fill'],
-  ['si', 'green-fill'],
+const lessonFacts = [
+  {
+    className: styles.factPurple,
+    icon: figmaAssets.lessonOneFactIconPurple,
+    text: 'Solfedjio atamasi “sol” va “fa” nota nomlari bilan bog‘liq.',
+  },
+  {
+    className: styles.factBlue,
+    icon: figmaAssets.lessonOneFactIconBlue,
+    text: 'Solfedjio notaga qarab kuylash ma’nosini anglatadi.',
+  },
+  {
+    className: styles.factGreen,
+    icon: figmaAssets.lessonOneFactIconGreen,
+    text: 'Gvido de Aresso nota tizimini shakllantirish va notalarni nomlash bilan bog‘liq tarixiy shaxsdir.',
+  },
 ] as const;
 
 export default function LessonOnePage() {
   return (
-    <main className="lesson-page">
-      <SiteHeader mode="lesson" activeLesson={1} />
+    <main className={styles.page}>
+      <SiteHeader mode="lesson" activeLesson={1} lessonChrome="auth" />
 
-      <section className="lesson-strip">
-        <small>1-SINF › MUSIQA NAZARIYASI › 1-DARS</small>
-        <strong>Solfedjio nima? 🎶</strong>
-      </section>
-
-      <section className="lesson-main">
-        <div className="lesson-left">
-          <article className="lesson-card">
-            <div className="lesson-card-head">
-              <div className="lesson-card-title">
-                <span className="round-icon" aria-hidden="true">📖</span>
-                <h2>Atama ta&apos;rifi</h2>
+      <section className={styles.hero}>
+        <div className={styles.layout}>
+          <div className={styles.left}>
+            <div className={styles.titleRow}>
+              <span className={styles.titleIcon} aria-hidden="true">
+                <img src={figmaAssets.lessonOneMusicIcon} alt="" />
+              </span>
+              <div className={styles.titleText}>
+                <p className={styles.kicker}>1-DARS. SOLFEDJIO.</p>
+                <h1>Solfedjio - musiqaning asosiy tili</h1>
               </div>
             </div>
-            <p><strong>Solfedjio</strong> – bu musiqada qo&apos;llaniladigan atama bo&apos;lib, italyancha <span className="pink-text">“Solfeggio”</span> ya&apos;ni <span className="blue-text">“sol”</span> va <span className="blue-text">“fa”</span> notalari nomidan kelib chiqadi. U notaga qarab kuylash ma&apos;nosini anglatadi.</p>
-          </article>
 
-          <article className="lesson-card history">
-            <div className="lesson-card-head">
-              <div className="lesson-card-title">
-                <span className="round-icon orange" aria-hidden="true">✨</span>
-                <h2>Bu qiziq!</h2>
+            <article className={styles.definitionCard}>
+              <div className={styles.definitionLabel}>
+                <span className={styles.definitionDot} aria-hidden="true" />
+                <span>Solfedjio nima?</span>
               </div>
-              <span className="fact-pill">Tarixiy fakt</span>
-            </div>
-            <p>Solfedjioning fan sifatida shakllanishi <strong>9 asrda</strong> yashab ijod qilgan italiyalik musiqashunos <span className="orange-text">Gvido de Aresso</span> nomi bilan bog&apos;liq. Aynan u nota tizimini yaratib notalarni nomlaydi.</p>
-          </article>
+              <p>
+                Solfedjio - bu musiqada qo&apos;llaniladigan atama bo&apos;lib, italyancha &quot;Solfeggio&quot; ya&apos;ni
+                &quot;sol&quot; va &quot;fa&quot; notalari nomidan kelib chiqadi. U notaga qarab kuylash ma&apos;nosini anglatadi.
+              </p>
+            </article>
 
-          <div className="lesson-notes" aria-label="Nota nomlari">
-            <strong>🎵 Notalar:</strong>
-            {lessonNotes.map(([note, tone]) => <span className={`note-chip ${tone}`} key={note}>{note}</span>)}
+            <article className={styles.funCard}>
+              <span className={styles.funChip}>🌟 Bu qiziq!</span>
+              <p className={styles.funText}>
+                Solfedjioning fan sifatida shakllanishi 9 asrda yashab ijod qilgan italiyalik musiqashunos Gvido de Aresso
+                nomi bilan bog&apos;liq. Aynan u nota tizimini yaratib notalarni nomlaydi.
+              </p>
+              <div className={styles.funFooter}>
+                <span className={styles.funFooterIcon} aria-hidden="true">♪</span>
+                <span>Solfedjio - musiqa bilimining boshlang&apos;ich darvozasi.</span>
+              </div>
+            </article>
+
+            <div className={styles.facts} aria-label="Darsning asosiy eslatmalari">
+              {lessonFacts.map((fact) => (
+                <div className={`${styles.fact} ${fact.className}`} key={fact.text}>
+                  <span className={styles.factIcon} aria-hidden="true"><img src={fact.icon} alt="" /></span>
+                  <span>{fact.text}</span>
+                </div>
+              ))}
+            </div>
           </div>
+
+          <aside className={styles.right}>
+            <figure className={styles.illustrationCard}>
+              <div className={styles.historyBand}>
+                <span>🎼 Tarix sahifasi</span>
+                <span>IX asr • Italiya</span>
+              </div>
+              <img
+                className={styles.illustration}
+                src={figmaAssets.lessonOneCurrentIllustration}
+                alt="Gvido de Aresso musiqa va nota yozuvini tushuntirayotgan tarixiy tasvir"
+              />
+            </figure>
+
+            <div className={styles.captionCard}>
+              <strong>Gvido de Aresso</strong>
+              <span className={styles.captionMeta}>991 - 1033 • Italiya musiqashunosi</span>
+              <span className={styles.captionSub}>Nota tizimi va nota nomlari tarixiga bog&apos;liq musiqashunos</span>
+            </div>
+          </aside>
         </div>
-
-        <aside className="lesson-art-card">
-          <img src={figmaAssets.lessonOneHistorical} alt="Gvido de Aresso va uning shogirdlari" />
-          <div className="lesson-caption">
-            <span className="caption-icon" aria-hidden="true">🎼</span>
-            <div><strong>Gvido de Aresso va uning nota tizimi</strong><small>Ut queant laxis · notalarga asos bo&apos;lgan qadimiy madhiya · IX asr</small></div>
-          </div>
-          <div className="lesson-progress">
-            <div className="progress-row"><span>Dars progressi</span><span className="progress-pill">1 / 12 dars</span></div>
-            <div className="progress-track"><div className="progress-fill" /></div>
-          </div>
-        </aside>
       </section>
 
-      <Link className="lesson-fab prev" href="/kurs/1" aria-label="Kurs boshiga qaytish">←</Link>
-      <Link className="lesson-fab next" href="/dars/2" aria-label="2-darsga o‘tish">→</Link>
+      <Link className={`${styles.fab} ${styles.prev}`} href="/kurs/1" aria-label="Kurs boshiga qaytish">←</Link>
+      <Link className={`${styles.fab} ${styles.next}`} href="/dars/2" aria-label="2-darsga o‘tish">→</Link>
     </main>
   );
 }
