@@ -311,6 +311,44 @@
 .prev { left: 32px; }
 .next { right: 32px; }
 
+@media (min-width: 1000px) and (max-height: 900px) {
+  .hero {
+    min-height: calc(100dvh - 74px);
+    padding: 24px clamp(32px, 4.5vw, 64px) 56px;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 760px) minmax(320px, 390px);
+    gap: 34px;
+    align-items: center;
+  }
+
+  .left { gap: 14px; }
+  .titleIcon { width: 50px; height: 50px; flex-basis: 50px; }
+  .titleIcon img { width: 22px; height: 22px; }
+  .kicker { font-size: 12px; }
+  .titleText h1 { font-size: clamp(32px, 2.6vw, 38px); }
+  .definitionCard { padding: 16px 18px; border-radius: 18px; }
+  .definitionLabel { margin-bottom: 7px; font-size: 11px; }
+  .definitionCard p { font-size: 16px; line-height: 1.45; }
+  .funCard { padding: 18px 20px; border-radius: 18px; }
+  .funChip { padding: 5px 12px; font-size: 11px; }
+  .funText { margin: 10px 0; font-size: 15px; line-height: 1.42; }
+  .funFooter { font-size: 12px; }
+  .funFooterIcon { width: 30px; height: 30px; flex-basis: 30px; }
+  .facts { gap: 7px; }
+  .fact { min-height: 48px; padding: 9px 12px; border-radius: 14px; gap: 9px; font-size: 13px; }
+  .factIcon { width: 30px; height: 30px; flex-basis: 30px; }
+  .illustrationCard { height: 438px; border-radius: 24px; }
+  .historyBand { height: 40px; padding: 0 15px; font-size: 11px; }
+  .illustration { height: calc(100% - 40px); }
+  .right { gap: 10px; }
+  .captionCard { padding: 9px 16px; border-radius: 16px; gap: 2px; }
+  .captionCard strong { font-size: 15px; }
+  .captionMeta { font-size: 12px; }
+  .captionSub { font-size: 11px; }
+}
+
 @media (max-width: 1180px) {
   .hero { padding-top: 42px; }
   .layout {
