@@ -1,88 +1,215 @@
 .page {
   min-height: 100vh;
-  background: #fffaf4;
+  background: #fff5f8;
   position: relative;
   color: var(--ink);
 }
 
-.strip {
-  min-height: 64px;
-  padding: 10px 24px;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  text-align: center;
-  background: linear-gradient(90deg, #ff9d2e, #ffb347 52%, #ffd166);
-  box-shadow: 0 4px 8px rgba(255, 179, 71, .2);
+.hero {
+  min-height: 855px;
+  padding: 64px 0 70px;
+  border-bottom: 3px solid #ff1e70;
+  background: #fff5f8;
+  position: relative;
+  overflow: hidden;
 }
 
-.strip small {
-  opacity: .8;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.strip strong {
-  font-size: 22px;
-  line-height: 1.2;
-}
-
-.main {
+.heroInner,
+.learningArea {
   width: min(1280px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 28px 0 88px;
+}
+
+.lessonHeading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.kickerRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ff1e70;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.musicBadge {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(105deg, #ff1e70, #ff6644);
+  box-shadow: 0 6px 12px rgba(255, 30, 112, .22);
+  font-size: 20px;
+}
+
+.lessonHeading h1 {
+  margin: 0;
+  color: #1e1224;
+  font-size: clamp(52px, 5.2vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -.025em;
+  font-weight: 800;
+}
+
+.lessonHeading h1 span {
+  color: #ff1e70;
+  font-size: .78em;
+}
+
+.definitionBar {
+  margin-top: 30px;
+  min-height: 62px;
+  padding: 15px 24px;
+  display: flex;
+  align-items: center;
+  border-radius: 18px;
+  background: #fff;
+  border: 1.5px solid #ffd6e7;
+  box-shadow: 0 8px 20px rgba(255, 30, 112, .06);
+}
+
+.definitionBar p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 650;
+}
+
+.pianoCard {
+  margin-top: 32px;
+  padding: 12px;
+  border-radius: 30px;
+  background: #fff;
+  border: 1.5px solid #ffd6e7;
+  box-shadow: 0 16px 40px rgba(255, 30, 112, .10);
+}
+
+.keyboard {
+  position: relative;
+  height: 348px;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #fff;
+  border: 1px solid #eadfe5;
+}
+
+.whiteKeys {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(21, minmax(0, 1fr));
+}
+
+.whiteKey {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 2px 20px;
+  background: linear-gradient(180deg, #fff, #fffdfd);
+  border-right: 1px solid #d7cbd2;
+  box-shadow: inset 0 -14px 24px rgba(30, 18, 36, .025);
+}
+
+.whiteKey:last-child { border-right: 0; }
+
+.whiteKey strong {
+  color: #524354;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.blackKey {
+  position: absolute;
+  top: 0;
+  z-index: 3;
+  width: 3.3%;
+  height: 72%;
+  transform: translateX(-50%);
+  border-radius: 0 0 7px 7px;
+  background: linear-gradient(180deg, #25182b 0%, #130c17 78%, #2a1a30 100%);
+  box-shadow: 0 9px 14px rgba(30, 18, 36, .24);
+}
+
+.blackKey small {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,.70);
+  font-size: 8px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.hintBar {
+  margin-top: 30px;
+  min-height: 68px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: 20px;
+  background: #fff0f4;
+  border: 1px solid #ffd6e7;
+}
+
+.hintIcon {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.hintBar p {
+  margin: 0;
+  color: #524354;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 650;
+}
+
+.decorNotes {
+  position: absolute;
+  right: clamp(24px, 5vw, 78px);
+  top: 28px;
+  color: rgba(255, 30, 112, .16);
+  font-size: 58px;
+  letter-spacing: 22px;
+  transform: rotate(-7deg);
+  user-select: none;
+}
+
+.learningArea {
+  padding: 44px 0 110px;
   display: flex;
   flex-direction: column;
   gap: 22px;
 }
 
-.titleRow {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-.titleIcon {
-  width: 64px;
-  height: 64px;
-  flex: 0 0 64px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 30px;
-  background: linear-gradient(135deg, #ffd166, #ff9d2e);
-  box-shadow: 0 6px 16px rgba(255, 157, 46, .24);
-}
-
-.titleCopy h1 {
-  margin: 0 0 6px;
-  font-size: 27px;
-  line-height: 1.15;
-}
-
-.titleCopy p {
-  margin: 0;
-  color: var(--copy);
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.keyboardCard,
+.audioCard,
 .octaveCard,
 .exerciseSection {
   background: #fff;
-  border: 1.5px solid #ffe2b8;
+  border: 1.5px solid #ffd6e7;
   border-radius: 28px;
-  box-shadow: 0 10px 28px rgba(255, 157, 46, .08);
+  box-shadow: 0 10px 28px rgba(255, 30, 112, .07);
 }
 
-.keyboardCard {
-  padding: 24px;
-}
+.audioCard,
+.exerciseSection { padding: 28px; }
 
 .sectionHeading,
 .exerciseHead {
@@ -93,10 +220,17 @@
   margin-bottom: 20px;
 }
 
+.sectionHeading p,
+.exerciseHead p {
+  margin: 7px 0 0;
+  color: var(--copy);
+  font-size: 15px;
+}
+
 .eyebrow {
   display: inline-block;
   margin-bottom: 5px;
-  color: #c27a00;
+  color: #ff1e70;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: .08em;
@@ -114,81 +248,14 @@
   align-self: center;
   padding: 9px 14px;
   border-radius: 999px;
-  background: #fff4d8;
-  color: #9a6200;
+  background: #fff0f4;
+  color: #b41f55;
   font-size: 13px;
   font-weight: 800;
   white-space: nowrap;
 }
 
-.keyboard {
-  position: relative;
-  height: 230px;
-  overflow: hidden;
-  border: 1px solid #eadfce;
-  border-radius: 22px;
-  background: linear-gradient(#fffdf8, #fff9ee);
-  box-shadow: inset 0 -12px 28px rgba(255, 179, 71, .05);
-}
-
-.whiteKeys {
-  height: 100%;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-}
-
-.whiteKey {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 8px;
-  padding: 18px 6px;
-  border-right: 1px solid #e7dfd3;
-  background: #fff;
-}
-
-.whiteKey:last-child { border-right: 0; }
-.whiteKey:nth-child(1) { background: #fff0f4; }
-.whiteKey:nth-child(2) { background: #eef8ff; }
-.whiteKey:nth-child(3) { background: #fff7d9; }
-.whiteKey:nth-child(4) { background: #edfcf4; }
-.whiteKey:nth-child(5) { background: #f7efff; }
-.whiteKey:nth-child(6) { background: #fff3e7; }
-.whiteKey:nth-child(7) { background: #eaf8ff; }
-
-.whiteKey strong {
-  font-size: 19px;
-  font-weight: 800;
-}
-
-.noteDot {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  background: #ff9d2e;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.blackKey {
-  position: absolute;
-  top: 0;
-  width: 7.5%;
-  height: 128px;
-  transform: translateX(-50%);
-  border-radius: 0 0 8px 8px;
-  background: linear-gradient(180deg, #2b1b33, #130d18);
-  box-shadow: 0 9px 15px rgba(30, 18, 36, .2);
-  z-index: 3;
-}
-
 .noteAudioGrid {
-  margin-top: 14px;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 8px;
@@ -198,24 +265,23 @@
 .melodyAudio,
 .sourceAudio {
   border: 0;
-  cursor: default;
   font-family: inherit;
 }
 
 .noteAudio {
-  min-height: 58px;
+  min-height: 60px;
   padding: 8px 7px;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  color: var(--ink);
-  background: #fff8ea;
-  border: 1px solid #ffe0aa;
+  gap: 6px;
+  color: #1e1224;
+  background: #fff7fa;
+  border: 1px solid #ffd6e7;
 }
 
-.noteAudio span { color: #ff9d2e; font-size: 16px; }
+.noteAudio span { color: #ff1e70; font-size: 17px; }
 .noteAudio strong { font-size: 14px; }
 .noteAudio small { display: none; }
 
@@ -225,7 +291,7 @@
   grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
   gap: 34px;
   align-items: center;
-  background: linear-gradient(120deg, #fff, #fffaf0);
+  background: linear-gradient(120deg, #fff, #fff8fb);
 }
 
 .octaveCopy p {
@@ -248,10 +314,10 @@
   padding: 9px 13px;
   border-radius: 999px;
   color: #fff;
-  background: linear-gradient(105deg, #ff9d2e, #ffbd59);
+  background: linear-gradient(105deg, #ff1e70, #ff6644);
   font-size: 13px;
   font-weight: 800;
-  box-shadow: 0 6px 12px rgba(255, 157, 46, .14);
+  box-shadow: 0 6px 12px rgba(255, 30, 112, .14);
 }
 
 .melodyAudio small,
@@ -275,32 +341,23 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #6b4b12;
-  background: #fff6df;
-  border: 1px solid #ffdfa0;
+  color: #6a4060;
+  background: #fff1f6;
+  border: 1px solid #ffd3e3;
   font-size: 14px;
   font-weight: 800;
 }
 
-.octaveChip:nth-child(4n+1) { background: #fff0f4; border-color: #ffd5e3; color: #a53c62; }
 .octaveChip:nth-child(4n+2) { background: #eef8ff; border-color: #cdeaff; color: #2479aa; }
 .octaveChip:nth-child(4n+3) { background: #edfcf4; border-color: #c8f0dc; color: #257b5c; }
+.octaveChip:nth-child(4n+4) { background: #fff7e8; border-color: #ffe0aa; color: #9a6400; }
 
 .exerciseSection {
-  padding: 28px;
   border-color: #d6eaff;
   box-shadow: 0 10px 30px rgba(43, 177, 255, .08);
 }
 
-.exerciseHead {
-  margin-bottom: 18px;
-}
-
-.exerciseHead p {
-  margin: 7px 0 0;
-  color: var(--copy);
-  font-size: 15px;
-}
+.exerciseHead { margin-bottom: 18px; }
 
 .reviewBadge {
   padding: 8px 13px;
@@ -329,9 +386,7 @@
   flex-direction: column;
 }
 
-.quizCard:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
-}
+.quizCard:last-child:nth-child(odd) { grid-column: 1 / -1; }
 
 .quizTop {
   display: flex;
@@ -366,14 +421,8 @@
   line-height: 1.35;
 }
 
-.sourceAudioRow {
-  margin: -2px 0 12px;
-}
-
-.sourceAudio {
-  background: linear-gradient(105deg, #2bb1ff, #63cfff);
-  box-shadow: 0 6px 12px rgba(43, 177, 255, .14);
-}
+.sourceAudioRow { margin: -2px 0 12px; }
+.sourceAudio { background: linear-gradient(105deg, #2bb1ff, #63cfff); }
 
 .quizOptions {
   display: grid;
@@ -432,10 +481,7 @@
   cursor: pointer;
 }
 
-.checkButton:disabled {
-  opacity: .45;
-  cursor: default;
-}
+.checkButton:disabled { opacity: .45; cursor: default; }
 
 .goodFeedback,
 .retryFeedback {
@@ -446,7 +492,6 @@
   font-weight: 700;
   line-height: 1.4;
 }
-
 .goodFeedback { color: #126a4b; background: #e8f8ef; }
 .retryFeedback { color: #8b6200; background: #fff5d9; }
 
@@ -464,13 +509,15 @@
   box-shadow: 0 6px 8px rgba(255, 30, 112, .25);
   z-index: 20;
 }
-
 .prev { left: 28px; }
 .next { right: 28px; }
-.nextDisabled { cursor: default; }
+.nextDisabled { cursor: default; opacity: .5; }
 
 @media (max-width: 980px) {
-  .main { width: min(900px, calc(100% - 48px)); }
+  .hero { min-height: auto; padding-top: 44px; }
+  .keyboard { height: 300px; overflow-x: auto; }
+  .whiteKeys { min-width: 1050px; }
+  .blackKey { width: 35px; }
   .sectionHeading, .exerciseHead { flex-direction: column; align-items: flex-start; gap: 10px; }
   .noteOrder, .reviewBadge { align-self: flex-start; white-space: normal; }
   .noteAudioGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -479,20 +526,21 @@
   .quizCard:last-child:nth-child(odd) { grid-column: auto; }
 }
 
-@media (max-width: 760px) {
-  .main { width: min(100% - 36px, 680px); padding-top: 22px; }
-  .titleRow { align-items: flex-start; gap: 14px; }
-  .titleIcon { width: 52px; height: 52px; flex-basis: 52px; font-size: 24px; }
-  .titleCopy h1 { font-size: 22px; }
-  .titleCopy p { font-size: 15px; }
-  .keyboardCard, .octaveCard, .exerciseSection { padding: 18px; border-radius: 22px; }
-  .keyboard { height: 190px; overflow-x: auto; }
-  .whiteKeys { min-width: 630px; }
-  .blackKey { display: none; }
+@media (max-width: 700px) {
+  .heroInner, .learningArea { width: min(100% - 32px, 680px); }
+  .hero { padding-top: 32px; }
+  .lessonHeading h1 { font-size: 46px; }
+  .definitionBar { padding: 14px 18px; }
+  .definitionBar p { font-size: 16px; }
+  .pianoCard { border-radius: 22px; padding: 8px; }
+  .keyboard { height: 250px; border-radius: 16px; }
+  .hintBar { align-items: flex-start; }
+  .audioCard, .octaveCard, .exerciseSection { padding: 18px; border-radius: 22px; }
   .noteAudioGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .octaveMap { grid-template-columns: 1fr; }
-  .quizCard { min-height: 0; }
-  .melodyAudio small, .sourceAudio small { display: none; }
-  .prev { left: 14px; }
-  .next { right: 14px; }
+  .decorNotes { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quizOption { transition: none; }
 }
