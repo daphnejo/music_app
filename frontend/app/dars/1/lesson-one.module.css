@@ -1,0 +1,354 @@
+.page {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  color: #1e1224;
+  background: #fff5f8;
+}
+
+.hero {
+  min-height: calc(100vh - 92px);
+  padding: 60px clamp(24px, 5.55vw, 80px) 82px;
+  border-bottom: 3px solid #ff1e70;
+  background: #fff5f8;
+}
+
+.layout {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 780px) minmax(360px, 452px);
+  gap: 48px;
+  align-items: center;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.titleIcon {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(105deg, #ff1e70, #ff6644);
+  box-shadow: 0 8px 10px rgba(255, 30, 112, .31);
+}
+
+.titleIcon img {
+  width: 28px;
+  height: 28px;
+}
+
+.titleText {
+  min-width: 0;
+}
+
+.kicker {
+  margin: 0 0 4px;
+  color: #ff1e70;
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.titleText h1 {
+  margin: 0;
+  font-size: clamp(38px, 3.25vw, 46px);
+  line-height: 1.1;
+  letter-spacing: -.015em;
+  font-weight: 800;
+}
+
+.definitionCard {
+  padding: 28px;
+  border: 1.5px solid #ffd6e7;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 10px 14px rgba(255, 30, 112, .08);
+}
+
+.definitionLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #ff1e70;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.definitionDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(105deg, #ff1e70, #ff6644);
+}
+
+.definitionCard p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.6;
+  font-weight: 700;
+}
+
+.funCard {
+  position: relative;
+  overflow: hidden;
+  padding: 28px;
+  border-radius: 24px;
+  color: #fff;
+  background: linear-gradient(105deg, #ff1e70, #ff6644);
+  box-shadow: 0 12px 32px rgba(255, 30, 112, .31);
+}
+
+.funCard::before,
+.funCard::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: rgba(255, 255, 255, .08);
+}
+
+.funCard::before {
+  width: 200px;
+  height: 200px;
+  right: 58px;
+  top: -60px;
+}
+
+.funCard::after {
+  width: 120px;
+  height: 120px;
+  left: -40px;
+  top: 60px;
+}
+
+.funChip,
+.funText,
+.funFooter {
+  position: relative;
+  z-index: 1;
+}
+
+.funChip {
+  width: fit-content;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .19);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.funText {
+  margin: 16px 0;
+  font-size: 19px;
+  line-height: 1.5;
+  font-weight: 800;
+}
+
+.funFooter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffe8f0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.funFooterIcon {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, .15);
+}
+
+.facts {
+  display: grid;
+  gap: 12px;
+}
+
+.fact {
+  min-height: 68px;
+  padding: 16px;
+  border: 1px solid;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.factPurple { background: #f3e8ff; border-color: #e9d5ff; }
+.factBlue { background: #e0f2fe; border-color: #bae6fd; }
+.factGreen { background: #dcfce7; border-color: #bbf7d0; }
+
+.factIcon {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, .82);
+}
+
+.factIcon img {
+  width: 18px;
+  height: 18px;
+}
+
+.right {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+
+.illustrationCard {
+  height: 560px;
+  overflow: hidden;
+  border: 2px solid #ffd6e7;
+  border-radius: 32px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(255, 30, 112, .13);
+}
+
+.historyBand {
+  height: 50px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: #fff;
+  background: linear-gradient(105deg, #ff1e70, #ff6644);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.historyBand span:last-child {
+  color: rgba(255, 255, 255, .68);
+  font-weight: 700;
+}
+
+.illustration {
+  width: 100%;
+  height: calc(100% - 50px);
+  object-fit: cover;
+}
+
+.captionCard {
+  padding: 14px 24px;
+  border: 1.5px solid #ffd6e7;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(255, 30, 112, .06);
+}
+
+.captionCard strong {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.captionMeta {
+  color: #ff1e70;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.captionSub {
+  color: #8b7a8e;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fab {
+  position: fixed;
+  bottom: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  background: linear-gradient(105deg, #ff1e70, #ff6644);
+  box-shadow: 0 6px 8px rgba(255, 30, 112, .25);
+  z-index: 50;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.fab:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 9px 16px rgba(255, 30, 112, .3);
+}
+
+.prev { left: 32px; }
+.next { right: 32px; }
+
+@media (max-width: 1180px) {
+  .hero { padding-top: 42px; }
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: 32px;
+  }
+  .definitionCard p { font-size: 18px; }
+  .illustrationCard { height: 520px; }
+}
+
+@media (max-width: 980px) {
+  .layout {
+    width: min(820px, 100%);
+    grid-template-columns: 1fr;
+  }
+  .right { width: min(100%, 520px); justify-self: center; }
+  .illustrationCard { height: 580px; }
+}
+
+@media (max-width: 720px) {
+  .hero { padding: 30px 18px 86px; }
+  .left { gap: 18px; }
+  .titleRow { align-items: flex-start; }
+  .titleIcon { width: 52px; height: 52px; flex-basis: 52px; }
+  .titleIcon img { width: 23px; height: 23px; }
+  .kicker { font-size: 12px; }
+  .titleText h1 { font-size: 34px; }
+  .definitionCard, .funCard { padding: 20px; border-radius: 20px; }
+  .definitionCard p, .funText { font-size: 16px; }
+  .fact { font-size: 14px; }
+  .right { width: 100%; }
+  .illustrationCard { height: 500px; border-radius: 24px; }
+  .historyBand { font-size: 12px; }
+  .captionMeta { font-size: 12px; }
+  .prev { left: 14px; }
+  .next { right: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab { transition: none; }
+}
