@@ -152,7 +152,7 @@ export default function LessonFourPage() {
       {step === 0 ? (
         <button className={`${styles.fab} ${styles.next}`} type="button" onClick={() => setStep(1)} aria-label="Qo‘shimcha chiziqlarga o‘tish">→</button>
       ) : (
-        <span className={`${styles.fab} ${styles.next} ${styles.nextPending}`} aria-label="4-dars yakunlandi">→</span>
+        <Link className={`${styles.fab} ${styles.next}`} href="/dars/5" aria-label="5-darsga o‘tish">→</Link>
       )}
     </main>
   );
