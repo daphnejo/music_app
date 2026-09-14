@@ -1,0 +1,367 @@
+.page {
+  min-height: 100vh;
+  background: #fff7fa;
+  color: #24132f;
+  position: relative;
+}
+
+.stage {
+  min-height: calc(100vh - 92px);
+  border-bottom: 3px solid #ff1e70;
+  background: #fff7fa;
+}
+
+.screen {
+  width: min(1320px, calc(100% - 80px));
+  margin: 0 auto;
+  min-height: 855px;
+  padding: 42px 0 92px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ff3d87;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.kicker span {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(105deg, #ff3d87, #ff6644);
+  box-shadow: 0 5px 12px rgba(255, 61, 135, .2);
+  font-size: 18px;
+}
+
+.heading h1 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #1a1a2e;
+  font-size: clamp(48px, 4.5vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -.03em;
+  font-weight: 800;
+}
+
+.heading h1 em {
+  color: #ff3d87;
+  font-size: .78em;
+  font-style: normal;
+  transform: rotate(-5deg);
+}
+
+.definition {
+  min-height: 64px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .72);
+  color: #446;
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+.whitePanel {
+  min-height: 550px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: 32px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(255, 36, 120, .05);
+}
+
+.cardsRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.learningCard {
+  min-height: 388px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.numberingCard { background: #f7f1ff; }
+.linesCard { background: #effaff; }
+.spacesCard { background: #edfcf5; }
+
+.cardTop {
+  min-height: 104px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.cardTop h2 {
+  margin: 0;
+  color: #24132f;
+  font-size: clamp(24px, 2vw, 32px);
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.purpleBadge,
+.badgeSpacer {
+  min-height: 34px;
+}
+
+.purpleBadge {
+  align-self: flex-start;
+  min-width: 152px;
+  padding: 5px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #fff;
+  background: #8438f5;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.numberingStaff,
+.staffGraphic {
+  height: 162px;
+  position: relative;
+}
+
+.staffLine {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  object-fit: fill;
+}
+
+.numberingStaff strong {
+  position: absolute;
+  color: #24132f;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.cardHint {
+  min-height: 82px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #685976;
+  font-size: 20px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.staffGraphic img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.audioSlot {
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.audioButton {
+  min-width: 220px;
+  height: 72px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  border-radius: 999px;
+  font: inherit;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.audioButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(30, 18, 36, .08);
+}
+
+.audioButton img {
+  width: 40px;
+  height: 38px;
+  flex: 0 0 40px;
+}
+
+.blueAudio {
+  color: #009fe8;
+  background: #effaff;
+  border: 1px solid #009fe8;
+}
+
+.greenAudio {
+  color: #00b97b;
+  background: #edfcf5;
+  border: 1px solid #00b97b;
+}
+
+.audioButton strong {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.waveform {
+  width: 44px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.waveform i {
+  width: 3px;
+  border-radius: 3px;
+  display: block;
+  background: currentColor;
+}
+.waveform i:nth-child(1) { height: 12px; }
+.waveform i:nth-child(2) { height: 24px; }
+.waveform i:nth-child(3) { height: 32px; }
+.waveform i:nth-child(4) { height: 18px; }
+.waveform i:nth-child(5) { height: 10px; }
+.blueWave { color: #009fe8; }
+.greenWave { color: #00b97b; }
+
+.rememberBar {
+  min-height: 94px;
+  padding: 13px 24px 13px 32px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  border-radius: 28px;
+  background: #fff0f7;
+}
+
+.rememberBar img {
+  width: 62px;
+  height: 68px;
+  flex: 0 0 62px;
+  object-fit: contain;
+}
+
+.rememberBar p {
+  margin: 0;
+  color: #24132f;
+  font-size: clamp(20px, 1.8vw, 28px);
+  line-height: 1.3;
+}
+
+.rememberBar strong { color: #ff2478; }
+
+.ledgerPanel {
+  justify-content: space-between;
+}
+
+.ledgerGraphic {
+  min-height: 388px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.ledgerGraphic img {
+  width: 100%;
+  height: 388px;
+  object-fit: contain;
+}
+
+.fab {
+  position: fixed;
+  bottom: 24px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(105deg, #ff1e70, #ff6644);
+  box-shadow: 0 6px 8px rgba(255, 30, 112, .25);
+  font: inherit;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 30;
+}
+
+.prev { left: 32px; }
+.next { right: 32px; }
+.nextPending {
+  opacity: .42;
+  cursor: default;
+}
+
+@media (max-width: 1120px) {
+  .screen { width: min(100% - 48px, 980px); }
+  .cardsRow { grid-template-columns: 1fr; }
+  .learningCard { min-height: 340px; }
+  .whitePanel { min-height: auto; }
+  .staffGraphic, .numberingStaff { height: 150px; }
+  .ledgerGraphic img { height: auto; }
+}
+
+@media (max-width: 760px) {
+  .screen {
+    width: min(100% - 32px, 680px);
+    min-height: 0;
+    padding: 30px 0 86px;
+  }
+  .heading h1 { font-size: 42px; }
+  .definition { font-size: 18px; }
+  .whitePanel { padding: 16px; border-radius: 24px; }
+  .learningCard { padding: 18px; border-radius: 22px; }
+  .purpleBadge { min-width: 128px; font-size: 16px; }
+  .cardTop h2 { font-size: 25px; }
+  .audioButton { min-width: 190px; height: 62px; }
+  .audioButton img { width: 34px; height: 32px; }
+  .audioButton strong { font-size: 18px; }
+  .rememberBar { padding: 14px 16px; gap: 14px; border-radius: 22px; }
+  .rememberBar img { width: 46px; height: 52px; flex-basis: 46px; }
+  .rememberBar p { font-size: 18px; }
+  .ledgerGraphic { min-height: 280px; }
+  .prev { left: 14px; }
+  .next { right: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audioButton { transition: none; }
+}
