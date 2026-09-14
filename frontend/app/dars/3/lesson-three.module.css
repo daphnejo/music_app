@@ -448,6 +448,46 @@
 .next { right: 28px; }
 .doneFab { background: linear-gradient(105deg, #34d399, #2ec4b6); cursor: default; }
 
+@media (min-width: 1000px) and (max-height: 900px) {
+  .progressBar { top: 74px; }
+  .stage {
+    min-height: calc(100dvh - 78px);
+    padding: 22px 0 64px;
+  }
+  .heroRow { margin-bottom: 14px; }
+  .heroRow h1,
+  .screenHeading h1,
+  .octaveCopy h1 { font-size: clamp(36px, 3.2vw, 48px); }
+  .musicDecor { font-size: 38px; }
+  .definition { min-height: 52px; padding: 12px 18px; font-size: 15px; border-radius: 15px; }
+  .keyboardShell { margin-top: 16px; padding: 8px; border-radius: 22px; }
+  .keyboard { height: 244px; border-radius: 16px; }
+  .rememberBar { margin-top: 14px; min-height: 48px; padding: 9px 14px; border-radius: 15px; }
+  .bulb { width: 30px; height: 30px; flex-basis: 30px; }
+  .rememberBar p { font-size: 13px; }
+  .screenHeading { margin-bottom: 20px; }
+  .screenHeading p,
+  .octaveCopy p { margin-top: 8px; font-size: 15px; line-height: 1.45; }
+  .noteListenGrid { gap: 9px; }
+  .noteButton { min-height: 126px; padding: 12px 8px; border-radius: 20px; }
+  .noteButton span { width: 38px; height: 38px; font-size: 18px; }
+  .noteButton strong { font-size: 18px; }
+  .noteSequence { margin-top: 18px; padding: 9px 18px; font-size: 14px; }
+  .octaveScreen { gap: 36px; }
+  .listenRow { margin-top: 16px; gap: 9px; }
+  .listenButton { min-height: 40px; padding: 8px 14px; font-size: 13px; }
+  .octaveGrid { gap: 8px; }
+  .octaveCard { min-height: 54px; padding: 10px; border-radius: 14px; font-size: 13px; }
+  .quizScreen { max-width: 820px; padding: 28px; border-radius: 24px; }
+  .answerGrid { gap: 8px; }
+  .answerOption { min-height: 46px; padding: 9px 14px; font-size: 14px; border-radius: 13px; }
+  .checkButton { min-height: 42px; margin-top: 14px; padding: 9px 18px; }
+  .goodFeedback,
+  .retryFeedback { margin-top: 10px; padding: 9px 12px; font-size: 13px; }
+  .fab { bottom: 16px; width: 44px; height: 44px; }
+  .stepCounter { bottom: 20px; }
+}
+
 @media (max-width: 980px) {
   .stage { width: min(900px, calc(100% - 40px)); align-items: flex-start; }
   .keyboard { height: 290px; overflow-x: auto; grid-template-columns: repeat(21, 54px); }
