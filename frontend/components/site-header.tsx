@@ -7,7 +7,7 @@ import styles from './site-header.module.css';
 type HeaderMode = 'landing' | 'course' | 'lesson';
 type LessonChrome = 'account' | 'auth';
 type LandingSection = 'home' | 'courses' | 'teachers' | 'pricing' | 'contact';
-type LessonNumber = 1 | 2 | 3 | 4 | 5 | 6;
+type LessonNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 type SiteHeaderProps = {
   mode?: HeaderMode;
@@ -30,6 +30,7 @@ const lessonLinks: Array<{ lesson: LessonNumber; href: string; label: string }> 
   { lesson: 4, href: '/dars/4', label: '4-Dars' },
   { lesson: 5, href: '/dars/5', label: '5-Dars' },
   { lesson: 6, href: '/dars/6', label: '6-Dars' },
+  { lesson: 7, href: '/dars/7', label: '7-Dars' },
 ];
 
 export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'account', showLessonHome = false }: SiteHeaderProps) {
