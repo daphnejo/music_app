@@ -232,8 +232,8 @@
 
 .noteLabels {
   position: absolute;
-  left: 16.72%;
-  right: 16.72%;
+  left: 15.91%;
+  right: 15.91%;
   bottom: 7px;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
