@@ -21,24 +21,22 @@ const landingSections: Array<{ id: Exclude<LandingSection, 'home'>; href: string
 
 export function SiteHeader({ mode = 'landing', activeLesson }: SiteHeaderProps) {
   const isLanding = mode === 'landing';
+  const isLesson = mode === 'lesson';
   const [activeSection, setActiveSection] = useState<LandingSection>('home');
 
   useEffect(() => {
     if (!isLanding) return;
 
     let raf = 0;
-
     const updateActiveSection = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const marker = window.scrollY + 180;
         let next: LandingSection = 'home';
-
         for (const section of landingSections) {
           const element = document.getElementById(section.id);
           if (element && element.offsetTop <= marker) next = section.id;
         }
-
         const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
         if (nearBottom && document.getElementById('contact')) next = 'contact';
         setActiveSection(next);
@@ -48,7 +46,6 @@ export function SiteHeader({ mode = 'landing', activeLesson }: SiteHeaderProps) 
     updateActiveSection();
     window.addEventListener('scroll', updateActiveSection, { passive: true });
     window.addEventListener('resize', updateActiveSection);
-
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('scroll', updateActiveSection);
@@ -58,7 +55,6 @@ export function SiteHeader({ mode = 'landing', activeLesson }: SiteHeaderProps) 
 
   const landingClass = (section: LandingSection) =>
     `${styles.navLink} ${activeSection === section ? styles.activeLanding : ''}`;
-
   const lessonClass = (lesson: 1 | 2 | 3) =>
     `${styles.navLink} ${activeLesson === lesson ? styles.activeLesson : ''}`;
 
@@ -70,21 +66,21 @@ export function SiteHeader({ mode = 'landing', activeLesson }: SiteHeaderProps) 
       </Link>
 
       <nav className="main-nav" aria-label="Asosiy navigatsiya">
-        <Link
-          className={isLanding ? landingClass('home') : `${styles.navLink} ${!activeLesson ? styles.activeLanding : ''}`}
-          href="/"
-        >
-          Bosh sahifa
-        </Link>
+        {isLesson ? null : (
+          <Link
+            className={isLanding ? landingClass('home') : `${styles.navLink} ${!activeLesson ? styles.activeLanding : ''}`}
+            href="/"
+          >
+            Bosh sahifa
+          </Link>
+        )}
 
         {isLanding ? (
-          <>
-            {landingSections.map((section) => (
-              <Link className={landingClass(section.id)} href={section.href} key={section.id}>
-                {section.label}
-              </Link>
-            ))}
-          </>
+          landingSections.map((section) => (
+            <Link className={landingClass(section.id)} href={section.href} key={section.id}>
+              {section.label}
+            </Link>
+          ))
         ) : (
           <>
             <Link className={lessonClass(1)} href="/dars/1">1-Dars</Link>
@@ -94,10 +90,17 @@ export function SiteHeader({ mode = 'landing', activeLesson }: SiteHeaderProps) 
         )}
       </nav>
 
-      <div className="header-actions">
-        <Link className="text-link" href="/kurs/1">Kirish</Link>
-        <Link className="gradient-button compact" href="/kurs/1">Ro&apos;yxatdan o&apos;tish</Link>
-      </div>
+      {isLesson ? (
+        <div className={styles.lessonUser} aria-label="Foydalanuvchi profili">
+          <span className={styles.lessonUserName}>Abdulaziz<br />Khamidov</span>
+          <span className={styles.lessonAvatar} aria-hidden="true">🐻</span>
+        </div>
+      ) : (
+        <div className="header-actions">
+          <Link className="text-link" href="/kurs/1">Kirish</Link>
+          <Link className="gradient-button compact" href="/kurs/1">Ro&apos;yxatdan o&apos;tish</Link>
+        </div>
+      )}
     </header>
   );
 }
