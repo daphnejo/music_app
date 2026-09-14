@@ -1,0 +1,552 @@
+.page {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  color: #1a1a2e;
+  background: #fff5f8;
+}
+
+.stage {
+  min-height: calc(100vh - 94px);
+  border-bottom: 3px solid #ff1e70;
+  background: #fff5f8;
+  font-family: var(--font-inter), Arial, sans-serif;
+}
+
+.screen {
+  width: calc(100% - 10.87vw);
+  min-height: calc(100vh - 94px);
+  margin: 0 auto;
+  padding: 16px 0 62px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kicker {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ff3d87;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.kicker span {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(105deg, #ff3d87, #ff6644);
+}
+
+.heading h1 {
+  margin: 0;
+  min-height: 77px;
+  display: flex;
+  align-items: center;
+  color: #1a1a2e;
+  font-size: 64px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+
+.heading h1 em {
+  margin-left: 16px;
+  color: #ff3d87;
+  font-size: 52px;
+  line-height: 1;
+  font-style: normal;
+  font-weight: 400;
+  transform: rotate(-5deg);
+}
+
+.definitionTall,
+.definitionShort {
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .62);
+  color: #446;
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: 400;
+}
+
+.definitionTall {
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+}
+
+.definitionShort {
+  min-height: 61px;
+  display: flex;
+  align-items: center;
+}
+
+.learningCard {
+  height: 55.5vh;
+  min-height: 540px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #fff;
+}
+
+.keyboard {
+  position: relative;
+  width: 100%;
+  height: 60.05%;
+  flex: 0 0 60.05%;
+  display: grid;
+  grid-template-columns: repeat(21, minmax(0, 1fr));
+  overflow: hidden;
+  border: 4px solid #5c5874;
+  border-radius: 13px;
+  background: #fff;
+}
+
+.whiteKey {
+  position: relative;
+  min-width: 0;
+  border-right: 3px solid #5c5874;
+  background: #fff;
+}
+
+.whiteKey:last-child { border-right: 0; }
+
+.whiteLabel {
+  position: absolute;
+  left: 50%;
+  bottom: 13px;
+  transform: translateX(-50%);
+  color: #524f6b;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 600;
+}
+
+.blackKey {
+  position: absolute;
+  z-index: 2;
+  top: -4px;
+  right: -35%;
+  width: 70%;
+  height: 72.35%;
+  border-radius: 0 0 6px 6px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 18px;
+  background: #5b5872;
+}
+
+.blackKey small {
+  color: #fff;
+  font-size: 9px;
+  line-height: 11px;
+  font-weight: 600;
+}
+
+.octaveBracket {
+  position: absolute;
+  z-index: 5;
+  left: 35.75%;
+  width: 33.35%;
+  bottom: 46px;
+  height: 40px;
+  pointer-events: none;
+}
+
+.bracketLabel {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  color: #ff3d87;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bracketLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  height: 3px;
+  border-radius: 999px;
+  background: #ff3d87;
+}
+
+.bracketCap {
+  position: absolute;
+  bottom: 3px;
+  width: 4px;
+  height: 13px;
+  border-radius: 999px;
+  background: #ff3d87;
+}
+
+.bracketCapLeft { left: 0; }
+.bracketCapRight { right: 0; }
+
+.staffPanel {
+  position: relative;
+  width: 100%;
+  height: 34.42%;
+  flex: 0 0 34.42%;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #f7f2ff;
+}
+
+.staffLines {
+  position: absolute;
+  left: 8.12%;
+  width: 82.79%;
+  top: 18.09%;
+  height: 44.22%;
+}
+
+.staffLines i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #77728f;
+  opacity: .72;
+}
+
+.staffLines i:nth-child(1) { top: 0; }
+.staffLines i:nth-child(2) { top: 25%; }
+.staffLines i:nth-child(3) { top: 50%; }
+.staffLines i:nth-child(4) { top: 75%; }
+.staffLines i:nth-child(5) { top: 100%; }
+
+.clef {
+  position: absolute;
+  left: 7.2%;
+  top: -4%;
+  z-index: 2;
+  width: 76px;
+  height: 82%;
+  display: grid;
+  place-items: center;
+  color: #24132f;
+  font-family: 'Times New Roman', 'Noto Music', serif;
+  font-size: 146px;
+  line-height: .92;
+  font-weight: 400;
+}
+
+.ledger {
+  position: absolute;
+  left: 16.64%;
+  top: 73.36%;
+  width: 50px;
+  height: 2px;
+  background: #77728f;
+}
+
+.staffNote {
+  position: absolute;
+  width: 27px;
+  height: 18px;
+  transform: translateX(-50%) rotate(-8deg);
+  border: 4px solid #24132f;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.edgeNote {
+  border-color: #ff3d87;
+}
+
+.noteLabels {
+  position: absolute;
+  left: 12.55%;
+  right: 12.55%;
+  bottom: 4px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  align-items: center;
+}
+
+.noteLabels strong {
+  color: #446;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.noteLabels .edgeLabel {
+  color: #ff3d87;
+}
+
+.continuationHeading {
+  gap: 10px;
+}
+
+.exerciseCard {
+  height: 540px;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #fff;
+}
+
+.songHeader {
+  height: 76px;
+  flex: 0 0 76px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+}
+
+.songHeader h2 {
+  margin: 0;
+  color: #1a1a2e;
+  font-size: 36px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.songHeader > span {
+  color: #446;
+  font-size: 20px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.audioButton {
+  justify-self: end;
+  width: 260px;
+  height: 72px;
+  padding: 0 20px;
+  border: 1px solid #009fe8;
+  border-radius: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #009fe8;
+  background: #effaff;
+  cursor: pointer;
+  transition: transform .16s ease, background .16s ease;
+}
+
+.audioButton:hover {
+  transform: translateY(-1px);
+  background: #e6f7ff;
+}
+
+.audioButton img {
+  width: 40px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.audioButton strong {
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.waveform {
+  width: 52px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.waveform i {
+  width: 3px;
+  border-radius: 2px;
+  background: #009fe8;
+}
+
+.waveform i:nth-child(1) { height: 12px; }
+.waveform i:nth-child(2) { height: 24px; }
+.waveform i:nth-child(3) { height: 32px; }
+.waveform i:nth-child(4) { height: 18px; }
+.waveform i:nth-child(5) { height: 10px; }
+
+.rhythmBoard {
+  position: relative;
+  height: 280px;
+  flex: 0 0 280px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #f7f2ff;
+}
+
+.rhythmBoard > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.syllable {
+  position: absolute;
+  top: 63.2%;
+  transform: translateX(-50%);
+  width: 76px;
+  color: #1a1a2e;
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.singingHint {
+  height: 88px;
+  flex: 0 0 88px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  color: #446;
+  background: #fff0f7;
+  font-size: 22px;
+  line-height: 27px;
+}
+
+.singingHint em {
+  font-style: italic;
+}
+
+.fab {
+  position: fixed;
+  bottom: 22px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(105deg, #ff1e70, #ff6644);
+  box-shadow: 0 6px 8px rgba(255, 30, 112, .25);
+  font-family: var(--font-inter), Arial, sans-serif;
+  font-size: 22px;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 30;
+}
+
+.fab:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.prev { left: 32px; }
+.next { right: 32px; }
+
+@media (max-width: 1120px) {
+  .screen {
+    width: calc(100% - 48px);
+    min-height: auto;
+    padding-bottom: 78px;
+  }
+
+  .heading h1 {
+    font-size: clamp(42px, 7vw, 64px);
+  }
+
+  .definitionTall,
+  .definitionShort {
+    height: auto;
+    font-size: clamp(18px, 2.2vw, 24px);
+  }
+
+  .learningCard {
+    height: auto;
+    min-height: 610px;
+  }
+
+  .keyboard {
+    height: 350px;
+    flex-basis: 350px;
+  }
+
+  .staffPanel {
+    height: 215px;
+    flex-basis: 215px;
+  }
+
+  .exerciseCard {
+    height: auto;
+    min-height: 540px;
+  }
+}
+
+@media (max-width: 760px) {
+  .screen {
+    width: calc(100% - 28px);
+    padding-top: 20px;
+  }
+
+  .heading h1 {
+    font-size: 40px;
+  }
+
+  .heading h1 em {
+    font-size: 32px;
+  }
+
+  .definitionTall,
+  .definitionShort {
+    font-size: 17px;
+    line-height: 1.35;
+  }
+
+  .learningCard,
+  .exerciseCard {
+    overflow-x: auto;
+  }
+
+  .keyboard,
+  .staffPanel,
+  .songHeader,
+  .rhythmBoard,
+  .singingHint {
+    width: 900px;
+    flex: 0 0 auto;
+  }
+
+  .songHeader {
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .prev { left: 14px; }
+  .next { right: 14px; }
+}
