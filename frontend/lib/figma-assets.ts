@@ -12,5 +12,5 @@ export const figmaAssets = {
   testimonial3: 'https://www.figma.com/api/mcp/asset/daa9226f-34cd-41f5-a4cc-e33cbf0202ca.png',
   coverVisual: 'https://www.figma.com/api/mcp/asset/e70f0b5a-e6fe-4b71-be68-a035040a495e.png',
   lessonOneHistorical: 'https://www.figma.com/api/mcp/asset/0a09f399-f129-4c58-8d18-0d40ffbcae6b.png',
-  lessonTwoAnimals: 'https://www.figma.com/api/mcp/asset/8e1c55bf-503f-4baf-86dc-483a62149810.png',
+  lessonTwoAnimals: 'https://www.figma.com/api/mcp/asset/0e7b60ef-cbe5-444f-8340-bab57f32c790.png',
 } as const;
