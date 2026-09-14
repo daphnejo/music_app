@@ -12,5 +12,10 @@ export const figmaAssets = {
   testimonial3: 'https://www.figma.com/api/mcp/asset/daa9226f-34cd-41f5-a4cc-e33cbf0202ca.png',
   coverVisual: 'https://www.figma.com/api/mcp/asset/e70f0b5a-e6fe-4b71-be68-a035040a495e.png',
   lessonOneHistorical: 'https://www.figma.com/api/mcp/asset/0a09f399-f129-4c58-8d18-0d40ffbcae6b.png',
+  lessonOneCurrentIllustration: 'https://www.figma.com/api/mcp/asset/37360293-ebf2-4dc8-9539-2b91133a68b5/6da3a.png',
+  lessonOneMusicIcon: 'https://www.figma.com/api/mcp/asset/37360293-ebf2-4dc8-9539-2b91133a68b5/93fc0.svg',
+  lessonOneFactIconPurple: 'https://www.figma.com/api/mcp/asset/37360293-ebf2-4dc8-9539-2b91133a68b5/5b4a6.svg',
+  lessonOneFactIconBlue: 'https://www.figma.com/api/mcp/asset/37360293-ebf2-4dc8-9539-2b91133a68b5/2e2b2.svg',
+  lessonOneFactIconGreen: 'https://www.figma.com/api/mcp/asset/37360293-ebf2-4dc8-9539-2b91133a68b5/f8b31.svg',
   lessonTwoAnimals: 'https://www.figma.com/api/mcp/asset/0e7b60ef-cbe5-444f-8340-bab57f32c790.png',
 } as const;
