@@ -18,10 +18,10 @@ function Keyboard() {
     <div className={styles.keyboard} aria-label="Uch oktavali klaviatura">
       {keys.map((key, index) => (
         <div className={styles.whiteKey} key={`${key.label}-${index}`}>
-          <span>{key.label}</span>
+          <span className={styles.whiteLabel}>{key.label}</span>
           {BLACK_AFTER.has(key.pitchClass) && index < keys.length - 1 ? (
             <div className={styles.blackKey} aria-hidden="true">
-              {key.label === 'Mi' || key.label === 'Si' ? null : <small>{key.label}#</small>}
+              <small>{key.label}#</small>
             </div>
           ) : null}
         </div>
@@ -33,21 +33,28 @@ function Keyboard() {
 function StaffScale() {
   return (
     <div className={styles.staffPanel} aria-label="Tovushqator nota yo‘lida">
-      <div className={styles.clef} aria-hidden="true">𝄞</div>
       <div className={styles.staffLines} aria-hidden="true">
         {Array.from({ length: 5 }, (_, index) => <i key={index} />)}
       </div>
+      <div className={styles.clef} aria-hidden="true">𝄞</div>
       <div className={styles.ledger} aria-hidden="true" />
-      {STAFF_NOTES.map((note, index) => (
-        <div
-          className={styles.staffNote}
-          key={note}
-          style={{ left: `${18 + index * 10.6}%`, bottom: `${16 + index * 5.7}%` }}
-        >
-          <span className={styles.noteHead} />
-          <strong>{note}</strong>
-        </div>
-      ))}
+
+      <div className={styles.noteLayer} aria-hidden="true">
+        {STAFF_NOTES.map((note, index) => (
+          <span
+            className={styles.noteHead}
+            key={`${note}-head`}
+            style={{
+              left: `${20.779 + index * 9.74}%`,
+              top: `${68.42 - index * 5.263}%`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className={styles.noteLabels}>
+        {STAFF_NOTES.map((note) => <strong key={note}>{note}</strong>)}
+      </div>
     </div>
   );
 }
@@ -68,7 +75,7 @@ export default function LessonSixPage() {
             Musiqaviy tovushqator — tovushlarning balandlik tartibi bo‘yicha joylashishi.
           </div>
 
-          <section className={styles.learningCard}>
+          <section className={styles.learningCard} aria-label="Klaviatura va nota yozuvi">
             <Keyboard />
             <StaffScale />
           </section>
