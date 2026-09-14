@@ -6,14 +6,6 @@ import { SiteHeader } from '@/components/site-header';
 import styles from './lesson-three.module.css';
 
 const NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'Lya', 'Si'] as const;
-const KEYBOARD_NOTES = Array.from({ length: 21 }, (_, index) => NOTES[index % NOTES.length]);
-const BLACK_KEYS = [
-  [0, 'Do#'], [1, 'Re#'], [3, 'Fa#'], [4, 'Sol#'], [5, 'Lya#'],
-  [7, 'Do#'], [8, 'Re#'], [10, 'Fa#'], [11, 'Sol#'], [12, 'Lya#'],
-  [14, 'Do#'], [15, 'Re#'], [17, 'Fa#'], [18, 'Sol#'], [19, 'Lya#'],
-] as const;
-const OCTAVES = ['Sub kontr', 'Kontr oktava', 'Katta oktava', 'Kichik oktava', 'Birinchi oktava', 'Ikkinchi oktava', 'Uchinchi oktava', 'To‘rtinchi oktava'] as const;
-
 const NOTE_AUDIO = [
   ['Do', 'audio10.wav'],
   ['Re', 'audio4.wav'],
@@ -23,20 +15,10 @@ const NOTE_AUDIO = [
   ['Lya', 'audio8.wav'],
   ['Si', 'audio9.wav'],
 ] as const;
+const OCTAVES = ['Sub kontr', 'Kontr oktava', 'Katta oktava', 'Kichik oktava', 'Birinchi oktava', 'Ikkinchi oktava', 'Uchinchi oktava', 'To‘rtinchi oktava'] as const;
 
-type QuizOption = { id: string; label: string; correct: boolean };
-type Quiz = {
-  id: string;
-  number: number;
-  prompt: string;
-  options: QuizOption[];
-  audio?: string[];
-};
-
-const QUIZZES: Quiz[] = [
+const QUIZZES = [
   {
-    id: 'octave-register',
-    number: 1,
     prompt: '1 oktava notalari qaysi registrga kiradi?',
     options: [
       { id: 'middle', label: 'O‘rta registr', correct: true },
@@ -45,8 +27,6 @@ const QUIZZES: Quiz[] = [
     ],
   },
   {
-    id: 'solfege',
-    number: 2,
     prompt: 'Solfedjio bu — ?',
     options: [
       { id: 'keys', label: 'Oq va qora klavishlar ketma-ketligi', correct: false },
@@ -55,8 +35,6 @@ const QUIZZES: Quiz[] = [
     ],
   },
   {
-    id: 'melody-middle',
-    number: 3,
     prompt: 'Kuy qaysi registrda yangradi?',
     audio: ['audio12.wav'],
     options: [
@@ -66,8 +44,6 @@ const QUIZZES: Quiz[] = [
     ],
   },
   {
-    id: 'birds',
-    number: 4,
     prompt: 'Qushlar sayrashini qaysi registrda ifoda etsa bo‘ladi?',
     options: [
       { id: 'middle', label: 'O‘rta registr', correct: false },
@@ -76,8 +52,6 @@ const QUIZZES: Quiz[] = [
     ],
   },
   {
-    id: 'melody-low',
-    number: 5,
     prompt: 'Kuy qaysi registrda ijro etildi?',
     audio: ['audio11.wav', 'audio14.wav'],
     options: [
@@ -86,174 +60,188 @@ const QUIZZES: Quiz[] = [
       { id: 'low', label: 'Pastki registr', correct: true },
     ],
   },
-];
+] as const;
 
-function QuizCard({ quiz }: { quiz: Quiz }) {
+const TOTAL_STEPS = 8;
+
+function KeyboardVisual() {
+  return (
+    <div className={styles.keyboardShell}>
+      <div className={styles.keyboard} aria-label="Do, Re, Mi, Fa, Sol, Lya, Si notalari ko‘rsatilgan klaviatura">
+        {Array.from({ length: 21 }, (_, index) => {
+          const note = NOTES[index % NOTES.length];
+          return (
+            <div className={styles.whiteKey} key={index}>
+              <strong>{note}</strong>
+            </div>
+          );
+        })}
+        {[0, 1, 3, 4, 5, 7, 8, 10, 11, 12, 14, 15, 17, 18, 19].map((keyIndex) => (
+          <span
+            className={styles.blackKey}
+            key={keyIndex}
+            style={{ left: `${((keyIndex + 1) / 21) * 100}%` }}
+          >
+            <small>{['Do♯', 'Re♯', 'Fa♯', 'Sol♯', 'Lya♯'][keyIndex % 5]}</small>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function QuizScreen({ quiz, index }: { quiz: (typeof QUIZZES)[number]; index: number }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [checked, setChecked] = useState(false);
   const selectedOption = quiz.options.find((option) => option.id === selected);
+  const correctOption = quiz.options.find((option) => option.correct);
 
   return (
-    <article className={styles.quizCard}>
-      <div className={styles.quizTop}>
-        <span className={styles.quizNumber}>{quiz.number}</span>
-        <span className={styles.quizBadge}>PPT mashqi</span>
+    <section className={styles.quizScreen}>
+      <div className={styles.screenHeading}>
+        <span className={styles.kicker}>MASHQ {index + 1}</span>
+        <h1>{quiz.prompt}</h1>
+        <p>To‘g‘ri javobni tanlang va keyin tekshiring.</p>
       </div>
-      <h3>{quiz.prompt}</h3>
 
-      {quiz.audio?.length ? (
-        <div className={styles.sourceAudioRow}>
-          {quiz.audio.map((audio) => (
-            <button key={audio} type="button" className={styles.sourceAudio} title="Manba audiosi">
-              ▶ Tinglash <small>{audio}</small>
+      {'audio' in quiz && quiz.audio?.length ? (
+        <div className={styles.listenRow}>
+          {quiz.audio.map((source, audioIndex) => (
+            <button className={styles.listenButton} data-source-audio={source} key={source} type="button">
+              <span className={styles.playIcon}>▶</span>
+              {quiz.audio.length > 1 ? `Tinglash ${audioIndex + 1}` : 'Tinglash'}
             </button>
           ))}
         </div>
       ) : null}
 
-      <div className={styles.quizOptions}>
+      <div className={styles.answerGrid}>
         {quiz.options.map((option) => {
           const isSelected = selected === option.id;
           const isCorrect = checked && option.correct;
           const isWrong = checked && isSelected && !option.correct;
           return (
             <button
-              type="button"
-              key={option.id}
+              className={`${styles.answerOption} ${isSelected ? styles.selected : ''} ${isCorrect ? styles.correct : ''} ${isWrong ? styles.wrong : ''}`}
               disabled={checked}
+              key={option.id}
               onClick={() => setSelected(option.id)}
-              className={`${styles.quizOption} ${isSelected ? styles.selected : ''} ${isCorrect ? styles.correct : ''} ${isWrong ? styles.wrong : ''}`}
+              type="button"
             >
               <span>{option.label}</span>
-              <span className={styles.optionMark}>{isCorrect ? '✓' : isWrong ? '×' : isSelected ? '●' : '○'}</span>
+              <span>{isCorrect ? '✓' : isWrong ? '×' : isSelected ? '●' : '○'}</span>
             </button>
           );
         })}
       </div>
 
-      <div className={styles.quizFooter}>
-        <button
-          type="button"
-          disabled={!selected || checked}
-          className={styles.checkButton}
-          onClick={() => setChecked(true)}
-        >
-          {checked ? 'Tekshirildi' : 'Javobni tekshirish'}
-        </button>
-        {checked ? (
-          <p className={selectedOption?.correct ? styles.goodFeedback : styles.retryFeedback}>
-            {selectedOption?.correct ? 'Barakalla! To‘g‘ri javob. ⭐' : `To‘g‘ri javob — ${quiz.options.find((option) => option.correct)?.label}.`}
-          </p>
-        ) : null}
-      </div>
-    </article>
+      <button className={styles.checkButton} disabled={!selected || checked} onClick={() => setChecked(true)} type="button">
+        {checked ? 'Tekshirildi' : 'Javobni tekshirish'}
+      </button>
+
+      {checked ? (
+        <div className={selectedOption?.correct ? styles.goodFeedback : styles.retryFeedback}>
+          {selectedOption?.correct ? 'Barakalla! To‘g‘ri javob. ⭐' : `To‘g‘ri javob: ${correctOption?.label}.`}
+        </div>
+      ) : null}
+    </section>
   );
 }
 
 export default function LessonThreePage() {
+  const [step, setStep] = useState(0);
+
+  const goBack = () => setStep((current) => Math.max(0, current - 1));
+  const goNext = () => setStep((current) => Math.min(TOTAL_STEPS - 1, current + 1));
+
   return (
     <main className={styles.page}>
       <SiteHeader mode="lesson" activeLesson={3} />
 
-      <section className={styles.hero}>
-        <div className={styles.decorNotes} aria-hidden="true">♪ ♫ ♪</div>
-        <div className={styles.heroInner}>
-          <header className={styles.lessonHeading}>
-            <div className={styles.kickerRow}>
-              <span className={styles.musicBadge}>♪</span>
-              <span>3-DARS • MUSIQA NAZARIYASI</span>
-            </div>
-            <h1>Klaviatura <span aria-hidden="true">♪</span></h1>
-          </header>
+      <div className={styles.progressBar} aria-label={`3-dars, ${step + 1}-bosqich, jami ${TOTAL_STEPS} bosqich`}>
+        <div className={styles.progressFill} style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%` }} />
+      </div>
 
-          <div className={styles.definitionBar}>
-            <p><strong>Klaviatura</strong> — musiqa cholg‘u sozlarida ma’lum tartibda joylashgan oq va qora klavishlar majmui.</p>
-          </div>
-
-          <section className={styles.pianoCard} aria-label="Pianino klaviaturasi">
-            <div className={styles.keyboard}>
-              <div className={styles.whiteKeys}>
-                {KEYBOARD_NOTES.map((note, index) => (
-                  <div className={styles.whiteKey} key={`${note}-${index}`}>
-                    <strong>{note}</strong>
-                  </div>
-                ))}
+      <section className={styles.stage}>
+        {step === 0 ? (
+          <div className={styles.keyboardScreen}>
+            <div className={styles.heroRow}>
+              <div>
+                <span className={styles.kicker}>♪ 3-DARS • MUSIQA NAZARIYASI</span>
+                <h1>Klaviatura <span>♪</span></h1>
               </div>
-              {BLACK_KEYS.map(([afterWhite, label]) => (
-                <span
-                  key={`${label}-${afterWhite}`}
-                  className={styles.blackKey}
-                  style={{ left: `${((afterWhite + 1) / KEYBOARD_NOTES.length) * 100}%` }}
-                >
-                  <small>{label}</small>
-                </span>
-              ))}
+              <div className={styles.musicDecor} aria-hidden="true">♪ ♫ ♪</div>
             </div>
-          </section>
 
-          <div className={styles.hintBar}>
-            <span className={styles.hintIcon}>💡</span>
-            <p><strong>Eslab qoling:</strong> oq klavishlarda Do, Re, Mi, Fa, Sol, Lya va Si notalari ketma-ket joylashadi.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.learningArea}>
-        <section className={styles.audioCard}>
-          <div className={styles.sectionHeading}>
-            <div>
-              <span className={styles.eyebrow}>5-SLAYD</span>
-              <h2>Notalarni tinglang</h2>
-              <p>Manbadagi yetti nota audiosi saqlab qolindi.</p>
+            <div className={styles.definition}>
+              <strong>Klaviatura</strong> — musiqa cholg‘u sozlarida ma’lum tartibda joylashgan oq va qora klavishlar majmui.
             </div>
-            <div className={styles.noteOrder}>Do → Re → Mi → Fa → Sol → Lya → Si</div>
-          </div>
-          <div className={styles.noteAudioGrid}>
-            {NOTE_AUDIO.map(([note, source]) => (
-              <button key={note} type="button" className={styles.noteAudio} title="Manba audiosi">
-                <span>♪</span><strong>{note}</strong><small>{source}</small>
-              </button>
-            ))}
-          </div>
-        </section>
 
-        <section className={styles.octaveCard}>
-          <div className={styles.octaveCopy}>
-            <span className={styles.eyebrow}>6-SLAYD</span>
-            <h2>Kuy va oktavalar</h2>
-            <p>Kuy — bu turli balandlikdagi tovushlarning ma’lum bir ritm va lad bilan uyg‘unlashgan holati.</p>
-            <div className={styles.melodyAudioRow}>
-              {['audio11.wav', 'audio12.wav', 'audio13.wav'].map((audio, index) => (
-                <button key={audio} className={styles.melodyAudio} type="button" title="Manba audiosi">
-                  ▶ Namuna {index + 1}<small>{audio}</small>
+            <KeyboardVisual />
+
+            <div className={styles.rememberBar}>
+              <span className={styles.bulb}>💡</span>
+              <p><strong>Eslab qoling:</strong> oq klavishlarda Do, Re, Mi, Fa, Sol, Lya va Si notalari ketma-ket joylashadi.</p>
+            </div>
+          </div>
+        ) : null}
+
+        {step === 1 ? (
+          <section className={styles.notesScreen}>
+            <div className={styles.screenHeading}>
+              <span className={styles.kicker}>NOTALARNI ESHITAMIZ</span>
+              <h1>Notalarni tinglang</h1>
+              <p>Har bir notani alohida tinglab, klaviaturadagi o‘rnini eslab qoling.</p>
+            </div>
+            <div className={styles.noteListenGrid}>
+              {NOTE_AUDIO.map(([note, source]) => (
+                <button className={styles.noteButton} data-source-audio={source} key={note} type="button">
+                  <span>♪</span>
+                  <strong>{note}</strong>
+                  <small>Tinglash</small>
                 </button>
               ))}
             </div>
-          </div>
-          <div className={styles.octaveMap}>
-            {OCTAVES.map((octave) => (
-              <span key={octave} className={styles.octaveChip}>{octave}</span>
-            ))}
-          </div>
-        </section>
+            <div className={styles.noteSequence}>Do → Re → Mi → Fa → Sol → Lya → Si</div>
+          </section>
+        ) : null}
 
-        <section className={styles.exerciseSection}>
-          <div className={styles.exerciseHead}>
-            <div>
-              <span className={styles.eyebrow}>7–11-SLAYDLAR</span>
-              <h2>Mashqlar va testlar</h2>
-              <p>Asl taqdimotdagi beshta test ham shu sahifada saqlanadi.</p>
+        {step === 2 ? (
+          <section className={styles.octaveScreen}>
+            <div className={styles.octaveCopy}>
+              <span className={styles.kicker}>KUY VA OKTAVALAR</span>
+              <h1>Kuy va oktavalar</h1>
+              <p>Kuy — bu turli balandlikdagi tovushlarning ma’lum bir ritm va lad bilan uyg‘unlashgan holati.</p>
+              <div className={styles.listenRow}>
+                {['audio11.wav', 'audio12.wav', 'audio13.wav'].map((source, index) => (
+                  <button className={styles.listenButton} data-source-audio={source} key={source} type="button">
+                    <span className={styles.playIcon}>▶</span> Namuna {index + 1}
+                  </button>
+                ))}
+              </div>
             </div>
-            <span className={styles.reviewBadge}>Javob kalitlari metodist tekshiruvida</span>
-          </div>
-          <div className={styles.quizGrid}>
-            {QUIZZES.map((quiz) => <QuizCard key={quiz.id} quiz={quiz} />)}
-          </div>
-        </section>
+            <div className={styles.octaveGrid}>
+              {OCTAVES.map((octave) => <div className={styles.octaveCard} key={octave}>{octave}</div>)}
+            </div>
+          </section>
+        ) : null}
+
+        {step >= 3 ? <QuizScreen key={step} quiz={QUIZZES[step - 3]} index={step - 3} /> : null}
       </section>
 
-      <Link className={`${styles.fab} ${styles.prev}`} href="/dars/2" aria-label="2-darsga qaytish">←</Link>
-      <span className={`${styles.fab} ${styles.next} ${styles.nextDisabled}`} aria-label="4-dars hali saytga ulanmagan">→</span>
+      <div className={styles.stepCounter}>{step + 1} / {TOTAL_STEPS}</div>
+
+      {step === 0 ? (
+        <Link className={`${styles.fab} ${styles.prev}`} href="/dars/2" aria-label="2-darsga qaytish">←</Link>
+      ) : (
+        <button className={`${styles.fab} ${styles.prev}`} onClick={goBack} type="button" aria-label="Oldingi bosqich">←</button>
+      )}
+
+      {step < TOTAL_STEPS - 1 ? (
+        <button className={`${styles.fab} ${styles.next}`} onClick={goNext} type="button" aria-label="Keyingi bosqich">→</button>
+      ) : (
+        <span className={`${styles.fab} ${styles.next} ${styles.doneFab}`} aria-label="3-dars yakunlandi">✓</span>
+      )}
     </main>
   );
 }
