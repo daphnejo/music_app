@@ -5,79 +5,28 @@ import { useMemo, useRef, useState } from 'react';
 import { SiteHeader } from '@/components/site-header';
 import styles from './lesson-five.module.css';
 
-const GUIDE_STEPS = [
-  '2-chiziq atrofidan boshlang',
-  'Yuqoriga yumaloq harakat qiling',
-  'Pastga katta aylana tushiring',
-  'Markazdan yuqoriga qayting',
-  'Pastga uzun chiziq tushiring',
-  'Pastida kichik ilgak bilan tugating',
-] as const;
+const FIGMA = {
+  step1: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/65ba7.svg',
+  step2: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/5337b.svg',
+  step3: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/37c40.svg',
+  step4: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/e669f.svg',
+  step5: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/e291f.svg',
+  step6: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/0e859.svg',
+  traceGuide: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/cfbda.svg',
+} as const;
 
-const TRACE_POINTS = [
-  [53, 7], [49, 10], [46, 15], [45, 21], [47, 27], [52, 31], [57, 35], [61, 40],
-  [63, 46], [62, 52], [59, 57], [54, 61], [48, 64], [42, 64], [36, 61], [31, 57],
-  [27, 52], [25, 46], [26, 40], [29, 35], [34, 31], [40, 28], [47, 27], [54, 28],
-  [60, 31], [65, 36], [68, 42], [69, 49], [68, 56], [65, 63], [61, 69], [56, 74],
-  [51, 77], [46, 79], [41, 79], [37, 77], [34, 73], [33, 68], [34, 63], [38, 59],
-  [43, 57], [49, 57], [54, 59], [58, 63], [60, 68], [59, 73], [56, 77], [52, 80],
-  [50, 84], [50, 88], [52, 92], [56, 94], [60, 94], [63, 92], [65, 88], [65, 84],
+const STEPS = [
+  { title: '1-qadam', text: 'Pastki dumaloq shaklning chap tomonini chizing.', image: FIGMA.step1, tone: 'purple' },
+  { title: '2-qadam', text: 'Dumaloq shaklni davom ettiring.', image: FIGMA.step2, tone: 'blue' },
+  { title: '3-qadam', text: 'Dumaloq shaklni tugating.', image: FIGMA.step3, tone: 'purple' },
+  { title: '4-qadam', text: 'Yuqoriga qarab egri chiziq chizing.', image: FIGMA.step4, tone: 'blue' },
+  { title: '5-qadam', text: 'Yuqori qismida ilmoq hosil qiling.', image: FIGMA.step5, tone: 'purple' },
+  { title: '6-qadam', text: 'Pastga tushirib, uchini buking. Kalit tayyor!', image: FIGMA.step6, tone: 'blue' },
 ] as const;
 
 type Point = { x: number; y: number };
 
-function StaffLines({ children }: { children?: React.ReactNode }) {
-  return (
-    <div className={styles.staff}>
-      {Array.from({ length: 5 }, (_, index) => <i key={index} style={{ top: `${18 + index * 16}%` }} />)}
-      {children}
-    </div>
-  );
-}
-
-function TheoryScreen() {
-  return (
-    <section className={styles.screen}>
-      <div className={styles.heading}>
-        <div className={styles.kicker}><span>♪</span> 5-DARS • MUSIQA NAZARIYASI</div>
-        <h1>Skripka kaliti <em>𝄞</em></h1>
-      </div>
-
-      <div className={styles.definition}>
-        Nota yo‘liga notalarni yozishdan avval musiqa kaliti qo‘yiladi. Musiqada ular bir nechta. Ulardan biri — skripka kaliti.
-      </div>
-
-      <div className={styles.theoryGrid}>
-        <article className={styles.clefCard}>
-          <div className={styles.clefBadge}>𝄞</div>
-          <div>
-            <span className={styles.cardEyebrow}>MUSIQA KALITI</span>
-            <h2>Skripka kaliti</h2>
-            <p>Kalit nota yo‘lining boshida yoziladi va notalarni o‘qishga yordam beradi.</p>
-          </div>
-        </article>
-
-        <article className={styles.staffCard}>
-          <span className={styles.cardEyebrow}>NOTA YO‘LIDA</span>
-          <h2>Kalit notalardan oldin keladi</h2>
-          <StaffLines>
-            <span className={styles.staffClef}>𝄞</span>
-            <span className={styles.staffNote} style={{ left: '38%', top: '43%' }}>●</span>
-            <span className={styles.staffNote} style={{ left: '53%', top: '35%' }}>●</span>
-            <span className={styles.staffNote} style={{ left: '68%', top: '27%' }}>●</span>
-          </StaffLines>
-        </article>
-      </div>
-
-      <div className={styles.rememberBar}>
-        <span>💡</span>
-        <p><strong>Eslab qoling:</strong> avval kalit, keyin notalar yoziladi.</p>
-      </div>
-    </section>
-  );
-}
-
-function PracticeScreen() {
+export default function LessonFivePage() {
   const boardRef = useRef<HTMLDivElement | null>(null);
   const [points, setPoints] = useState<Point[]>([]);
   const [drawing, setDrawing] = useState(false);
@@ -87,89 +36,76 @@ function PracticeScreen() {
   const addPoint = (clientX: number, clientY: number) => {
     const rect = boardRef.current?.getBoundingClientRect();
     if (!rect) return;
-    const x = ((clientX - rect.left) / rect.width) * 100;
-    const y = ((clientY - rect.top) / rect.height) * 100;
-    setPoints((current) => [...current, { x, y }]);
+    setPoints((current) => [
+      ...current,
+      {
+        x: ((clientX - rect.left) / rect.width) * 100,
+        y: ((clientY - rect.top) / rect.height) * 100,
+      },
+    ]);
   };
 
   return (
-    <section className={styles.screen}>
-      <div className={styles.headingCompact}>
-        <div>
-          <div className={styles.kicker}><span>✎</span> 5-DARS • MASHQ</div>
-          <h1>Skripka kalitini yozing</h1>
-        </div>
-        <button className={styles.clearButton} type="button" onClick={() => setPoints([])}>Tozalash</button>
-      </div>
+    <main className={styles.page}>
+      <SiteHeader mode="lesson" activeLesson={5} />
 
-      <div className={styles.practiceLayout}>
-        <div className={styles.stepsCard}>
-          <span className={styles.cardEyebrow}>6 QADAM</span>
-          <h2>Chizish tartibi</h2>
-          <div className={styles.stepsGrid}>
-            {GUIDE_STEPS.map((step, index) => (
-              <div className={styles.stepItem} key={step}>
-                <span>{index + 1}</span>
-                <p>{step}</p>
-              </div>
+      <section className={styles.stage}>
+        <div className={styles.screen}>
+          <header className={styles.heading}>
+            <div className={styles.kicker}><span>♪</span> 5-DARS • MUSIQA NAZARIYASI</div>
+            <h1>Skripka kaliti <em>♪</em></h1>
+          </header>
+
+          <div className={styles.definition}>
+            Skripka yoki “sol” kaliti nota yo‘lining ikkinchi chizig‘idan boshlab yoziladi.
+          </div>
+
+          <div className={styles.stepsRow}>
+            {STEPS.map((step) => (
+              <article
+                className={`${styles.stepCard} ${step.tone === 'blue' ? styles.blueCard : styles.purpleCard}`}
+                key={step.title}
+              >
+                <h2>{step.title}</h2>
+                <div className={styles.stepImage}>
+                  <img src={step.image} alt={`${step.title}: skripka kalitini chizish bosqichi`} />
+                </div>
+                <p>{step.text}</p>
+              </article>
             ))}
           </div>
-        </div>
 
-        <div className={styles.traceCard}>
-          <div className={styles.traceHead}>
-            <div>
-              <span className={styles.cardEyebrow}>SMART MONITOR MASHQI</span>
-              <h2>Nuqtalar ustidan chizing</h2>
+          <section className={styles.practiceCard}>
+            <div className={styles.practiceText}>
+              <h2>Endi o‘zingiz chizing</h2>
+              <p>Pushti nuqtadan boshlang. Shtrixli yo‘l ustidan barmoq yoki stilus bilan yuring.</p>
             </div>
-            <span className={styles.stylusHint}>✎ Stilus / sichqoncha</span>
-          </div>
 
-          <div
-            className={styles.traceBoard}
-            ref={boardRef}
-            onPointerDown={(event) => {
-              event.currentTarget.setPointerCapture(event.pointerId);
-              setDrawing(true);
-              addPoint(event.clientX, event.clientY);
-            }}
-            onPointerMove={(event) => {
-              if (drawing) addPoint(event.clientX, event.clientY);
-            }}
-            onPointerUp={() => setDrawing(false)}
-            onPointerCancel={() => setDrawing(false)}
-          >
-            <StaffLines />
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-              {TRACE_POINTS.map(([x, y], index) => <circle key={index} cx={x} cy={y} r="0.85" className={styles.traceDot} />)}
-              {path ? <polyline points={path} className={styles.tracePath} /> : null}
-            </svg>
-          </div>
+            <div
+              className={styles.traceBoard}
+              ref={boardRef}
+              onPointerDown={(event) => {
+                event.currentTarget.setPointerCapture(event.pointerId);
+                setDrawing(true);
+                addPoint(event.clientX, event.clientY);
+              }}
+              onPointerMove={(event) => {
+                if (drawing) addPoint(event.clientX, event.clientY);
+              }}
+              onPointerUp={() => setDrawing(false)}
+              onPointerCancel={() => setDrawing(false)}
+            >
+              <img src={FIGMA.traceGuide} alt="Ustidan chizish uchun to‘rtta shtrixli skripka kaliti" />
+              <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                {path ? <polyline points={path} className={styles.tracePath} /> : null}
+              </svg>
+            </div>
+          </section>
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-export default function LessonFivePage() {
-  const [step, setStep] = useState(0);
-
-  return (
-    <main className={styles.page}>
-      <SiteHeader mode="lesson" activeLesson={5} showLessonHome />
-      <div className={styles.stage}>{step === 0 ? <TheoryScreen /> : <PracticeScreen />}</div>
-
-      {step === 0 ? (
-        <Link className={`${styles.fab} ${styles.prev}`} href="/dars/4" aria-label="4-darsga qaytish">←</Link>
-      ) : (
-        <button className={`${styles.fab} ${styles.prev}`} type="button" onClick={() => setStep(0)} aria-label="Oldingi bosqich">←</button>
-      )}
-
-      {step === 0 ? (
-        <button className={`${styles.fab} ${styles.next}`} type="button" onClick={() => setStep(1)} aria-label="Mashqqa o‘tish">→</button>
-      ) : (
-        <span className={`${styles.fab} ${styles.next} ${styles.nextPending}`} aria-label="5-dars yakunlandi">→</span>
-      )}
+      <Link className={`${styles.fab} ${styles.prev}`} href="/dars/4" aria-label="4-darsga qaytish">←</Link>
+      <Link className={`${styles.fab} ${styles.next}`} href="/dars/6" aria-label="6-darsga o‘tish">→</Link>
     </main>
   );
 }
