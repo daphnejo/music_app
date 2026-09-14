@@ -70,7 +70,7 @@ export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'acc
     `${styles.navLink} ${activeLesson === lesson ? styles.activeLesson : ''}`;
 
   return (
-    <header className={`site-header ${styles.stickyHeader}`}>
+    <header className={`site-header ${styles.stickyHeader} ${isLesson ? styles.lessonHeader : ''}`}>
       <Link className={`brand ${styles.brandLink}`} href="/" aria-label="Solfedjio bosh sahifa">
         <span className="brand-mark" aria-hidden="true">♫</span>
         <span>Solfedjio</span>
