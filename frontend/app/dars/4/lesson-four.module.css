@@ -129,9 +129,7 @@
 }
 
 .purpleBadge,
-.badgeSpacer {
-  min-height: 34px;
-}
+.badgeSpacer { min-height: 34px; }
 
 .purpleBadge {
   align-self: flex-start;
@@ -292,17 +290,80 @@
 }
 
 .ledgerGraphic {
-  min-height: 388px;
-  display: grid;
-  place-items: center;
+  height: 388px;
+  position: relative;
   overflow: hidden;
   border-radius: 24px;
+  background: #fff;
 }
 
-.ledgerGraphic img {
+.ledgerBase {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 388px;
-  object-fit: contain;
+  height: 100%;
+  object-fit: fill;
+}
+
+.ledgerZone {
+  position: absolute;
+  left: 4.7%;
+  width: 39%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 2;
+}
+
+.ledgerZone strong {
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.ledgerZone span {
+  color: #446;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.ledgerTopZone { top: 10.3%; }
+.ledgerTopZone strong { color: #7d47ba; }
+.ledgerBottomZone { top: 75.2%; }
+.ledgerBottomZone strong { color: #217a5e; }
+
+.ledgerNumbers,
+.mainStaffNumbers {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+}
+
+.ledgerNumbers { left: 57.2%; }
+.topLedgerNumbers { top: 10.3%; color: #7d47ba; }
+.bottomLedgerNumbers { top: 68%; color: #217a5e; }
+.mainStaffNumbers { left: 65.6%; top: 31.9%; color: #446; }
+
+.staffCaption {
+  position: absolute;
+  left: 72%;
+  top: 42%;
+  width: 25%;
+  color: #446;
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 500;
+  z-index: 3;
+}
+
+.ledgerReminder p {
+  color: #446;
+  font-size: 24px;
 }
 
 .fab {
@@ -325,10 +386,6 @@
 
 .prev { left: 32px; }
 .next { right: 32px; }
-.nextPending {
-  opacity: .42;
-  cursor: default;
-}
 
 @media (min-width: 1121px) and (max-height: 900px) {
   .stage { min-height: calc(100dvh - 74px); }
@@ -348,11 +405,9 @@
   .learningCard { min-height: 300px; padding: 14px 18px; border-radius: 20px; }
   .cardTop { min-height: 72px; gap: 6px; }
   .cardTop h2 { font-size: 22px; }
-  .purpleBadge,
-  .badgeSpacer { min-height: 27px; }
+  .purpleBadge, .badgeSpacer { min-height: 27px; }
   .purpleBadge { min-width: 118px; padding: 4px 12px; font-size: 15px; }
-  .numberingStaff,
-  .staffGraphic { height: 126px; }
+  .numberingStaff, .staffGraphic { height: 126px; }
   .numberingStaff strong { font-size: 26px; }
   .cardHint { min-height: 54px; font-size: 15px; }
   .audioSlot { min-height: 58px; }
@@ -363,8 +418,11 @@
   .rememberBar { min-height: 62px; padding: 8px 16px 8px 20px; gap: 14px; border-radius: 20px; }
   .rememberBar img { width: 42px; height: 46px; flex-basis: 42px; }
   .rememberBar p { font-size: 17px; }
-  .ledgerGraphic { min-height: 300px; }
-  .ledgerGraphic img { height: 300px; }
+  .ledgerGraphic { height: 300px; }
+  .ledgerZone strong, .staffCaption { font-size: 18px; }
+  .ledgerZone span { font-size: 14px; }
+  .ledgerNumbers, .mainStaffNumbers { font-size: 17px; line-height: 22px; }
+  .ledgerReminder p { font-size: 17px; }
   .fab { bottom: 16px; }
 }
 
@@ -374,7 +432,10 @@
   .learningCard { min-height: 340px; }
   .whitePanel { min-height: auto; }
   .staffGraphic, .numberingStaff { height: 150px; }
-  .ledgerGraphic img { height: auto; }
+  .ledgerGraphic { height: auto; min-height: 340px; }
+  .ledgerZone strong, .staffCaption { font-size: 18px; }
+  .ledgerZone span { font-size: 14px; }
+  .ledgerNumbers, .mainStaffNumbers { font-size: 17px; line-height: 24px; }
 }
 
 @media (max-width: 760px) {
@@ -395,7 +456,12 @@
   .rememberBar { padding: 14px 16px; gap: 14px; border-radius: 22px; }
   .rememberBar img { width: 46px; height: 52px; flex-basis: 46px; }
   .rememberBar p { font-size: 18px; }
-  .ledgerGraphic { min-height: 280px; }
+  .ledgerGraphic {
+    min-height: 520px;
+    overflow-x: auto;
+  }
+  .ledgerBase { min-width: 900px; }
+  .ledgerZone, .ledgerNumbers, .mainStaffNumbers, .staffCaption { display: none; }
   .prev { left: 14px; }
   .next { right: 14px; }
 }
