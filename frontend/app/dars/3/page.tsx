@@ -240,7 +240,7 @@ export default function LessonThreePage() {
       {step < TOTAL_STEPS - 1 ? (
         <button className={`${styles.fab} ${styles.next}`} onClick={goNext} type="button" aria-label="Keyingi bosqich">→</button>
       ) : (
-        <span className={`${styles.fab} ${styles.next} ${styles.doneFab}`} aria-label="3-dars yakunlandi">✓</span>
+        <Link className={`${styles.fab} ${styles.next}`} href="/dars/4" aria-label="4-darsga o‘tish">→</Link>
       )}
     </main>
   );
