@@ -8,8 +8,8 @@ import styles from './lesson-seven.module.css';
 const WHITE_NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'] as const;
 const BLACK_AFTER = new Set([0, 1, 3, 4, 5]);
 const STAFF_NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'Lya', 'Si', 'Do'] as const;
-const RHYTHM_ASSET = 'https://www.figma.com/api/mcp/asset/77e98d1c-d98b-40d8-86ab-3d8c25fe98ef/f4a75.svg';
-const AUDIO_ICON_ASSET = 'https://www.figma.com/api/mcp/asset/77e98d1c-d98b-40d8-86ab-3d8c25fe98ef/64e34.svg';
+const RHYTHM_ASSET = '/assets/figma/lesson-7-ayiq-rhythm.svg';
+const AUDIO_ICON_ASSET = '/assets/figma/lesson-7-audio-icon.svg';
 const SYLLABLES = [
   { text: 'A –', left: 13.07 },
   { text: 'yiq', left: 21.57 },
