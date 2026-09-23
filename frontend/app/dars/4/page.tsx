@@ -6,14 +6,13 @@ import { SiteHeader } from '@/components/site-header';
 import styles from './lesson-four.module.css';
 
 const FIGMA = {
-  staffLine: 'https://www.figma.com/api/mcp/asset/682b81ed-c35a-4c72-984c-66761011b173/58d87.svg',
-  notesOnLines: 'https://www.figma.com/api/mcp/asset/682b81ed-c35a-4c72-984c-66761011b173/d7f8c.svg',
-  notesInSpaces: 'https://www.figma.com/api/mcp/asset/682b81ed-c35a-4c72-984c-66761011b173/c8225.svg',
-  audioBlue: 'https://www.figma.com/api/mcp/asset/682b81ed-c35a-4c72-984c-66761011b173/64e34.svg',
-  audioGreen: 'https://www.figma.com/api/mcp/asset/682b81ed-c35a-4c72-984c-66761011b173/10f62.svg',
-  lightbulb: 'https://www.figma.com/api/mcp/asset/682b81ed-c35a-4c72-984c-66761011b173/5d531.svg',
-  ledgerLines: 'https://www.figma.com/api/mcp/asset/016521d5-365c-4f64-81de-7ba0520cc1d6/1c5d6.svg',
-  lightbulbLedger: 'https://www.figma.com/api/mcp/asset/016521d5-365c-4f64-81de-7ba0520cc1d6/5d531.svg',
+  notesOnLines: '/assets/figma/lesson-4-on-lines.svg',
+  notesInSpaces: '/assets/figma/lesson-4-in-spaces.svg',
+  audioBlue: '/assets/figma/lesson-4-audio-blue.svg',
+  audioGreen: '/assets/figma/lesson-4-audio-green.svg',
+  lightbulb: '/assets/figma/lesson-4-lightbulb.svg',
+  ledgerLines: '/assets/figma/lesson-4-ledger.svg',
+  lightbulbLedger: '/assets/figma/lesson-4-ledger-lightbulb.svg',
 } as const;
 
 function Waveform({ tone }: { tone: 'blue' | 'green' }) {
@@ -44,7 +43,7 @@ function StaffNumberingCard() {
         <h2>Chiziqlar tartibi</h2>
       </div>
       <div className={styles.numberingStaff} aria-label="Nota yo‘lining besh chizig‘i pastdan yuqoriga 1 dan 5 gacha sanaladi">
-        {positions.map((top) => <img className={styles.staffLine} key={top} src={FIGMA.staffLine} alt="" aria-hidden="true" style={{ top }} />)}
+        {positions.map((top) => <span className={styles.staffLine} key={top} aria-hidden="true" style={{ top }} />)}
         <strong style={{ left: '4%', top: '69%' }}>1</strong>
         <strong style={{ left: '23%', top: '54%' }}>2</strong>
         <strong style={{ left: '43%', top: '39%' }}>3</strong>
