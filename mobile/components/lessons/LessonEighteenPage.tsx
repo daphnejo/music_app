@@ -288,7 +288,7 @@ export function LessonEighteenPage({
               <DegreeSound key={degree.roman} degree={degree} audio={audios[index]} resolveUrl={resolveUrl} />
             ))}
           </View>
-          <View style={styles.tipBox}><Text style={styles.tipEmoji}>👂</Text><Text style={styles.tipText}>Manbadagi audio55–audio61 pog‘onalar I–VII ketma-ketligiga mos keladi.</Text></View>
+          <View style={styles.tipBox}><Text style={styles.tipEmoji}>👂</Text><Text style={styles.tipText}>Har bir tugmani bosib pog‘onalarni I dan VII gacha ketma-ket tingla.</Text></View>
         </View>
       ) : null}
 
