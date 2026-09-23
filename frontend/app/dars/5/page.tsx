@@ -6,13 +6,13 @@ import { SiteHeader } from '@/components/site-header';
 import styles from './lesson-five.module.css';
 
 const FIGMA = {
-  step1: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/65ba7.svg',
-  step2: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/5337b.svg',
-  step3: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/37c40.svg',
-  step4: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/e669f.svg',
-  step5: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/e291f.svg',
-  step6: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/0e859.svg',
-  traceGuide: 'https://www.figma.com/api/mcp/asset/2765140d-3dbd-4719-b7b5-60394166d284/cfbda.svg',
+  step1: '/assets/figma/lesson-5-step-1.svg',
+  step2: '/assets/figma/lesson-5-step-2.svg',
+  step3: '/assets/figma/lesson-5-step-3.svg',
+  step4: '/assets/figma/lesson-5-step-4.svg',
+  step5: '/assets/figma/lesson-5-step-5.svg',
+  step6: '/assets/figma/lesson-5-step-6.svg',
+  traceGuide: '/assets/figma/lesson-5-trace-guide.svg',
 } as const;
 
 const STEPS = [
