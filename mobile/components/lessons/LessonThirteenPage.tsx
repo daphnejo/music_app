@@ -26,7 +26,7 @@ const GAMMA = [
   { note: 'Sol', degree: 'V', color: '#D27A24', soft: '#FFF0DF' },
   { note: 'Lya', degree: 'VI', color: '#C14E70', soft: '#FFE7EE' },
   { note: 'Si', degree: 'VII', color: '#7C52B8', soft: '#F0E8FF' },
-  { note: 'Do', degree: 'VIII', color: '#23866A', soft: '#E2F7F0' },
+  { note: 'Do', degree: 'I', color: '#23866A', soft: '#E2F7F0' },
 ] as const;
 
 const QUIZ_OPTIONS = [
@@ -237,7 +237,7 @@ export function LessonThirteenPage({ audios, videos, completed, saving, onBack, 
         <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}> 
           <Text style={styles.stepLabel}>GAMMA ZINAPOYASI</Text>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Pog‘onama-pog‘ona chiq 🪜</Text>
-          <Text style={[styles.sectionText, { color: colors.muted }]}>I-pog‘onadan boshlang va VIII-pog‘onadagi yuqori Do gacha tartib bilan chiqing.</Text>
+          <Text style={[styles.sectionText, { color: colors.muted }]}>I-pog‘onadan boshlang va yuqori Do — yana I pog‘onagacha tartib bilan chiqing.</Text>
           <View style={styles.climbStatus}>
             <View style={[styles.climbCircle, climbComplete && styles.climbCircleDone]}><Text style={styles.climbCircleText}>{climbComplete ? '✓' : `${climbIndex}/8`}</Text></View>
             <View style={{ flex: 1 }}><Text style={styles.climbTitle}>{climbComplete ? 'Ajoyib! Gamma tepaga chiqdi.' : `Navbat: ${GAMMA[Math.min(climbIndex, 7)].degree} — ${GAMMA[Math.min(climbIndex, 7)].note}`}</Text><Text style={styles.climbSub}>{climbMistakes ? `${climbMistakes} marta adashding — davom et!` : 'Har pog‘ona bosilganda uning ovozi ham chiqadi.'}</Text></View>
@@ -269,7 +269,7 @@ export function LessonThirteenPage({ audios, videos, completed, saving, onBack, 
             <Pressable onPress={() => setSelectedVideo('rhythm')} style={[styles.videoTab, selectedVideo === 'rhythm' && styles.videoTabActive]}><Text style={[styles.videoTabText, selectedVideo === 'rhythm' && styles.videoTabTextActive]}>🥁 Ritm</Text></Pressable>
           </View>
           {activeVideo ? <View style={styles.videoFrame}><PracticeVideo key={activeVideo.id} url={resolveUrl(activeVideo.url)} /></View> : <View style={styles.noVideo}><Ionicons name="videocam-off-outline" size={32} color={colors.muted} /><Text style={[styles.noVideoText, { color: colors.muted }]}>Video topilmadi</Text></View>}
-          <View style={styles.tipBox}><Text style={styles.tipEmoji}>🎶</Text><Text style={styles.tipText}>Kuylaganda pog‘onalarni ham eslab bor: I, II, III, IV, V, VI, VII, VIII.</Text></View>
+          <View style={styles.tipBox}><Text style={styles.tipEmoji}>🎶</Text><Text style={styles.tipText}>Kuylaganda pog‘onalarni ham eslab bor: I, II, III, IV, V, VI, VII, I.</Text></View>
         </View>
       ) : null}
 
