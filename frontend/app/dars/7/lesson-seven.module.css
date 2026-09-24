@@ -397,6 +397,27 @@
 .waveform i:nth-child(4) { height: 18px; }
 .waveform i:nth-child(5) { height: 10px; }
 
+
+.audioChoices {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.audioChoices .audioButton {
+  width: 176px;
+}
+
+.pendingFab,
+.pendingFab:hover {
+  opacity: .38;
+  cursor: not-allowed;
+  transform: none;
+  filter: grayscale(.2);
+  box-shadow: none;
+}
+
 .rhythmBoard {
   position: relative;
   height: 280px;
@@ -520,6 +541,8 @@
   .songHeader h2 { font-size: 30px; }
   .songHeader > span { font-size: 17px; }
   .audioButton { width: 220px; height: 58px; }
+  .audioChoices { gap: 8px; }
+  .audioChoices .audioButton { width: 156px; }
   .audioButton strong { font-size: 20px; }
   .rhythmBoard { height: 246px; flex-basis: 246px; }
   .syllable { font-size: 18px; top: 62%; }
@@ -601,6 +624,15 @@
 
   .songHeader {
     grid-template-columns: 1fr auto 1fr;
+  }
+
+  .audioChoices {
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .audioChoices .audioButton {
+    width: 160px;
   }
 
   .prev { left: 14px; }
