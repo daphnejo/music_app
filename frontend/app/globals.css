@@ -302,3 +302,41 @@ img { display: block; max-width: 100%; }
   .lesson-fab.prev { left: 14px; }
   .lesson-fab.next { right: 14px; }
 }
+
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+button[data-source-audio] {
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease, opacity .16s ease;
+}
+
+button[data-source-audio][data-loading='true'] {
+  cursor: progress;
+  opacity: .82;
+}
+
+button[data-source-audio][data-playing='true'] {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 3px rgba(43, 177, 255, .18), 0 8px 18px rgba(43, 177, 255, .14);
+  filter: saturate(1.08);
+}
+
+button[data-source-audio][data-media-error='true'] {
+  box-shadow: 0 0 0 3px rgba(229, 72, 77, .12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button[data-source-audio] {
+    transition: none;
+  }
+}
