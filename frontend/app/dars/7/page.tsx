@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { SiteHeader } from '@/components/site-header';
+import { SourceAudioButton } from '@/components/source-audio-button';
 import styles from './lesson-seven.module.css';
 
 const WHITE_NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'] as const;
@@ -86,19 +87,18 @@ function StaffOctave() {
 
 function AudioButton() {
   return (
-    <button
-      type="button"
+    <SourceAudioButton
       className={styles.audioButton}
-      data-source-audio="audio30.wav"
+      source="audio30.wav"
       data-alt-source-audio="audio31.wav"
-      title="Ayiq mashqi manba audiosi"
+      title="Ayiq mashqi manba audiosini tinglash"
     >
       <img src={AUDIO_ICON_ASSET} alt="" aria-hidden="true" />
       <span className={styles.waveform} aria-hidden="true">
         <i /><i /><i /><i /><i />
       </span>
       <strong>Tinglash</strong>
-    </button>
+    </SourceAudioButton>
   );
 }
 
