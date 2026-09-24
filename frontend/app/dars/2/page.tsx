@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SiteHeader } from '@/components/site-header';
+import { SourceAudioButton } from '@/components/source-audio-button';
 import { figmaAssets } from '@/lib/figma-assets';
 import styles from './lesson-two.module.css';
 
@@ -61,16 +62,15 @@ export default function LessonTwoPage() {
 
         <div className={styles.listenRow} aria-label="Registrlarni tinglash">
           {listenButtons.map((item) => (
-            <button
-              type="button"
+            <SourceAudioButton
               className={`${styles.listenButton} ${item.tone}`}
               key={item.label}
-              data-source-audio={item.source}
-              title={`${item.source} manba audiosi`}
+              source={item.source}
+              title={`${item.label} audiosini tinglash`}
             >
               <span className={styles.speaker} aria-hidden="true">🔊</span>
               <span>Tinglash</span>
-            </button>
+            </SourceAudioButton>
           ))}
         </div>
 
