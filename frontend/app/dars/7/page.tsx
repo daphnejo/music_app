@@ -108,7 +108,7 @@ function AyiqExercise() {
       <div className={styles.songHeader}>
         <h2>1. Ayiq</h2>
         <span>Bolalar qo‘shig‘i</span>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 10 }} aria-label="Ayiq mashqi audiolari">
+        <div className={styles.audioChoices} aria-label="Ayiq mashqi audiolari">
           <AudioButton source="audio30.wav" label="Tinglash 1" />
           <AudioButton source="audio31.wav" label="Tinglash 2" />
         </div>
@@ -180,7 +180,7 @@ export default function LessonSevenPage() {
       {screen === 0 ? (
         <button className={`${styles.fab} ${styles.next}`} type="button" onClick={() => setScreen(1)} aria-label="Ayiq mashqiga o‘tish">→</button>
       ) : (
-        <Link className={`${styles.fab} ${styles.next}`} href="/dars/8" aria-label="8-darsga o‘tish">→</Link>
+        <button className={`${styles.fab} ${styles.next} ${styles.pendingFab}`} type="button" disabled aria-label="Keyingi ekran hali tayyor emas" title="Keyingi ekran tayyorlanmoqda">→</button>
       )}
     </main>
   );
