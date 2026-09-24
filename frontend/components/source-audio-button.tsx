@@ -97,6 +97,7 @@ export function SourceAudioButton({ source, children, onClick, title, ...buttonP
         src={sourceMediaUrl(source)}
         preload="metadata"
         onLoadStart={() => setLoading(true)}
+        onLoadedMetadata={() => setLoading(false)}
         onCanPlay={() => setLoading(false)}
         onPlaying={() => {
           setLoading(false);
