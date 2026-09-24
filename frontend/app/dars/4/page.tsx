@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { SiteHeader } from '@/components/site-header';
+import { SourceAudioButton } from '@/components/source-audio-button';
 import styles from './lesson-four.module.css';
 
 const FIGMA = {
@@ -26,11 +27,11 @@ function Waveform({ tone }: { tone: 'blue' | 'green' }) {
 function AudioButton({ tone, source }: { tone: 'blue' | 'green'; source: string }) {
   const icon = tone === 'green' ? FIGMA.audioGreen : FIGMA.audioBlue;
   return (
-    <button className={`${styles.audioButton} ${tone === 'green' ? styles.greenAudio : styles.blueAudio}`} type="button" data-source-audio={source} title="Manba audiosi media integratsiyasi bilan ulanadi">
+    <SourceAudioButton className={`${styles.audioButton} ${tone === 'green' ? styles.greenAudio : styles.blueAudio}`} source={source} title="Manba audiosini tinglash">
       <img src={icon} alt="" aria-hidden="true" />
       <Waveform tone={tone} />
       <strong>Tinglash</strong>
-    </button>
+    </SourceAudioButton>
   );
 }
 
