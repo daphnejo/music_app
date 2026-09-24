@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { SiteHeader } from '@/components/site-header';
+import { SourceAudioButton } from '@/components/source-audio-button';
 import styles from './lesson-three.module.css';
 
 const NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'Lya', 'Si'] as const;
@@ -107,10 +108,10 @@ function QuizScreen({ quiz, index }: { quiz: (typeof QUIZZES)[number]; index: nu
       {'audio' in quiz && quiz.audio?.length ? (
         <div className={styles.listenRow}>
           {quiz.audio.map((source, audioIndex) => (
-            <button className={styles.listenButton} data-source-audio={source} key={source} type="button">
+            <SourceAudioButton className={styles.listenButton} key={source} source={source}>
               <span className={styles.playIcon}>▶</span>
               {quiz.audio.length > 1 ? `Tinglash ${audioIndex + 1}` : 'Tinglash'}
-            </button>
+            </SourceAudioButton>
           ))}
         </div>
       ) : null}
@@ -195,11 +196,11 @@ export default function LessonThreePage() {
             </div>
             <div className={styles.noteListenGrid}>
               {NOTE_AUDIO.map(([note, source]) => (
-                <button className={styles.noteButton} data-source-audio={source} key={note} type="button">
+                <SourceAudioButton className={styles.noteButton} key={note} source={source} title={`${note} notasini tinglash`}>
                   <span>♪</span>
                   <strong>{note}</strong>
                   <small>Tinglash</small>
-                </button>
+                </SourceAudioButton>
               ))}
             </div>
             <div className={styles.noteSequence}>Do → Re → Mi → Fa → Sol → Lya → Si</div>
@@ -214,9 +215,9 @@ export default function LessonThreePage() {
               <p>Kuy — bu turli balandlikdagi tovushlarning ma’lum bir ritm va lad bilan uyg‘unlashgan holati.</p>
               <div className={styles.listenRow}>
                 {['audio11.wav', 'audio12.wav', 'audio13.wav'].map((source, index) => (
-                  <button className={styles.listenButton} data-source-audio={source} key={source} type="button">
+                  <SourceAudioButton className={styles.listenButton} key={source} source={source}>
                     <span className={styles.playIcon}>▶</span> Namuna {index + 1}
-                  </button>
+                  </SourceAudioButton>
                 ))}
               </div>
             </div>
