@@ -247,6 +247,65 @@
   text-align: center;
 }
 
+
+.audioDock {
+  min-height: 66px;
+  padding: 9px 12px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #ffd5e4;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .86);
+  box-shadow: 0 8px 22px rgba(255, 30, 112, .06);
+}
+
+.audioDockCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.audioDockCopy strong {
+  color: #24132f;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.audioDockCopy span {
+  color: #75657a;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.audioSamples {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.sampleButton {
+  min-width: 0;
+  height: 44px;
+  padding: 0;
+  border: 1px solid #bfe7ff;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  color: #1676a8;
+  background: #eef9ff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sampleButton:hover {
+  border-color: #65c8ff;
+  background: #e3f6ff;
+}
+
 .fab {
   position: fixed;
   bottom: 22px;
@@ -298,14 +357,18 @@
   }
 
   .learningCard {
-    height: 520px;
+    height: 500px;
     padding: 10px;
     gap: 7px;
     border-radius: 21px;
   }
 
   .keyboard { height: 298px; flex-basis: 298px; }
-  .staffPanel { height: 195px; flex-basis: 195px; }
+  .staffPanel { height: 175px; flex-basis: 175px; }
+  .audioDock { min-height: 58px; grid-template-columns: 185px minmax(0, 1fr); padding: 7px 10px; gap: 10px; }
+  .audioDockCopy strong { font-size: 13px; }
+  .audioDockCopy span { font-size: 11px; }
+  .sampleButton { height: 38px; border-radius: 11px; font-size: 12px; }
   .clef { font-size: 132px; }
   .noteLabels strong { font-size: 16px; }
   .fab { bottom: 16px; }
@@ -366,6 +429,15 @@
 
   .learningCard {
     overflow-x: auto;
+  }
+
+  .audioDock {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .audioSamples {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .keyboard,
