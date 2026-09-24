@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import { SiteHeader } from '@/components/site-header';
+import { SourceAudioButton } from '@/components/source-audio-button';
 import styles from './lesson-six.module.css';
 
 const WHITE_NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'] as const;
 const BLACK_AFTER = new Set([0, 1, 3, 4, 5]);
 const STAFF_NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'Lya', 'Si'] as const;
+const SOUND_SAMPLES = Array.from({ length: 12 }, (_, index) => `audio${index + 17}.wav`);
 
 function Keyboard() {
   const keys = Array.from({ length: 21 }, (_, index) => ({
@@ -78,6 +80,25 @@ export default function LessonSixPage() {
           <section className={styles.learningCard} aria-label="Klaviatura va nota yozuvi">
             <Keyboard />
             <StaffScale />
+          </section>
+
+          <section className={styles.audioDock} aria-label="Tovushqator audio namunalari">
+            <div className={styles.audioDockCopy}>
+              <strong>Tovushlarni tinglang</strong>
+              <span>Namunalarni ketma-ket eshiting.</span>
+            </div>
+            <div className={styles.audioSamples}>
+              {SOUND_SAMPLES.map((source, index) => (
+                <SourceAudioButton
+                  className={styles.sampleButton}
+                  key={source}
+                  source={source}
+                  title={`Namuna ${index + 1} ni tinglash`}
+                >
+                  <span aria-hidden="true">{index + 1}</span>
+                </SourceAudioButton>
+              ))}
+            </div>
           </section>
         </div>
       </section>
