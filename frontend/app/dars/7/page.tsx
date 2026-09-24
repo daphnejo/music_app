@@ -89,7 +89,6 @@ function AudioButton({ source, label }: { source: string; label: string }) {
   return (
     <SourceAudioButton
       className={styles.audioButton}
-      style={{ width: 176 }}
       source={source}
       title={label}
     >
