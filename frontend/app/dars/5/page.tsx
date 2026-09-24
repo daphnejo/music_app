@@ -77,7 +77,12 @@ export default function LessonFivePage() {
 
           <section className={styles.practiceCard}>
             <div className={styles.practiceText}>
-              <h2>Endi o‘zingiz chizing</h2>
+              <div className={styles.practiceTitleRow}>
+                <h2>Endi o‘zingiz chizing</h2>
+                <button className={styles.clearButton} type="button" disabled={!points.length} onClick={() => setPoints([])}>
+                  Tozalash
+                </button>
+              </div>
               <p>Pushti nuqtadan boshlang. Shtrixli yo‘l ustidan barmoq yoki stilus bilan yuring.</p>
             </div>
 
@@ -92,7 +97,10 @@ export default function LessonFivePage() {
               onPointerMove={(event) => {
                 if (drawing) addPoint(event.clientX, event.clientY);
               }}
-              onPointerUp={() => setDrawing(false)}
+              onPointerUp={(event) => {
+                if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+                setDrawing(false);
+              }}
               onPointerCancel={() => setDrawing(false)}
             >
               <img src={FIGMA.traceGuide} alt="Ustidan chizish uchun to‘rtta shtrixli skripka kaliti" />
