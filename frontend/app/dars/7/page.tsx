@@ -89,6 +89,7 @@ function AudioButton({ source, label }: { source: string; label: string }) {
   return (
     <SourceAudioButton
       className={styles.audioButton}
+      style={{ width: 176 }}
       source={source}
       title={label}
     >
@@ -107,7 +108,7 @@ function AyiqExercise() {
       <div className={styles.songHeader}>
         <h2>1. Ayiq</h2>
         <span>Bolalar qo‘shig‘i</span>
-        <div className={styles.audioChoices} aria-label="Ayiq mashqi audiolari">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 10 }} aria-label="Ayiq mashqi audiolari">
           <AudioButton source="audio30.wav" label="Tinglash 1" />
           <AudioButton source="audio31.wav" label="Tinglash 2" />
         </div>
