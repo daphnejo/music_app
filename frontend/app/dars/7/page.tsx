@@ -85,19 +85,18 @@ function StaffOctave() {
   );
 }
 
-function AudioButton() {
+function AudioButton({ source, label }: { source: string; label: string }) {
   return (
     <SourceAudioButton
       className={styles.audioButton}
-      source="audio30.wav"
-      data-alt-source-audio="audio31.wav"
-      title="Ayiq mashqi manba audiosini tinglash"
+      source={source}
+      title={label}
     >
       <img src={AUDIO_ICON_ASSET} alt="" aria-hidden="true" />
       <span className={styles.waveform} aria-hidden="true">
         <i /><i /><i /><i /><i />
       </span>
-      <strong>Tinglash</strong>
+      <strong>{label}</strong>
     </SourceAudioButton>
   );
 }
@@ -108,7 +107,10 @@ function AyiqExercise() {
       <div className={styles.songHeader}>
         <h2>1. Ayiq</h2>
         <span>Bolalar qo‘shig‘i</span>
-        <AudioButton />
+        <div className={styles.audioChoices} aria-label="Ayiq mashqi audiolari">
+          <AudioButton source="audio30.wav" label="Tinglash 1" />
+          <AudioButton source="audio31.wav" label="Tinglash 2" />
+        </div>
       </div>
 
       <div className={styles.rhythmBoard}>
