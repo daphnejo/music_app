@@ -141,6 +141,32 @@
   overflow: hidden;
 }
 
+
+.practiceTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.clearButton {
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 1px solid #ffd0df;
+  border-radius: 999px;
+  color: #c62461;
+  background: #fff3f7;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.clearButton:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
 .practiceText h2 {
   margin: 0;
   color: #1a1a2e;
