@@ -31,7 +31,7 @@ export default function LessonOnePage() {
           <div className={styles.left}>
             <div className={styles.titleRow}>
               <span className={styles.titleIcon} aria-hidden="true">
-                <img src={figmaAssets.lessonOneMusicIcon} alt="" />
+                <img src="/assets/lesson-1/dars-icon.svg" alt="" />
               </span>
               <div className={styles.titleText}>
                 <p className={styles.kicker}>1-DARS. SOLFEDJIO.</p>
