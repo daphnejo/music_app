@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { AppIcon } from '@/components/app-icon';
 import { SiteHeader } from '@/components/site-header';
 import { SourceAudioButton } from '@/components/source-audio-button';
 import styles from './lesson-six.module.css';
@@ -69,8 +70,8 @@ export default function LessonSixPage() {
       <section className={styles.stage}>
         <div className={styles.screen}>
           <header className={styles.heading}>
-            <div className={styles.kicker}><span>♪</span> 6-DARS • MUSIQA NAZARIYASI</div>
-            <h1>Tovushqator <em>♪</em></h1>
+            <div className={styles.kicker}><span><AppIcon name="note" size={18} /></span> 6-DARS • MUSIQA NAZARIYASI</div>
+            <h1>Tovushqator <em><AppIcon name="note" size={34} /></em></h1>
           </header>
 
           <div className={styles.definition}>
@@ -103,8 +104,8 @@ export default function LessonSixPage() {
         </div>
       </section>
 
-      <Link className={`${styles.fab} ${styles.prev}`} href="/dars/5" aria-label="5-darsga qaytish">←</Link>
-      <Link className={`${styles.fab} ${styles.next}`} href="/dars/7" aria-label="7-darsga o‘tish">→</Link>
+      <Link className={`${styles.fab} ${styles.prev}`} href="/dars/5" aria-label="5-darsga qaytish"><AppIcon name="arrow-left" size={23} /></Link>
+      <Link className={`${styles.fab} ${styles.next}`} href="/dars/7" aria-label="7-darsga o‘tish"><AppIcon name="arrow-right" size={23} /></Link>
     </main>
   );
 }
