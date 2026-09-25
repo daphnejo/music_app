@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { AppIcon } from '@/components/app-icon';
 import { SiteHeader } from '@/components/site-header';
 import { SourceAudioButton } from '@/components/source-audio-button';
 import styles from './lesson-seven.module.css';
@@ -10,7 +11,6 @@ const WHITE_NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'] as const;
 const BLACK_AFTER = new Set([0, 1, 3, 4, 5]);
 const STAFF_NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'Lya', 'Si', 'Do'] as const;
 const RHYTHM_ASSET = '/assets/figma/lesson-7-ayiq-rhythm.svg';
-const AUDIO_ICON_ASSET = '/assets/figma/lesson-7-audio-icon.svg';
 const SYLLABLES = [
   { text: 'A –', left: 13.07 },
   { text: 'yiq', left: 21.57 },
@@ -92,7 +92,7 @@ function AudioButton({ source, label }: { source: string; label: string }) {
       source={source}
       title={label}
     >
-      <img src={AUDIO_ICON_ASSET} alt="" aria-hidden="true" />
+      <span className={styles.audioIcon} aria-hidden="true"><AppIcon name="speaker" size={30} /></span>
       <span className={styles.waveform} aria-hidden="true">
         <i /><i /><i /><i /><i />
       </span>
@@ -141,8 +141,8 @@ export default function LessonSevenPage() {
           {screen === 0 ? (
             <>
               <header className={styles.heading}>
-                <div className={styles.kicker}><span>♪</span> 7-DARS • MUSIQA NAZARIYASI</div>
-                <h1>Oktava <em>♪</em></h1>
+                <div className={styles.kicker}><span><AppIcon name="note" size={18} /></span> 7-DARS • MUSIQA NAZARIYASI</div>
+                <h1>Oktava <em><AppIcon name="note" size={34} /></em></h1>
                 <div className={styles.definitionTall}>
                   <span>Bir xil nomdagi eng yaqin ikki tovush orasidagi masofa oktava deyiladi.</span>
                   <span>Do, Re, Mi, Fa, Sol, Lya, Si dan keyin Do yuqoriroq registrda takrorlanadi.</span>
@@ -157,8 +157,8 @@ export default function LessonSevenPage() {
           ) : (
             <>
               <header className={`${styles.heading} ${styles.continuationHeading}`}>
-                <div className={styles.kicker}><span>♪</span> 7-DARS • DAVOMI</div>
-                <h1>Kuylash uchun mashqlar <em>♪</em></h1>
+                <div className={styles.kicker}><span><AppIcon name="note" size={18} /></span> 7-DARS • DAVOMI</div>
+                <h1>Kuylash uchun mashqlar <em><AppIcon name="note" size={34} /></em></h1>
                 <div className={styles.definitionShort}>
                   Do, Re, Mi notalari. Kuyni tinglang, so‘ng nota nomlari va so‘zlari bilan kuylang.
                 </div>
@@ -171,15 +171,15 @@ export default function LessonSevenPage() {
       </section>
 
       {screen === 0 ? (
-        <Link className={`${styles.fab} ${styles.prev}`} href="/dars/6" aria-label="6-darsga qaytish">←</Link>
+        <Link className={`${styles.fab} ${styles.prev}`} href="/dars/6" aria-label="6-darsga qaytish"><AppIcon name="arrow-left" size={23} /></Link>
       ) : (
-        <button className={`${styles.fab} ${styles.prev}`} type="button" onClick={() => setScreen(0)} aria-label="Oktava ekraniga qaytish">←</button>
+        <button className={`${styles.fab} ${styles.prev}`} type="button" onClick={() => setScreen(0)} aria-label="Oktava ekraniga qaytish"><AppIcon name="arrow-left" size={23} /></button>
       )}
 
       {screen === 0 ? (
-        <button className={`${styles.fab} ${styles.next}`} type="button" onClick={() => setScreen(1)} aria-label="Ayiq mashqiga o‘tish">→</button>
+        <button className={`${styles.fab} ${styles.next}`} type="button" onClick={() => setScreen(1)} aria-label="Ayiq mashqiga o‘tish"><AppIcon name="arrow-right" size={23} /></button>
       ) : (
-        <button className={`${styles.fab} ${styles.next} ${styles.pendingFab}`} type="button" disabled aria-label="Keyingi ekran hali tayyor emas" title="Keyingi ekran tayyorlanmoqda">→</button>
+        <button className={`${styles.fab} ${styles.next} ${styles.pendingFab}`} type="button" disabled aria-label="Keyingi ekran hali tayyor emas" title="Keyingi ekran tayyorlanmoqda"><AppIcon name="arrow-right" size={23} /></button>
       )}
     </main>
   );
