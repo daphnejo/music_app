@@ -8,7 +8,7 @@
 
 .hero {
   min-height: calc(100vh - 92px);
-  padding: 60px clamp(24px, 5.55vw, 80px) 82px;
+  padding: 56px clamp(24px, 5.55vw, 80px) 68px;
   display: flex;
   align-items: center;
   border-bottom: 3px solid #ff1e70;
@@ -20,14 +20,14 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 780px) minmax(360px, 452px);
-  gap: 48px;
+  gap: 44px;
   align-items: center;
 }
 
 .left {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 22px;
 }
 
 .titleRow {
@@ -208,7 +208,7 @@
 
 .facts {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .fact {
