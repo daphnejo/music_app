@@ -71,7 +71,10 @@ export default function LessonTwoPage() {
               title={`${item.label} audiosini tinglash`}
             >
               <span className={styles.speaker} aria-hidden="true">🔊</span>
-              <span>Tinglash</span>
+              <span className={styles.listenCopy}>
+                <span className={styles.listenName}>{item.label}</span>
+                <span className={styles.listenAction}>Tinglash</span>
+              </span>
             </SourceAudioButton>
           ))}
         </div>
