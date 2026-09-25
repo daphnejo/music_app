@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { AppIcon } from '@/components/app-icon';
 import { NoteStrip } from '@/components/note-strip';
 import { SiteHeader } from '@/components/site-header';
 import { figmaAssets } from '@/lib/figma-assets';
@@ -110,11 +111,11 @@ export default function HomePage() {
       <section className="hero-section">
         <div className="hero-grid">
           <div className="hero-copy">
-            <span className="badge blue">🎵 YANGI INTERAKTIV PLATFORMA</span>
+            <span className="badge blue"><AppIcon name="music" size={16} /> YANGI INTERAKTIV PLATFORMA</span>
             <h1 className="hero-title">Musiqa nazariyasini<br />o&apos;ynab <span>o&apos;rganing!</span></h1>
             <p className="hero-lead">Bolalar musiqa va san&apos;at maktablarining 1-7 sinf o&apos;quvchilari uchun maxsus ishlab chiqilgan, qiziqarli o&apos;yinlar va vizual notalar orqali solfedjio darslari.</p>
             <div className="hero-actions">
-              <Link className="gradient-button" href="/kurs/1">🚀 Bepul darsni boshlang</Link>
+              <Link className="gradient-button" href="/kurs/1"><AppIcon name="rocket" size={18} /> Bepul darsni boshlang</Link>
               <Link className="outline-button" href="#features">Dastur bilan tanishish</Link>
             </div>
             <div className="hero-stats">
@@ -127,7 +128,7 @@ export default function HomePage() {
           <div className="hero-media">
             <img src={figmaAssets.landingHero} alt="Solfedjio darsidagi bolalar" />
             <div className="wave-card">
-              <span className="play-dot" aria-hidden="true">▶</span>
+              <span className="play-dot" aria-hidden="true"><AppIcon name="play" size={18} /></span>
               <div className="wave-copy"><strong>Ritm mashqi</strong><WaveBars /></div>
             </div>
           </div>
@@ -177,8 +178,8 @@ export default function HomePage() {
                 </div>
                 <div className="notation-block" aria-hidden="true" />
                 <div className="course-footer">
-                  {course.href === '#' ? <span style={{ color: '#9b7ea6', background: 'transparent', padding: 0 }}>Tez orada →</span> : <Link href={course.href}>Darsni boshlash →</Link>}
-                  <span>⭐ Musiqiy darslik</span>
+                  {course.href === '#' ? <span style={{ color: '#9b7ea6', background: 'transparent', padding: 0 }}>Tez orada <AppIcon name="arrow-right" size={16} /></span> : <Link href={course.href}>Darsni boshlash <AppIcon name="arrow-right" size={16} /></Link>}
+                  <span><AppIcon name="star" size={16} /> Musiqiy darslik</span>
                 </div>
               </article>
             ))}
@@ -222,18 +223,18 @@ export default function HomePage() {
             </article>
 
             <article className="card price-card dark">
-              <span className="popular">ENG OMMABOP 🔥</span>
+              <span className="popular">ENG OMMABOP <AppIcon name="flame" size={14} /></span>
               <div><h3>Standart</h3><p className="muted">Solfedjio darslarini chuqur o&apos;rganish uchun</p></div>
               <div className="price">89,000 UZS</div>
               <ul><li>Barcha sinflar uchun darsliklar</li><li>100+ ritm va eshitish o&apos;yinlari</li><li>Ota-onalar uchun tahliliy shaxsiy kabinet</li><li>Oylik sertifikat va yutuqlar</li></ul>
-              <Link className="gradient-button" href="/kurs/1">Ulanish 🚀</Link>
+              <Link className="gradient-button" href="/kurs/1">Ulanish <AppIcon name="rocket" size={18} /></Link>
             </article>
 
             <article className="card price-card green">
               <div><h3>Maktab uchun (Premium)</h3><p className="muted">To&apos;liq musiqa va san&apos;at maktabi sinflari uchun maxsus tarif</p></div>
               <div className="price">Kontakt</div>
               <ul><li>Barcha sinf o&apos;quvchilari uchun cheksiz profil</li><li>O&apos;qituvchilar uchun metodik dars rejalari</li><li>Sinflararo reyting va musobaqalar</li><li>24/7 Shaxsiy menejer qo&apos;llab-quvvatlashi</li></ul>
-              <Link className="gradient-button" style={{ background: 'linear-gradient(105deg,#34d399,#2ec4b6)' }} href="#contact">Ulanish ✨</Link>
+              <Link className="gradient-button" style={{ background: 'linear-gradient(105deg,#34d399,#2ec4b6)' }} href="#contact">Ulanish <AppIcon name="sparkle" size={18} /></Link>
             </article>
           </div>
         </div>
@@ -264,7 +265,7 @@ export default function HomePage() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">
-              <div className="brand"><span className="brand-mark">♫</span><span>Solfedjio</span></div>
+              <div className="brand"><span className="brand-mark"><AppIcon name="music" size={20} /></span><span>Solfedjio</span></div>
               <p>Bolalar musiqa va san&apos;at maktablari uchun interaktiv, qiziqarli va professional solfedjio darslari platformasi. Farzandingiz musiqa olamini sevib o&apos;rgansin.</p>
             </div>
             <div className="footer-col"><h3>Platforma</h3><Link href="#courses">Darsliklar</Link><Link href="#features">Mashqlar</Link><Link href="#teachers">Pedagoglar</Link><Link href="#pricing">Tariflar</Link></div>
