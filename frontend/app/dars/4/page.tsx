@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { AppIcon } from '@/components/app-icon';
 import { SiteHeader } from '@/components/site-header';
 import { SourceAudioButton } from '@/components/source-audio-button';
 import styles from './lesson-four.module.css';
@@ -9,11 +10,7 @@ import styles from './lesson-four.module.css';
 const FIGMA = {
   notesOnLines: '/assets/figma/lesson-4-on-lines.svg',
   notesInSpaces: '/assets/figma/lesson-4-in-spaces.svg',
-  audioBlue: '/assets/figma/lesson-4-audio-blue.svg',
-  audioGreen: '/assets/figma/lesson-4-audio-green.svg',
-  lightbulb: '/assets/figma/lesson-4-lightbulb.svg',
   ledgerLines: '/assets/figma/lesson-4-ledger.svg',
-  lightbulbLedger: '/assets/figma/lesson-4-ledger-lightbulb.svg',
 } as const;
 
 function Waveform({ tone }: { tone: 'blue' | 'green' }) {
@@ -25,10 +22,9 @@ function Waveform({ tone }: { tone: 'blue' | 'green' }) {
 }
 
 function AudioButton({ tone, source }: { tone: 'blue' | 'green'; source: string }) {
-  const icon = tone === 'green' ? FIGMA.audioGreen : FIGMA.audioBlue;
   return (
     <SourceAudioButton className={`${styles.audioButton} ${tone === 'green' ? styles.greenAudio : styles.blueAudio}`} source={source} title="Manba audiosini tinglash">
-      <img src={icon} alt="" aria-hidden="true" />
+      <span className={styles.audioIcon} aria-hidden="true"><AppIcon name="speaker" size={30} /></span>
       <Waveform tone={tone} />
       <strong>Tinglash</strong>
     </SourceAudioButton>
@@ -76,8 +72,8 @@ function MainStaffScreen() {
   return (
     <section className={styles.screen}>
       <div className={styles.heading}>
-        <div className={styles.kicker}><span>♪</span> 4-DARS • MUSIQA NAZARIYASI</div>
-        <h1>Nota yo‘li <em>♪</em></h1>
+        <div className={styles.kicker}><span><AppIcon name="note" size={18} /></span> 4-DARS • MUSIQA NAZARIYASI</div>
+        <h1>Nota yo‘li <em><AppIcon name="note" size={34} /></em></h1>
       </div>
       <div className={styles.definition}>Notalar musiqa yozuvida 5 ta chiziqdan iborat nota yo‘liga yoziladi.</div>
       <div className={styles.whitePanel}>
@@ -87,7 +83,7 @@ function MainStaffScreen() {
           <StaffAudioCard kind="spaces" />
         </div>
         <div className={styles.rememberBar}>
-          <img src={FIGMA.lightbulb} alt="" aria-hidden="true" />
+          <span className={styles.rememberIcon} aria-hidden="true"><AppIcon name="bulb" size={30} /></span>
           <p><strong>Eslab qoling:</strong> nota yo‘li 5 ta chiziqdan iborat.</p>
         </div>
       </div>
@@ -99,8 +95,8 @@ function LedgerLinesScreen() {
   return (
     <section className={styles.screen}>
       <div className={styles.heading}>
-        <div className={styles.kicker}><span>♪</span> 4-DARS • DAVOMI</div>
-        <h1>Qo‘shimcha chiziqlar <em>♪</em></h1>
+        <div className={styles.kicker}><span><AppIcon name="note" size={18} /></span> 4-DARS • DAVOMI</div>
+        <h1>Qo‘shimcha chiziqlar <em><AppIcon name="note" size={34} /></em></h1>
       </div>
       <div className={styles.definition}>Shuningdek, notalar qo‘shimcha chiziqlarda ham yoziladi.</div>
 
@@ -130,7 +126,7 @@ function LedgerLinesScreen() {
         </div>
 
         <div className={`${styles.rememberBar} ${styles.ledgerReminder}`}>
-          <img src={FIGMA.lightbulbLedger} alt="" aria-hidden="true" />
+          <span className={styles.rememberIcon} aria-hidden="true"><AppIcon name="bulb" size={30} /></span>
           <p>Eslab qoling: qo‘shimcha chiziqlar nota yo‘liga eng yaqin chiziqdan boshlab sanaladi.</p>
         </div>
       </div>
@@ -144,8 +140,8 @@ export default function LessonFourPage() {
     <main className={styles.page}>
       <SiteHeader mode="lesson" activeLesson={4} showLessonHome />
       <div className={styles.stage}>{step === 0 ? <MainStaffScreen /> : <LedgerLinesScreen />}</div>
-      {step === 0 ? <Link className={`${styles.fab} ${styles.prev}`} href="/dars/3" aria-label="3-darsga qaytish">←</Link> : <button className={`${styles.fab} ${styles.prev}`} type="button" onClick={() => setStep(0)} aria-label="Oldingi bosqich">←</button>}
-      {step === 0 ? <button className={`${styles.fab} ${styles.next}`} type="button" onClick={() => setStep(1)} aria-label="Qo‘shimcha chiziqlarga o‘tish">→</button> : <Link className={`${styles.fab} ${styles.next}`} href="/dars/5" aria-label="5-darsga o‘tish">→</Link>}
+      {step === 0 ? <Link className={`${styles.fab} ${styles.prev}`} href="/dars/3" aria-label="3-darsga qaytish"><AppIcon name="arrow-left" size={23} /></Link> : <button className={`${styles.fab} ${styles.prev}`} type="button" onClick={() => setStep(0)} aria-label="Oldingi bosqich"><AppIcon name="arrow-left" size={23} /></button>}
+      {step === 0 ? <button className={`${styles.fab} ${styles.next}`} type="button" onClick={() => setStep(1)} aria-label="Qo‘shimcha chiziqlarga o‘tish"><AppIcon name="arrow-right" size={23} /></button> : <Link className={`${styles.fab} ${styles.next}`} href="/dars/5" aria-label="5-darsga o‘tish"><AppIcon name="arrow-right" size={23} /></Link>}
     </main>
   );
 }
