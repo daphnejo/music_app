@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useMemo, useRef, useState } from 'react';
+import { AppIcon } from '@/components/app-icon';
 import { SiteHeader } from '@/components/site-header';
 import styles from './lesson-five.module.css';
 
@@ -52,8 +53,8 @@ export default function LessonFivePage() {
       <section className={styles.stage}>
         <div className={styles.screen}>
           <header className={styles.heading}>
-            <div className={styles.kicker}><span>♪</span> 5-DARS • MUSIQA NAZARIYASI</div>
-            <h1>Skripka kaliti <em>♪</em></h1>
+            <div className={styles.kicker}><span><AppIcon name="note" size={18} /></span> 5-DARS • MUSIQA NAZARIYASI</div>
+            <h1>Skripka kaliti <em><AppIcon name="note" size={34} /></em></h1>
           </header>
 
           <div className={styles.definition}>
@@ -112,8 +113,8 @@ export default function LessonFivePage() {
         </div>
       </section>
 
-      <Link className={`${styles.fab} ${styles.prev}`} href="/dars/4" aria-label="4-darsga qaytish">←</Link>
-      <Link className={`${styles.fab} ${styles.next}`} href="/dars/6" aria-label="6-darsga o‘tish">→</Link>
+      <Link className={`${styles.fab} ${styles.prev}`} href="/dars/4" aria-label="4-darsga qaytish"><AppIcon name="arrow-left" size={23} /></Link>
+      <Link className={`${styles.fab} ${styles.next}`} href="/dars/6" aria-label="6-darsga o‘tish"><AppIcon name="arrow-right" size={23} /></Link>
     </main>
   );
 }
