@@ -83,13 +83,12 @@ export default function LessonOnePage() {
                 src={figmaAssets.lessonOneCurrentIllustration}
                 alt="Gvido de Aresso musiqa va nota yozuvini tushuntirayotgan tarixiy tasvir"
               />
+              <figcaption className={styles.captionCard}>
+                <strong>Gvido de Aresso</strong>
+                <span className={styles.captionMeta}>991 - 1033 • Italiya musiqashunosi</span>
+                <span className={styles.captionSub}>Nota tizimi va nota nomlari tarixiga bog&apos;liq musiqashunos</span>
+              </figcaption>
             </figure>
-
-            <div className={styles.captionCard}>
-              <strong>Gvido de Aresso</strong>
-              <span className={styles.captionMeta}>991 - 1033 • Italiya musiqashunosi</span>
-              <span className={styles.captionSub}>Nota tizimi va nota nomlari tarixiga bog&apos;liq musiqashunos</span>
-            </div>
           </aside>
         </div>
       </section>
