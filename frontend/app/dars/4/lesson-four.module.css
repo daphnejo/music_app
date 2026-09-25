@@ -213,10 +213,14 @@
   box-shadow: 0 8px 18px rgba(30, 18, 36, .08);
 }
 
-.audioButton img {
+.audioIcon {
   width: 40px;
-  height: 38px;
+  height: 40px;
   flex: 0 0 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, .82);
 }
 
 .blueAudio {
@@ -270,11 +274,16 @@
   background: #fff0f7;
 }
 
-.rememberBar img {
-  width: 62px;
-  height: 68px;
-  flex: 0 0 62px;
-  object-fit: contain;
+.rememberIcon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #ff2478;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(255, 36, 120, .08);
 }
 
 .rememberBar p {
@@ -413,11 +422,11 @@
   .cardHint { min-height: 54px; font-size: 15px; }
   .audioSlot { min-height: 58px; }
   .audioButton { min-width: 176px; height: 50px; padding: 0 14px; gap: 9px; }
-  .audioButton img { width: 30px; height: 28px; flex-basis: 30px; }
+  .audioIcon { width: 32px; height: 32px; flex-basis: 32px; }
   .audioButton strong { font-size: 17px; }
   .waveform { width: 34px; height: 26px; gap: 3px; }
   .rememberBar { min-height: 62px; padding: 8px 16px 8px 20px; gap: 14px; border-radius: 20px; }
-  .rememberBar img { width: 42px; height: 46px; flex-basis: 42px; }
+  .rememberIcon { width: 40px; height: 40px; flex-basis: 40px; }
   .rememberBar p { font-size: 17px; }
   .ledgerGraphic { height: 300px; }
   .ledgerZone strong, .staffCaption { font-size: 18px; }
@@ -452,10 +461,10 @@
   .purpleBadge { min-width: 128px; font-size: 16px; }
   .cardTop h2 { font-size: 25px; }
   .audioButton { min-width: 190px; height: 62px; }
-  .audioButton img { width: 34px; height: 32px; }
+  .audioIcon { width: 36px; height: 36px; flex-basis: 36px; }
   .audioButton strong { font-size: 18px; }
   .rememberBar { padding: 14px 16px; gap: 14px; border-radius: 22px; }
-  .rememberBar img { width: 46px; height: 52px; flex-basis: 46px; }
+  .rememberIcon { width: 44px; height: 44px; flex-basis: 44px; }
   .rememberBar p { font-size: 18px; }
   .ledgerGraphic {
     min-height: 520px;
