@@ -43,8 +43,8 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: linear-gradient(105deg, #ff1e70, #ff6644);
-  box-shadow: 0 8px 10px rgba(255, 30, 112, .31);
+  background: linear-gradient(105deg, #ff2a75, #ff6848);
+  box-shadow: 0 8px 18px rgba(255, 30, 112, .24);
 }
 
 .titleIcon img {
@@ -82,10 +82,10 @@
 .definitionCard {
   position: relative;
   padding: 30px 30px 30px 34px;
-  border: 2px solid #ffc7dc;
-  border-radius: 24px;
+  border: 1.5px solid #ffc9dd;
+  border-radius: 22px;
   background: linear-gradient(135deg, #fff 0%, #fff9fb 100%);
-  box-shadow: 0 12px 28px rgba(255, 30, 112, .10);
+  box-shadow: 0 10px 24px rgba(255, 30, 112, .09);
 }
 
 .definitionCard::before {
@@ -130,10 +130,10 @@
   position: relative;
   overflow: hidden;
   padding: 24px 26px 22px;
-  border-radius: 24px;
+  border-radius: 22px;
   color: #fff;
-  background: linear-gradient(105deg, #ff1e70, #ff6644);
-  box-shadow: 0 12px 32px rgba(255, 30, 112, .27);
+  background: linear-gradient(105deg, #ff2a75, #ff6848);
+  box-shadow: 0 12px 28px rgba(255, 30, 112, .23);
 }
 
 .funCard::before,
@@ -215,7 +215,7 @@
   min-height: 60px;
   padding: 13px 15px;
   border: 1px solid;
-  border-radius: 16px;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -225,9 +225,9 @@
   font-weight: 600;
 }
 
-.factPurple { background: #f8f2ff; border-color: #eadcff; }
-.factBlue { background: #f0f9ff; border-color: #d3efff; }
-.factGreen { background: #effcf5; border-color: #d2f4df; }
+.factPurple { background: #faf6ff; border-color: #eadfff; }
+.factBlue { background: #f4fbff; border-color: #d8f0ff; }
+.factGreen { background: #f3fcf7; border-color: #d8f3e2; }
 
 .factIcon {
   width: 40px;
@@ -257,12 +257,12 @@
 .illustrationCard {
   margin: 0;
   overflow: hidden;
-  border: 2px solid #ffd6e7;
-  border-radius: 32px;
+  border: 1.5px solid #ffd1e3;
+  border-radius: 28px;
   display: flex;
   flex-direction: column;
   background: #fff;
-  box-shadow: 0 16px 40px rgba(255, 30, 112, .13);
+  box-shadow: 0 14px 32px rgba(255, 30, 112, .11);
 }
 
 .historyBand {
@@ -293,7 +293,7 @@
 .captionCard {
   min-height: 88px;
   padding: 14px 24px 16px;
-  border-top: 1.5px solid #ffd6e7;
+  border-top: 1px solid #ffd8e7;
   display: flex;
   flex-direction: column;
   align-items: center;
