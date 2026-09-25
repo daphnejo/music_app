@@ -9,6 +9,8 @@
 .hero {
   min-height: calc(100vh - 92px);
   padding: 60px clamp(24px, 5.55vw, 80px) 82px;
+  display: flex;
+  align-items: center;
   border-bottom: 3px solid #ff1e70;
   background: #fff5f8;
 }
@@ -362,6 +364,8 @@
 }
 
 @media (max-width: 980px) {
+  .hero { display: block; }
+
   .layout {
     width: min(820px, 100%);
     grid-template-columns: 1fr;
