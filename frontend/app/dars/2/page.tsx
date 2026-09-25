@@ -41,24 +41,26 @@ export default function LessonTwoPage() {
           </div>
         </header>
 
-        <figure className={styles.registerVisual}>
-          <img src={figmaAssets.lessonTwoAnimals} alt="Ayiq, mushuk va qush orqali past, o‘rta va yuqori registr tasviri" />
-        </figure>
+        <div className={styles.registerStage}>
+          <figure className={styles.registerVisual}>
+            <img src={figmaAssets.lessonTwoAnimals} alt="Ayiq, mushuk va qush orqali past, o‘rta va yuqori registr tasviri" />
+          </figure>
 
-        <section className={styles.pianoCard} aria-label="Pianino klaviaturasi">
-          <div className={styles.keyboard}>
-            <div className={styles.whiteKeys}>
-              {whiteKeys.map((key) => <span className={styles.whiteKey} key={key} />)}
+          <section className={styles.pianoCard} aria-label="Pianino klaviaturasi">
+            <div className={styles.keyboard}>
+              <div className={styles.whiteKeys}>
+                {whiteKeys.map((key) => <span className={styles.whiteKey} key={key} />)}
+              </div>
+              {blackKeys.map((afterWhite) => (
+                <span
+                  className={styles.blackKey}
+                  key={afterWhite}
+                  style={{ left: `${((afterWhite + 1) / 50) * 100}%` }}
+                />
+              ))}
             </div>
-            {blackKeys.map((afterWhite) => (
-              <span
-                className={styles.blackKey}
-                key={afterWhite}
-                style={{ left: `${((afterWhite + 1) / 50) * 100}%` }}
-              />
-            ))}
-          </div>
-        </section>
+          </section>
+        </div>
 
         <div className={styles.listenRow} aria-label="Registrlarni tinglash">
           {listenButtons.map((item) => (
