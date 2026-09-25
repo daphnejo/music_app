@@ -18,36 +18,36 @@
 .lessonHeader {
   min-height: 110px;
   display: grid;
-  grid-template-columns: 480px 2px minmax(0, 1fr);
-  gap: 32px;
+  grid-template-columns: 460px 2px minmax(0, 1fr);
+  gap: 28px;
   align-items: center;
 }
 
 .titleBlock {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   align-items: center;
 }
 
 .lessonIcon {
-  width: 68px;
-  height: 68px;
-  flex: 0 0 68px;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #fff;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 800;
   background: linear-gradient(105deg, #ff2478, #ff6958);
-  box-shadow: 0 8px 10px rgba(255, 30, 112, .31);
+  box-shadow: 0 8px 18px rgba(255, 30, 112, .24);
 }
 
 .kicker {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   color: #ff2478;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: .02em;
 }
@@ -55,27 +55,27 @@
 .titleBlock h1 {
   margin: 0;
   color: #24132f;
-  font-size: clamp(34px, 3vw, 44px);
-  line-height: 1.04;
+  font-size: clamp(34px, 2.8vw, 40px);
+  line-height: 1.06;
   font-weight: 800;
 }
 
 .divider {
   width: 2px;
-  height: 80px;
+  height: 72px;
   background: linear-gradient(#ff2478, rgba(255, 105, 88, 0));
 }
 
 .definitionCard {
-  min-height: 96px;
+  min-height: 92px;
   position: relative;
-  padding: 20px;
+  padding: 18px 20px;
   display: flex;
   align-items: center;
   border: 1.5px solid #ffd6e7;
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 6px 10px rgba(255, 30, 112, .08);
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff 0%, #fff9fb 100%);
+  box-shadow: 0 8px 20px rgba(255, 30, 112, .08);
   overflow: hidden;
 }
 
@@ -83,8 +83,8 @@
   position: relative;
   z-index: 1;
   margin: 0;
-  font-size: 18px;
-  line-height: 1.55;
+  font-size: 17px;
+  line-height: 1.5;
   font-weight: 700;
 }
 
