@@ -81,9 +81,11 @@ export default function LessonTwoPage() {
         </div>
 
         <aside className={styles.hintBar}>
-          <span aria-hidden="true"><AppIcon name="bulb" size={21} /></span>
-          <strong>Eslab qoling:</strong>
-          <span>chapdan o&apos;ngga tovushlar balandlashib boradi.</span>
+          <span className={styles.hintIcon} aria-hidden="true"><AppIcon name="bulb" size={22} /></span>
+          <div className={styles.hintCopy}>
+            <strong>Eslab qoling</strong>
+            <span>Chapdan o&apos;ngga tovushlar balandlashib boradi.</span>
+          </div>
         </aside>
       </section>
 
