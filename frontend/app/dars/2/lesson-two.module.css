@@ -90,6 +90,9 @@
 
 .decoNotes {
   position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 3px;
   right: 18px;
   top: 7px;
   color: rgba(255, 36, 120, .18);
@@ -255,7 +258,7 @@
   line-height: 1.4;
 }
 
-.hintBar > span:first-child { color: #ff2478; }
+.hintBar > span:first-child { color: #ff2478; display: grid; place-items: center; }
 .hintBar strong { color: #24132f; }
 
 .fab {
