@@ -33,7 +33,7 @@
 .titleRow {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .titleIcon {
@@ -56,21 +56,26 @@
 
 .titleText {
   min-width: 0;
+  display: grid;
+  gap: 2px;
 }
 
 .kicker {
-  margin: 0 0 4px;
+  margin: 0;
   color: #ff1e70;
   font-size: 15px;
+  line-height: 1.15;
+  letter-spacing: .025em;
   font-weight: 800;
   text-transform: uppercase;
 }
 
 .titleText h1 {
   margin: 0;
+  max-width: 760px;
   font-size: clamp(38px, 3.25vw, 46px);
-  line-height: 1.1;
-  letter-spacing: -.015em;
+  line-height: 1.06;
+  letter-spacing: -.02em;
   font-weight: 800;
 }
 
@@ -362,8 +367,10 @@
   .left { gap: 14px; }
   .titleIcon { width: 50px; height: 50px; flex-basis: 50px; }
   .titleIcon img { width: 25px; height: 27px; }
+  .titleRow { gap: 12px; }
+  .titleText { gap: 1px; }
   .kicker { font-size: 12px; }
-  .titleText h1 { font-size: clamp(32px, 2.6vw, 38px); }
+  .titleText h1 { font-size: clamp(32px, 2.6vw, 38px); line-height: 1.05; }
   .definitionCard { padding: 17px 18px 17px 22px; border-radius: 18px; }
   .definitionCard::before { top: 14px; bottom: 14px; width: 4px; }
   .definitionLabel { margin-bottom: 7px; font-size: 11px; }
@@ -411,7 +418,7 @@
 @media (max-width: 720px) {
   .hero { padding: 30px 18px 86px; }
   .left { gap: 18px; }
-  .titleRow { align-items: flex-start; }
+  .titleRow { align-items: flex-start; gap: 12px; }
   .titleIcon { width: 52px; height: 52px; flex-basis: 52px; }
   .titleIcon img { width: 26px; height: 28px; }
   .kicker { font-size: 12px; }
