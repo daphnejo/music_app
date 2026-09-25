@@ -364,10 +364,14 @@
   background: #e6f7ff;
 }
 
-.audioButton img {
+.audioIcon {
   width: 40px;
-  height: 38px;
-  object-fit: contain;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, .82);
 }
 
 .audioButton strong {
@@ -541,6 +545,7 @@
   .songHeader h2 { font-size: 30px; }
   .songHeader > span { font-size: 17px; }
   .audioButton { width: 220px; height: 58px; }
+  .audioIcon { width: 34px; height: 34px; flex-basis: 34px; }
   .audioChoices { gap: 8px; }
   .audioChoices .audioButton { width: 156px; }
   .audioButton strong { font-size: 20px; }
