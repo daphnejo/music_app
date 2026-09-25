@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SiteHeader } from '@/components/site-header';
+import { AppIcon } from '@/components/app-icon';
 import { figmaAssets } from '@/lib/figma-assets';
 import styles from './lesson-one.module.css';
 
@@ -51,13 +52,13 @@ export default function LessonOnePage() {
             </article>
 
             <article className={styles.funCard}>
-              <span className={styles.funChip}>🌟 Bu qiziq!</span>
+              <span className={styles.funChip}><AppIcon name="star" size={16} /> Bu qiziq!</span>
               <p className={styles.funText}>
                 Solfedjioning fan sifatida shakllanishi 9 asrda yashab ijod qilgan italiyalik musiqashunos Gvido de Aresso
                 nomi bilan bog&apos;liq. Aynan u nota tizimini yaratib notalarni nomlaydi.
               </p>
               <div className={styles.funFooter}>
-                <span className={styles.funFooterIcon} aria-hidden="true">♪</span>
+                <span className={styles.funFooterIcon} aria-hidden="true"><AppIcon name="note" size={18} /></span>
                 <span>Solfedjio - musiqa bilimining boshlang&apos;ich darvozasi.</span>
               </div>
             </article>
@@ -75,7 +76,7 @@ export default function LessonOnePage() {
           <aside className={styles.right}>
             <figure className={styles.illustrationCard}>
               <div className={styles.historyBand}>
-                <span>🎼 Tarix sahifasi</span>
+                <span><AppIcon name="history" size={17} /> Tarix sahifasi</span>
                 <span>IX asr • Italiya</span>
               </div>
               <img
@@ -93,8 +94,8 @@ export default function LessonOnePage() {
         </div>
       </section>
 
-      <Link className={`${styles.fab} ${styles.prev}`} href="/kurs/1" aria-label="Kurs boshiga qaytish">←</Link>
-      <Link className={`${styles.fab} ${styles.next}`} href="/dars/2" aria-label="2-darsga o‘tish">→</Link>
+      <Link className={`${styles.fab} ${styles.prev}`} href="/kurs/1" aria-label="Kurs boshiga qaytish"><AppIcon name="arrow-left" size={23} /></Link>
+      <Link className={`${styles.fab} ${styles.next}`} href="/dars/2" aria-label="2-darsga o‘tish"><AppIcon name="arrow-right" size={23} /></Link>
     </main>
   );
 }
