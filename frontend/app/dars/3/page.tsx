@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { AppIcon } from '@/components/app-icon';
 import { SiteHeader } from '@/components/site-header';
 import { SourceAudioButton } from '@/components/source-audio-button';
 import styles from './lesson-three.module.css';
@@ -109,7 +110,7 @@ function QuizScreen({ quiz, index }: { quiz: (typeof QUIZZES)[number]; index: nu
         <div className={styles.listenRow}>
           {quiz.audio.map((source, audioIndex) => (
             <SourceAudioButton className={styles.listenButton} key={source} source={source}>
-              <span className={styles.playIcon}>▶</span>
+              <span className={styles.playIcon}><AppIcon name="play" size={11} /></span>
               {quiz.audio.length > 1 ? `Tinglash ${audioIndex + 1}` : 'Tinglash'}
             </SourceAudioButton>
           ))}
@@ -130,7 +131,7 @@ function QuizScreen({ quiz, index }: { quiz: (typeof QUIZZES)[number]; index: nu
               type="button"
             >
               <span>{option.label}</span>
-              <span>{isCorrect ? '✓' : isWrong ? '×' : isSelected ? '●' : '○'}</span>
+              <span aria-hidden="true">{isCorrect ? <AppIcon name="check" size={20} /> : isWrong ? <AppIcon name="x" size={20} /> : isSelected ? <AppIcon name="dot" size={18} /> : <AppIcon name="circle" size={18} />}</span>
             </button>
           );
         })}
@@ -142,7 +143,7 @@ function QuizScreen({ quiz, index }: { quiz: (typeof QUIZZES)[number]; index: nu
 
       {checked ? (
         <div className={selectedOption?.correct ? styles.goodFeedback : styles.retryFeedback}>
-          {selectedOption?.correct ? 'Barakalla! To‘g‘ri javob. ⭐' : `To‘g‘ri javob: ${correctOption?.label}.`}
+          {selectedOption?.correct ? <><AppIcon name="star" size={17} /><span>Barakalla! To‘g‘ri javob.</span></> : `To‘g‘ri javob: ${correctOption?.label}.`}
         </div>
       ) : null}
     </section>
@@ -168,10 +169,10 @@ export default function LessonThreePage() {
           <div className={styles.keyboardScreen}>
             <div className={styles.heroRow}>
               <div>
-                <span className={styles.kicker}>♪ 3-DARS • MUSIQA NAZARIYASI</span>
-                <h1>Klaviatura <span>♪</span></h1>
+                <span className={styles.kicker}><AppIcon name="note" size={14} /> 3-DARS • MUSIQA NAZARIYASI</span>
+                <h1>Klaviatura <span><AppIcon name="note" size={30} /></span></h1>
               </div>
-              <div className={styles.musicDecor} aria-hidden="true">♪ ♫ ♪</div>
+              <div className={styles.musicDecor} aria-hidden="true"><AppIcon name="note" size={34} /><AppIcon name="music" size={42} /><AppIcon name="note" size={30} /></div>
             </div>
 
             <div className={styles.definition}>
@@ -181,7 +182,7 @@ export default function LessonThreePage() {
             <KeyboardVisual />
 
             <div className={styles.rememberBar}>
-              <span className={styles.bulb}>💡</span>
+              <span className={styles.bulb}><AppIcon name="bulb" size={21} /></span>
               <p><strong>Eslab qoling:</strong> oq klavishlarda Do, Re, Mi, Fa, Sol, Lya va Si notalari ketma-ket joylashadi.</p>
             </div>
           </div>
@@ -197,7 +198,7 @@ export default function LessonThreePage() {
             <div className={styles.noteListenGrid}>
               {NOTE_AUDIO.map(([note, source]) => (
                 <SourceAudioButton className={styles.noteButton} key={note} source={source} title={`${note} notasini tinglash`}>
-                  <span>♪</span>
+                  <span><AppIcon name="note" size={22} /></span>
                   <strong>{note}</strong>
                   <small>Tinglash</small>
                 </SourceAudioButton>
@@ -216,7 +217,7 @@ export default function LessonThreePage() {
               <div className={styles.listenRow}>
                 {['audio11.wav', 'audio12.wav', 'audio13.wav'].map((source, index) => (
                   <SourceAudioButton className={styles.listenButton} key={source} source={source}>
-                    <span className={styles.playIcon}>▶</span> Namuna {index + 1}
+                    <span className={styles.playIcon}><AppIcon name="play" size={11} /></span> Namuna {index + 1}
                   </SourceAudioButton>
                 ))}
               </div>
@@ -233,15 +234,15 @@ export default function LessonThreePage() {
       <div className={styles.stepCounter}>{step + 1} / {TOTAL_STEPS}</div>
 
       {step === 0 ? (
-        <Link className={`${styles.fab} ${styles.prev}`} href="/dars/2" aria-label="2-darsga qaytish">←</Link>
+        <Link className={`${styles.fab} ${styles.prev}`} href="/dars/2" aria-label="2-darsga qaytish"><AppIcon name="arrow-left" size={23} /></Link>
       ) : (
-        <button className={`${styles.fab} ${styles.prev}`} onClick={goBack} type="button" aria-label="Oldingi bosqich">←</button>
+        <button className={`${styles.fab} ${styles.prev}`} onClick={goBack} type="button" aria-label="Oldingi bosqich"><AppIcon name="arrow-left" size={23} /></button>
       )}
 
       {step < TOTAL_STEPS - 1 ? (
-        <button className={`${styles.fab} ${styles.next}`} onClick={goNext} type="button" aria-label="Keyingi bosqich">→</button>
+        <button className={`${styles.fab} ${styles.next}`} onClick={goNext} type="button" aria-label="Keyingi bosqich"><AppIcon name="arrow-right" size={23} /></button>
       ) : (
-        <Link className={`${styles.fab} ${styles.next}`} href="/dars/4" aria-label="4-darsga o‘tish">→</Link>
+        <Link className={`${styles.fab} ${styles.next}`} href="/dars/4" aria-label="4-darsga o‘tish"><AppIcon name="arrow-right" size={23} /></Link>
       )}
     </main>
   );
