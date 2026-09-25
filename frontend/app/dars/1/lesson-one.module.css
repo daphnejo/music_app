@@ -46,8 +46,10 @@
 }
 
 .titleIcon img {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 38px;
+  display: block;
+  object-fit: contain;
 }
 
 .titleText {
@@ -325,7 +327,7 @@
 
   .left { gap: 14px; }
   .titleIcon { width: 50px; height: 50px; flex-basis: 50px; }
-  .titleIcon img { width: 22px; height: 22px; }
+  .titleIcon img { width: 28px; height: 30px; }
   .kicker { font-size: 12px; }
   .titleText h1 { font-size: clamp(32px, 2.6vw, 38px); }
   .definitionCard { padding: 16px 18px; border-radius: 18px; }
@@ -373,7 +375,7 @@
   .left { gap: 18px; }
   .titleRow { align-items: flex-start; }
   .titleIcon { width: 52px; height: 52px; flex-basis: 52px; }
-  .titleIcon img { width: 23px; height: 23px; }
+  .titleIcon img { width: 30px; height: 31px; }
   .kicker { font-size: 12px; }
   .titleText h1 { font-size: 34px; }
   .definitionCard, .funCard { padding: 20px; border-radius: 20px; }
