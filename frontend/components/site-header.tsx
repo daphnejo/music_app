@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { AppIcon } from '@/components/app-icon';
 import styles from './site-header.module.css';
 
 type HeaderMode = 'landing' | 'course' | 'lesson';
@@ -79,7 +80,7 @@ export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'acc
   return (
     <header className={`site-header ${styles.stickyHeader} ${isLesson ? styles.lessonHeader : ''}`}>
       <Link className={`brand ${styles.brandLink}`} href="/" aria-label="Solfedjio bosh sahifa">
-        <span className="brand-mark" aria-hidden="true">♫</span>
+        <span className="brand-mark" aria-hidden="true"><AppIcon name="music" size={20} /></span>
         <span>Solfedjio</span>
       </Link>
 
@@ -109,7 +110,7 @@ export function SiteHeader({ mode = 'landing', activeLesson, lessonChrome = 'acc
       {isLesson && lessonChrome === 'account' ? (
         <div className={styles.lessonUser} aria-label="Foydalanuvchi profili">
           <span className={styles.lessonUserName}>Abdulaziz<br />Khamidov</span>
-          <span className={styles.lessonAvatar} aria-hidden="true">🐻</span>
+          <span className={styles.lessonAvatar} aria-hidden="true"><AppIcon name="user" size={28} /></span>
         </div>
       ) : (
         <div className="header-actions">
