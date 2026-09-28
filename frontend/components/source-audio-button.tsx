@@ -8,9 +8,10 @@ const AUDIO_PLAY_EVENT = 'solfedjio:audio-play';
 type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> & {
   source: string;
   children: ReactNode;
+  onPlaybackChange?: (playing: boolean) => void;
 };
 
-export function SourceAudioButton({ source, children, onClick, title, ...buttonProps }: Props) {
+export function SourceAudioButton({ source, children, onClick, onPlaybackChange, title, ...buttonProps }: Props) {
   const id = useId();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -40,6 +41,10 @@ export function SourceAudioButton({ source, children, onClick, title, ...buttonP
     setLoading(false);
     setFailed(false);
   }, [source]);
+
+  useEffect(() => {
+    onPlaybackChange?.(playing);
+  }, [onPlaybackChange, playing]);
 
   const toggle = async () => {
     const audio = audioRef.current;
