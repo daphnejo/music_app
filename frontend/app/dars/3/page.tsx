@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AppIcon } from '@/components/app-icon';
 import { SiteHeader } from '@/components/site-header';
 import { SourceAudioButton } from '@/components/source-audio-button';
+import { sourceMediaUrl } from '@/lib/source-media';
 import styles from './lesson-three.module.css';
 
 const NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'Lya', 'Si'] as const;
@@ -94,34 +95,114 @@ function KeyboardVisual() {
 
 function InteractiveNotePiano() {
   const [activeNote, setActiveNote] = useState<string | null>(null);
+  const sampleBankRef = useRef<Map<string, HTMLAudioElement>>(new Map());
+  const voicesRef = useRef<Set<HTMLAudioElement>>(new Set());
+  const activeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const blackAfter = [0, 1, 3, 4, 5];
+
+  useEffect(() => {
+    const sampleBank = new Map<string, HTMLAudioElement>();
+
+    NOTE_AUDIO.forEach(([note, source]) => {
+      const audio = new Audio(sourceMediaUrl(source));
+      audio.preload = 'auto';
+      audio.load();
+      sampleBank.set(note, audio);
+    });
+
+    sampleBankRef.current = sampleBank;
+
+    return () => {
+      if (activeTimerRef.current) clearTimeout(activeTimerRef.current);
+      sampleBank.forEach((audio) => {
+        audio.pause();
+        audio.removeAttribute('src');
+      });
+      voicesRef.current.forEach((voice) => {
+        voice.pause();
+        voice.removeAttribute('src');
+      });
+      voicesRef.current.clear();
+      sampleBankRef.current.clear();
+    };
+  }, []);
+
+  const playNote = (note: string, source: string) => {
+    const template = sampleBankRef.current.get(note);
+    const voice = template
+      ? (template.cloneNode(true) as HTMLAudioElement)
+      : new Audio(sourceMediaUrl(source));
+
+    voice.preload = 'auto';
+    voice.currentTime = 0;
+    voice.volume = 1;
+
+    if (voicesRef.current.size >= 12) {
+      const oldest = voicesRef.current.values().next().value as HTMLAudioElement | undefined;
+      if (oldest) {
+        oldest.pause();
+        oldest.removeAttribute('src');
+        voicesRef.current.delete(oldest);
+      }
+    }
+
+    const cleanup = () => {
+      voicesRef.current.delete(voice);
+      voice.removeEventListener('ended', cleanup);
+      voice.removeEventListener('error', cleanup);
+    };
+
+    voicesRef.current.add(voice);
+    voice.addEventListener('ended', cleanup, { once: true });
+    voice.addEventListener('error', cleanup, { once: true });
+    void voice.play().catch(cleanup);
+
+    setActiveNote(note);
+    if (activeTimerRef.current) clearTimeout(activeTimerRef.current);
+    activeTimerRef.current = setTimeout(() => {
+      setActiveNote((current) => current === note ? null : current);
+    }, 720);
+  };
 
   return (
     <div className={styles.notePianoStage}>
       <div className={styles.notePianoTopline}>
         <span className={styles.notePianoHint}><AppIcon name="sparkle" size={15} /> Har bir oq klavishni bosing</span>
-        <span className={styles.notePianoStatus}>{activeNote ? `${activeNote} notasi yangramoqda` : 'Nota tanlang va tovushni tinglang'}</span>
+        <span className={styles.notePianoStatus}>{activeNote ? `${activeNote} notasi yangradi` : 'Nota tanlang va tovushni tinglang'}</span>
       </div>
 
       <div className={styles.notePiano} aria-label="Do dan Si gacha interaktiv pianino">
         <div className={styles.noteWhiteKeys}>
-          {NOTE_AUDIO.map(([note, source]) => (
-            <SourceAudioButton
-              className={styles.notePianoKey}
-              key={note}
-              source={source}
-              title={`${note} notasini tinglash`}
-              onPlaybackChange={(playing) => {
-                setActiveNote((current) => playing ? note : current === note ? null : current);
-              }}
-            >
-              <span className={styles.floatingNote} aria-hidden="true"><AppIcon name="note" size={24} /></span>
-              <span className={styles.noteSoundWave} aria-hidden="true"><i /><i /><i /></span>
-              <span className={styles.noteSpeaker} aria-hidden="true"><AppIcon name="speaker" size={21} /></span>
-              <strong>{note}</strong>
-              <small>Bosing</small>
-            </SourceAudioButton>
-          ))}
+          {NOTE_AUDIO.map(([note, source]) => {
+            const isActive = activeNote === note;
+
+            return (
+              <button
+                className={styles.notePianoKey}
+                data-active={isActive ? 'true' : 'false'}
+                key={note}
+                type="button"
+                title={`${note} notasini tinglash`}
+                aria-label={`${note} notasini chalish`}
+                onPointerDown={(event) => {
+                  event.preventDefault();
+                  playNote(note, source);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    playNote(note, source);
+                  }
+                }}
+              >
+                <span className={styles.floatingNote} aria-hidden="true"><AppIcon name="note" size={24} /></span>
+                <span className={styles.noteSoundWave} aria-hidden="true"><i /><i /><i /></span>
+                <span className={styles.noteSpeaker} aria-hidden="true"><AppIcon name="speaker" size={21} /></span>
+                <strong>{note}</strong>
+                <small>Bosing</small>
+              </button>
+            );
+          })}
         </div>
 
         {blackAfter.map((afterWhite) => (
