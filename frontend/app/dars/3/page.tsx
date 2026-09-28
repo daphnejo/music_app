@@ -92,6 +92,60 @@ function KeyboardVisual() {
   );
 }
 
+function InteractiveNotePiano() {
+  const [activeNote, setActiveNote] = useState<string | null>(null);
+  const blackAfter = [0, 1, 3, 4, 5];
+
+  return (
+    <div className={styles.notePianoStage}>
+      <div className={styles.notePianoTopline}>
+        <span className={styles.notePianoHint}><AppIcon name="sparkle" size={15} /> Har bir oq klavishni bosing</span>
+        <span className={styles.notePianoStatus}>{activeNote ? `${activeNote} notasi yangramoqda` : 'Nota tanlang va tovushni tinglang'}</span>
+      </div>
+
+      <div className={styles.notePiano} aria-label="Do dan Si gacha interaktiv pianino">
+        <div className={styles.noteWhiteKeys}>
+          {NOTE_AUDIO.map(([note, source]) => (
+            <SourceAudioButton
+              className={styles.notePianoKey}
+              key={note}
+              source={source}
+              title={`${note} notasini tinglash`}
+              onPlaybackChange={(playing) => {
+                setActiveNote((current) => playing ? note : current === note ? null : current);
+              }}
+            >
+              <span className={styles.floatingNote} aria-hidden="true"><AppIcon name="note" size={24} /></span>
+              <span className={styles.noteSoundWave} aria-hidden="true"><i /><i /><i /></span>
+              <span className={styles.noteSpeaker} aria-hidden="true"><AppIcon name="speaker" size={21} /></span>
+              <strong>{note}</strong>
+              <small>Bosing</small>
+            </SourceAudioButton>
+          ))}
+        </div>
+
+        {blackAfter.map((afterWhite) => (
+          <span
+            className={styles.noteBlackKey}
+            key={afterWhite}
+            style={{ left: `${((afterWhite + 1) / 7) * 100}%` }}
+            aria-hidden="true"
+          />
+        ))}
+      </div>
+
+      <div className={styles.noteSequence} aria-label="Notalar ketma-ketligi">
+        {NOTE_AUDIO.map(([note], index) => (
+          <span className={activeNote === note ? styles.noteSequenceActive : ''} key={note}>
+            {note}
+            {index < NOTE_AUDIO.length - 1 ? <AppIcon name="arrow-right" size={14} /> : null}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function QuizScreen({ quiz, index }: { quiz: (typeof QUIZZES)[number]; index: number }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [checked, setChecked] = useState(false);
@@ -191,20 +245,11 @@ export default function LessonThreePage() {
         {step === 1 ? (
           <section className={styles.notesScreen}>
             <div className={styles.screenHeading}>
-              <span className={styles.kicker}>NOTALARNI ESHITAMIZ</span>
+              <span className={styles.kicker}><AppIcon name="music" size={15} /> NOTALARNI ESHITAMIZ</span>
               <h1>Notalarni tinglang</h1>
-              <p>Har bir notani alohida tinglab, klaviaturadagi o‘rnini eslab qoling.</p>
+              <p>Pianino klavishlarini bosing, tovushlarni tinglang va nota nomlarini eslab qoling.</p>
             </div>
-            <div className={styles.noteListenGrid}>
-              {NOTE_AUDIO.map(([note, source]) => (
-                <SourceAudioButton className={styles.noteButton} key={note} source={source} title={`${note} notasini tinglash`}>
-                  <span className={styles.noteAudioIcon}><AppIcon name="speaker" size={22} /></span>
-                  <strong>{note}</strong>
-                  <small>Tinglash</small>
-                </SourceAudioButton>
-              ))}
-            </div>
-            <div className={styles.noteSequence}>Do → Re → Mi → Fa → Sol → Lya → Si</div>
+            <InteractiveNotePiano />
           </section>
         ) : null}
 
