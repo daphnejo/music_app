@@ -198,7 +198,7 @@ export default function LessonThreePage() {
             <div className={styles.noteListenGrid}>
               {NOTE_AUDIO.map(([note, source]) => (
                 <SourceAudioButton className={styles.noteButton} key={note} source={source} title={`${note} notasini tinglash`}>
-                  <span><AppIcon name="note" size={22} /></span>
+                  <span className={styles.noteAudioIcon}><AppIcon name="speaker" size={22} /></span>
                   <strong>{note}</strong>
                   <small>Tinglash</small>
                 </SourceAudioButton>
