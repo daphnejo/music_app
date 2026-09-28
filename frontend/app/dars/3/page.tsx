@@ -19,6 +19,11 @@ const NOTE_AUDIO = [
   ['Si', 'audio9.wav'],
 ] as const;
 const OCTAVES = ['Sub kontr', 'Kontr oktava', 'Katta oktava', 'Kichik oktava', 'Birinchi oktava', 'Ikkinchi oktava', 'Uchinchi oktava', 'To‘rtinchi oktava'] as const;
+const SAMPLE_AUDIO = ['audio11.wav', 'audio12.wav', 'audio13.wav'] as const;
+const WAVEFORM = [8, 14, 20, 16, 10, 22, 18, 12, 20, 8, 16, 22, 14, 10, 18, 6, 20, 12, 16, 22, 9, 17, 13, 19] as const;
+const OCTAVE_BLACK_KEYS = Array.from({ length: 8 }, (_, octave) =>
+  [0, 1, 3, 4, 5].map((position) => octave * 7 + position)
+).flat();
 
 const QUIZZES = [
   {
@@ -342,27 +347,72 @@ export default function LessonThreePage() {
 
         {step === 2 ? (
           <section className={styles.octaveScreen}>
-            <div className={styles.octaveCopy}>
-              <span className={styles.kicker}><AppIcon name="music" size={15} /> KUY VA OKTAVALAR</span>
-              <h1>Kuy va oktavalar</h1>
-              <p>Kuy — bu turli balandlikdagi tovushlarning ma’lum bir ritm va lad bilan uyg‘unlashgan holati.</p>
-              <div className={styles.listenRow}>
-                {['audio11.wav', 'audio12.wav', 'audio13.wav'].map((source, index) => (
-                  <SourceAudioButton className={styles.listenButton} key={source} source={source}>
-                    <span className={styles.playIcon}><AppIcon name="speaker" size={15} /></span>
-                    <span>Namuna {index + 1}</span>
-                  </SourceAudioButton>
-                ))}
-              </div>
-            </div>
-            <div className={styles.octaveGrid}>
-              {OCTAVES.map((octave) => (
-                <div className={styles.octaveCard} key={octave}>
-                  <span className={styles.octaveIcon} aria-hidden="true"><AppIcon name="note" size={18} /></span>
-                  <span>{octave}</span>
+            <div className={styles.octaveHero}>
+              <div className={styles.octaveCopy}>
+                <div className={styles.octaveLabelRow}>
+                  <span className={styles.octaveLabelIcon} aria-hidden="true"><AppIcon name="music" size={22} /></span>
+                  <span>3-DARS • DAVOMI</span>
                 </div>
+                <h1>Kuy va oktavalar</h1>
+                <p><strong>Kuy</strong> - bu turli balandlikdagi tovushlarning ma&apos;lum bir ritm va lad bilan uyg&apos;unlashgan holati.</p>
+              </div>
+              <img className={styles.octaveDecor} src="/assets/figma/lesson-3-octave-decor.svg" alt="" />
+            </div>
+
+            <div className={styles.audioSamples}>
+              {SAMPLE_AUDIO.map((source, index) => (
+                <SourceAudioButton
+                  className={`${styles.audioSampleCard} ${index === 0 ? styles.audioSamplePurple : index === 1 ? styles.audioSampleBlue : styles.audioSampleGreen}`}
+                  key={source}
+                  source={source}
+                >
+                  <span className={styles.audioSampleIcon} aria-hidden="true"><AppIcon name="speaker" size={22} /></span>
+                  <span className={styles.audioSampleBody}>
+                    <strong>{index + 1}-namuna</strong>
+                    <span className={styles.waveform} aria-hidden="true">
+                      {WAVEFORM.map((height, barIndex) => <i key={barIndex} style={{ height: `${height}px` }} />)}
+                    </span>
+                    <small>Tinglash</small>
+                  </span>
+                </SourceAudioButton>
               ))}
             </div>
+
+            <section className={styles.octaveKeyboardPanel} aria-label="Oktavalar klaviaturasi">
+              <h2>Oktavalar</h2>
+              <div className={styles.octaveKeyboard}>
+                <div className={styles.octaveWhiteKeys}>
+                  {Array.from({ length: 56 }, (_, index) => <span key={index} />)}
+                </div>
+                {OCTAVE_BLACK_KEYS.map((keyIndex) => (
+                  <span
+                    className={styles.octaveBlackKey}
+                    key={keyIndex}
+                    style={{ left: `${((keyIndex + 1) / 56) * 100}%` }}
+                    aria-hidden="true"
+                  />
+                ))}
+              </div>
+              <div className={styles.octaveRanges}>
+                {OCTAVES.map((octave, index) => (
+                  <div className={styles.octaveRange} data-range={index + 1} key={octave}>
+                    <span aria-hidden="true" />
+                    <small>{octave}</small>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <div className={styles.pitchScale}>
+              <strong>Past tovushlar</strong>
+              <span className={styles.pitchLine} aria-hidden="true" />
+              <strong>Baland tovushlar</strong>
+            </div>
+
+            <aside className={styles.octaveFact}>
+              <strong>Qiziqarli fakt</strong>
+              <p>Bilasizmi? Fil ham musiqa tinglashni yaxshi ko&apos;radi! Fillar past tovushlarni oyoqlari orqali his qiladi. Pianinodagi eng past tovush ham xuddi shunday — uni quloq bilan eshitish qiyin, lekin his qilsa bo&apos;ladi!</p>
+            </aside>
           </section>
         ) : null}
 
