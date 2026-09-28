@@ -167,12 +167,18 @@ function InteractiveNotePiano() {
   return (
     <div className={styles.notePianoStage}>
       <div className={styles.notePianoTopline}>
-        <span className={styles.notePianoHint}><AppIcon name="sparkle" size={15} /> Har bir oq klavishni bosing</span>
-        <span className={styles.notePianoStatus}>{activeNote ? `${activeNote} notasi yangradi` : 'Nota tanlang va tovushni tinglang'}</span>
+        <span className={styles.notePianoHint}><AppIcon name="sparkle" size={15} /> Oq klavishlarni bosing va tinglang</span>
+        <span className={styles.notePianoStatus}>{activeNote ? `${activeNote} notasi yangradi` : 'Pianinoda nota tanlang'}</span>
       </div>
 
-      <div className={styles.notePiano} aria-label="Do dan Si gacha interaktiv pianino">
-        <div className={styles.noteWhiteKeys}>
+      <div className={styles.pianoInstrument}>
+        <div className={styles.pianoLid} aria-hidden="true">
+          <span className={styles.pianoBrand}>SOLFEDJIO</span>
+          <span className={styles.pianoBrandMark}><AppIcon name="music" size={16} /></span>
+        </div>
+        <div className={styles.pianoFelt} aria-hidden="true" />
+        <div className={styles.notePiano} aria-label="Do dan Si gacha interaktiv pianino">
+          <div className={styles.noteWhiteKeys}>
           {NOTE_AUDIO.map(([note, source]) => {
             const isActive = activeNote === note;
 
@@ -195,24 +201,24 @@ function InteractiveNotePiano() {
                   }
                 }}
               >
-                <span className={styles.floatingNote} aria-hidden="true"><AppIcon name="note" size={24} /></span>
-                <span className={styles.noteSoundWave} aria-hidden="true"><i /><i /><i /></span>
-                <span className={styles.noteSpeaker} aria-hidden="true"><AppIcon name="speaker" size={21} /></span>
+                <span className={styles.floatingNote} aria-hidden="true"><AppIcon name="note" size={23} /></span>
+                <span className={styles.keyGlow} aria-hidden="true" />
                 <strong>{note}</strong>
-                <small>Bosing</small>
               </button>
             );
           })}
-        </div>
+          </div>
 
-        {blackAfter.map((afterWhite) => (
-          <span
-            className={styles.noteBlackKey}
-            key={afterWhite}
-            style={{ left: `${((afterWhite + 1) / 7) * 100}%` }}
-            aria-hidden="true"
-          />
-        ))}
+          {blackAfter.map((afterWhite) => (
+            <span
+              className={styles.noteBlackKey}
+              key={afterWhite}
+              style={{ left: `${((afterWhite + 1) / 7) * 100}%` }}
+              aria-hidden="true"
+            />
+          ))}
+        </div>
+        <div className={styles.pianoBase} aria-hidden="true" />
       </div>
 
       <div className={styles.noteSequence} aria-label="Notalar ketma-ketligi">
