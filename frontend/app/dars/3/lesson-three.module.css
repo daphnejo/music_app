@@ -25,7 +25,7 @@
   width: min(1280px, calc(100% - 48px));
   min-height: calc(100vh - 96px);
   margin: 0 auto;
-  padding: 46px 0 96px;
+  padding: 36px 0 84px;
   display: flex;
   align-items: center;
 }
@@ -41,8 +41,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 28px;
-  margin-bottom: 26px;
+  gap: 24px;
+  margin-bottom: 20px;
 }
 
 .kicker {
@@ -61,7 +61,7 @@
 .octaveCopy h1 {
   margin: 5px 0 0;
   color: #1e1224;
-  font-size: clamp(42px, 4.5vw, 64px);
+  font-size: clamp(40px, 4vw, 56px);
   line-height: 1.04;
   letter-spacing: -.025em;
   font-weight: 800;
@@ -80,28 +80,28 @@
 
 .definition {
   min-height: 62px;
-  padding: 17px 24px;
+  padding: 16px 22px;
   display: flex;
   align-items: center;
+  border: 1.5px solid #ffd0e1;
   border-radius: 18px;
-  background: #fff;
-  border: 1.5px solid #ffd6e7;
-  box-shadow: 0 8px 20px rgba(255, 30, 112, .05);
   color: #2a1b30;
+  background: linear-gradient(135deg, #fff 0%, #fff9fb 100%);
+  box-shadow: 0 8px 18px rgba(255, 30, 112, .07);
   font-size: 17px;
-  line-height: 1.5;
+  line-height: 1.48;
   font-weight: 650;
 }
 
 .definition strong { margin-right: 5px; }
 
 .keyboardShell {
-  margin-top: 30px;
-  padding: 12px;
-  border-radius: 30px;
+  margin-top: 22px;
+  padding: 10px;
+  border: 1.5px solid #efddea;
+  border-radius: 26px;
   background: #fff;
-  border: 1.5px solid #ffd6e7;
-  box-shadow: 0 16px 40px rgba(255, 30, 112, .09);
+  box-shadow: 0 14px 32px rgba(255, 30, 112, .085);
 }
 
 .keyboard {
@@ -159,25 +159,28 @@
 }
 
 .rememberBar {
-  margin-top: 26px;
-  min-height: 66px;
-  padding: 14px 22px;
+  margin-top: 18px;
+  min-height: 62px;
+  padding: 12px 18px;
   display: flex;
   align-items: center;
   gap: 13px;
-  border-radius: 20px;
-  background: #fff0f4;
-  border: 1px solid #ffd6e7;
+  border: 1.5px solid #ffd4e5;
+  border-radius: 18px;
+  background: linear-gradient(105deg, #fff0f5 0%, #fff7fa 100%);
+  box-shadow: 0 7px 18px rgba(255, 30, 112, .06);
 }
 
 .bulb {
-  width: 36px;
-  height: 36px;
-  flex: 0 0 36px;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
   border-radius: 50%;
   display: grid;
   place-items: center;
+  color: #ff2478;
   background: #fff;
+  box-shadow: 0 4px 12px rgba(255, 36, 120, .08);
 }
 
 .rememberBar p {
@@ -457,15 +460,15 @@
     min-height: calc(100dvh - 78px);
     padding: 22px 0 64px;
   }
-  .heroRow { margin-bottom: 14px; }
+  .heroRow { margin-bottom: 12px; }
   .heroRow h1,
   .screenHeading h1,
   .octaveCopy h1 { font-size: clamp(36px, 3.2vw, 48px); }
   .musicDecor { gap: 12px; }
   .definition { min-height: 52px; padding: 12px 18px; font-size: 15px; border-radius: 15px; }
-  .keyboardShell { margin-top: 16px; padding: 8px; border-radius: 22px; }
+  .keyboardShell { margin-top: 14px; padding: 8px; border-radius: 21px; }
   .keyboard { height: 244px; border-radius: 16px; }
-  .rememberBar { margin-top: 14px; min-height: 48px; padding: 9px 14px; border-radius: 15px; }
+  .rememberBar { margin-top: 12px; min-height: 48px; padding: 8px 12px; border-radius: 15px; }
   .bulb { width: 30px; height: 30px; flex-basis: 30px; }
   .rememberBar p { font-size: 13px; }
   .screenHeading { margin-bottom: 20px; }
