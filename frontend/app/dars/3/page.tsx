@@ -343,19 +343,25 @@ export default function LessonThreePage() {
         {step === 2 ? (
           <section className={styles.octaveScreen}>
             <div className={styles.octaveCopy}>
-              <span className={styles.kicker}>KUY VA OKTAVALAR</span>
+              <span className={styles.kicker}><AppIcon name="music" size={15} /> KUY VA OKTAVALAR</span>
               <h1>Kuy va oktavalar</h1>
               <p>Kuy — bu turli balandlikdagi tovushlarning ma’lum bir ritm va lad bilan uyg‘unlashgan holati.</p>
               <div className={styles.listenRow}>
                 {['audio11.wav', 'audio12.wav', 'audio13.wav'].map((source, index) => (
                   <SourceAudioButton className={styles.listenButton} key={source} source={source}>
-                    <span className={styles.playIcon}><AppIcon name="play" size={11} /></span> Namuna {index + 1}
+                    <span className={styles.playIcon}><AppIcon name="speaker" size={15} /></span>
+                    <span>Namuna {index + 1}</span>
                   </SourceAudioButton>
                 ))}
               </div>
             </div>
             <div className={styles.octaveGrid}>
-              {OCTAVES.map((octave) => <div className={styles.octaveCard} key={octave}>{octave}</div>)}
+              {OCTAVES.map((octave) => (
+                <div className={styles.octaveCard} key={octave}>
+                  <span className={styles.octaveIcon} aria-hidden="true"><AppIcon name="note" size={18} /></span>
+                  <span>{octave}</span>
+                </div>
+              ))}
             </div>
           </section>
         ) : null}
