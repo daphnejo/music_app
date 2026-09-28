@@ -204,89 +204,245 @@
   line-height: 1.6;
 }
 
-.noteListenGrid {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 12px;
+.notePianoStage {
+  padding: 18px;
+  border: 1.5px solid #efddea;
+  border-radius: 28px;
+  background: linear-gradient(180deg, #fff 0%, #fff9fc 100%);
+  box-shadow: 0 16px 36px rgba(255, 30, 112, .08);
 }
 
-.noteButton {
-  min-height: 166px;
-  padding: 18px 12px 16px;
-  border: 1.5px solid #eadfea;
+.notePianoTopline {
+  min-height: 42px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.notePianoHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #b21f58;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.notePianoStatus {
+  color: #8b7a8e;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.notePiano {
+  position: relative;
+  height: 288px;
+  overflow: hidden;
+  border: 1px solid #d9d2d8;
   border-radius: 22px;
+  background: #f7f4f7;
+  box-shadow: inset 0 8px 18px rgba(30, 18, 36, .04);
+}
+
+.noteWhiteKeys {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.notePianoKey {
+  min-width: 0;
+  position: relative;
+  padding: 86px 10px 18px;
+  border: 0;
+  border-right: 1px solid #d4ccd3;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 9px;
-  color: #24132f;
-  background: linear-gradient(180deg, #fff 0%, #fffafd 100%);
+  justify-content: flex-end;
+  gap: 6px;
+  color: #35223b;
+  background: linear-gradient(180deg, #fff 0%, #fffdfd 74%, #faf5f8 100%);
+  box-shadow: inset 0 -16px 26px rgba(30, 18, 36, .025);
   font: inherit;
   cursor: pointer;
-  box-shadow: 0 9px 22px rgba(54, 34, 66, .055);
-  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  transition: transform .16s ease, background .16s ease, box-shadow .16s ease;
 }
 
-.noteButton:hover {
-  transform: translateY(-3px);
-  border-color: #ffc0d8;
-  background: linear-gradient(180deg, #fff 0%, #fff5f9 100%);
-  box-shadow: 0 13px 26px rgba(255, 30, 112, .09);
+.notePianoKey:last-child {
+  border-right: 0;
 }
 
-.noteButton[data-playing='true'] {
-  transform: translateY(-2px);
-  border-color: #ff86b2;
-  background: #fff2f7;
-  box-shadow: 0 14px 28px rgba(255, 30, 112, .13);
+.notePianoKey:hover {
+  background: linear-gradient(180deg, #fff 0%, #fff8fb 74%, #fff0f5 100%);
 }
 
-.noteAudioIcon {
-  width: 48px;
-  height: 48px;
+.notePianoKey[data-playing='true'] {
+  transform: translateY(6px);
+  background: linear-gradient(180deg, #fff 0%, #fff6fa 68%, #ffeaf2 100%);
+  box-shadow: inset 0 -8px 24px rgba(255, 30, 112, .13), 0 0 24px rgba(255, 30, 112, .14);
+}
+
+.notePianoKey strong {
+  position: relative;
+  z-index: 4;
+  color: #2d1c33;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.notePianoKey small {
+  position: relative;
+  z-index: 4;
+  padding: 5px 10px;
+  border-radius: 999px;
+  color: #7d6a82;
+  background: #f5eef4;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.noteSpeaker {
+  position: relative;
+  z-index: 4;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #ffd2e2;
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #ff2478;
   background: #fff;
-  border: 1px solid #ffd3e3;
-  box-shadow: 0 5px 13px rgba(255, 36, 120, .09);
+  box-shadow: 0 4px 12px rgba(255, 36, 120, .08);
+  transition: color .16s ease, background .16s ease, transform .16s ease;
 }
 
-.noteButton[data-playing='true'] .noteAudioIcon {
+.notePianoKey[data-playing='true'] .noteSpeaker {
   color: #fff;
   background: linear-gradient(105deg, #ff2a75, #ff6848);
   border-color: transparent;
+  transform: scale(1.06);
 }
 
-.noteButton strong {
-  font-size: 23px;
-  line-height: 1.05;
-  font-weight: 800;
+.noteBlackKey {
+  position: absolute;
+  top: 0;
+  z-index: 8;
+  width: 8.2%;
+  height: 58%;
+  transform: translateX(-50%);
+  border-radius: 0 0 9px 9px;
+  pointer-events: none;
+  background: linear-gradient(180deg, #2c2030 0%, #171019 84%, #302234 100%);
+  box-shadow: 0 10px 16px rgba(30, 18, 36, .24);
 }
 
-.noteButton small {
-  padding: 5px 10px;
+.noteSoundWave {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 54px;
+  height: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+}
+
+.noteSoundWave i {
+  width: 3px;
   border-radius: 999px;
-  color: #7e6d83;
-  background: #f6eff5;
-  font-size: 11px;
-  line-height: 1;
-  font-weight: 800;
+  display: block;
+  background: #ff3d87;
+}
+
+.noteSoundWave i:nth-child(1) { height: 8px; }
+.noteSoundWave i:nth-child(2) { height: 18px; }
+.noteSoundWave i:nth-child(3) { height: 11px; }
+
+.notePianoKey[data-playing='true'] .noteSoundWave {
+  opacity: 1;
+}
+
+.notePianoKey[data-playing='true'] .noteSoundWave i {
+  animation: noteWave .58s ease-in-out infinite alternate;
+}
+
+.notePianoKey[data-playing='true'] .noteSoundWave i:nth-child(2) {
+  animation-delay: .12s;
+}
+
+.notePianoKey[data-playing='true'] .noteSoundWave i:nth-child(3) {
+  animation-delay: .24s;
+}
+
+.floatingNote {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 74px;
+  color: #ff2478;
+  opacity: 0;
+  transform: translate(-50%, 6px) scale(.84);
+  pointer-events: none;
+}
+
+.notePianoKey[data-playing='true'] .floatingNote {
+  animation: floatNote 1.15s ease-out infinite;
 }
 
 .noteSequence {
-  margin: 22px auto 0;
+  margin: 16px auto 0;
   width: fit-content;
-  padding: 10px 22px;
+  max-width: 100%;
+  padding: 8px 16px;
   border: 1px solid #ffd6e7;
   border-radius: 999px;
-  color: #b41f55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #8a6476;
   background: linear-gradient(105deg, #fff0f5, #fff7fa);
   box-shadow: 0 5px 14px rgba(255, 30, 112, .05);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 800;
+}
+
+.noteSequence > span {
+  min-height: 28px;
+  padding: 0 6px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color .16s ease, background .16s ease, transform .16s ease;
+}
+
+.noteSequenceActive {
+  color: #fff;
+  background: linear-gradient(105deg, #ff2a75, #ff6848);
+  transform: translateY(-1px);
+}
+
+@keyframes noteWave {
+  from { transform: scaleY(.62); opacity: .65; }
+  to { transform: scaleY(1.18); opacity: 1; }
+}
+
+@keyframes floatNote {
+  0% { opacity: 0; transform: translate(-50%, 8px) scale(.82) rotate(-6deg); }
+  24% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -58px) scale(1.12) rotate(7deg); }
 }
 
 .octaveScreen {
@@ -503,12 +659,18 @@
   .screenHeading { margin-bottom: 20px; }
   .screenHeading p,
   .octaveCopy p { margin-top: 8px; font-size: 15px; line-height: 1.45; }
-  .noteListenGrid { gap: 8px; }
-  .noteButton { min-height: 122px; padding: 11px 8px 10px; border-radius: 18px; gap: 7px; }
-  .noteAudioIcon { width: 36px; height: 36px; }
-  .noteButton strong { font-size: 18px; }
-  .noteButton small { padding: 4px 8px; font-size: 9.5px; }
-  .noteSequence { margin-top: 16px; padding: 8px 17px; font-size: 13px; }
+  .notePianoStage { padding: 12px; border-radius: 22px; }
+  .notePianoTopline { min-height: 34px; margin-bottom: 8px; }
+  .notePianoHint,
+  .notePianoStatus { font-size: 11px; }
+  .notePiano { height: 230px; border-radius: 17px; }
+  .notePianoKey { padding: 72px 8px 13px; gap: 5px; }
+  .notePianoKey strong { font-size: 18px; }
+  .notePianoKey small { padding: 4px 8px; font-size: 8.5px; }
+  .noteSpeaker { width: 34px; height: 34px; }
+  .noteSoundWave { top: 44px; height: 19px; }
+  .floatingNote { top: 60px; }
+  .noteSequence { margin-top: 10px; padding: 6px 12px; font-size: 11px; }
   .octaveScreen { gap: 36px; }
   .listenRow { margin-top: 16px; gap: 9px; }
   .listenButton { min-height: 40px; padding: 8px 14px; font-size: 13px; }
@@ -528,7 +690,10 @@
   .stage { width: min(900px, calc(100% - 40px)); align-items: flex-start; }
   .keyboard { height: 290px; overflow-x: auto; grid-template-columns: repeat(21, 54px); }
   .blackKey { display: none; }
-  .noteListenGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .notePianoStage { overflow-x: auto; }
+  .notePianoTopline,
+  .notePiano,
+  .noteSequence { min-width: 760px; }
   .octaveScreen { grid-template-columns: 1fr; gap: 34px; }
   .octaveCopy { text-align: center; }
   .octaveCopy .listenRow { justify-content: center; }
@@ -544,8 +709,10 @@
   .keyboardShell { margin-top: 20px; padding: 8px; border-radius: 22px; overflow: hidden; }
   .keyboard { height: 250px; border-radius: 16px; }
   .rememberBar { margin-top: 20px; padding: 12px 14px; align-items: flex-start; }
-  .noteListenGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .noteButton { min-height: 126px; border-radius: 18px; }
+  .notePianoStage { padding: 10px; border-radius: 20px; }
+  .notePianoTopline { min-width: 720px; }
+  .notePiano { min-width: 720px; height: 230px; }
+  .noteSequence { min-width: 720px; }
   .octaveGrid { grid-template-columns: 1fr; }
   .quizScreen { padding: 24px 16px; border-radius: 24px; }
   .screenHeading { margin-bottom: 24px; }
@@ -557,6 +724,13 @@
 
 @media (prefers-reduced-motion: reduce) {
   .progressFill,
-  .noteButton,
+  .notePianoKey,
+  .noteSpeaker,
+  .noteSequence > span,
   .answerOption { transition: none; }
+
+  .notePianoKey[data-playing='true'] .noteSoundWave i,
+  .notePianoKey[data-playing='true'] .floatingNote {
+    animation: none;
+  }
 }
