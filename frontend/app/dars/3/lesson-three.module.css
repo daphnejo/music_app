@@ -192,7 +192,7 @@
 
 .screenHeading {
   max-width: 820px;
-  margin: 0 auto 34px;
+  margin: 0 auto 28px;
   text-align: center;
 }
 
@@ -207,56 +207,85 @@
 .noteListenGrid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 14px;
+  gap: 12px;
 }
 
 .noteButton {
-  min-height: 180px;
-  padding: 20px 12px;
-  border: 1.5px solid #ffd6e7;
-  border-radius: 26px;
+  min-height: 166px;
+  padding: 18px 12px 16px;
+  border: 1.5px solid #eadfea;
+  border-radius: 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  color: #1e1224;
-  background: #fff;
+  gap: 9px;
+  color: #24132f;
+  background: linear-gradient(180deg, #fff 0%, #fffafd 100%);
   font: inherit;
   cursor: pointer;
-  box-shadow: 0 10px 26px rgba(255, 30, 112, .07);
-  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  box-shadow: 0 9px 22px rgba(54, 34, 66, .055);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
 }
 
 .noteButton:hover {
-  transform: translateY(-4px);
-  border-color: #ff93ba;
-  box-shadow: 0 16px 28px rgba(255, 30, 112, .11);
+  transform: translateY(-3px);
+  border-color: #ffc0d8;
+  background: linear-gradient(180deg, #fff 0%, #fff5f9 100%);
+  box-shadow: 0 13px 26px rgba(255, 30, 112, .09);
 }
 
-.noteButton span {
+.noteButton[data-playing='true'] {
+  transform: translateY(-2px);
+  border-color: #ff86b2;
+  background: #fff2f7;
+  box-shadow: 0 14px 28px rgba(255, 30, 112, .13);
+}
+
+.noteAudioIcon {
   width: 48px;
   height: 48px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: #fff;
-  background: linear-gradient(105deg, #ff1e70, #ff6644);
-  font-size: 22px;
+  color: #ff2478;
+  background: #fff;
+  border: 1px solid #ffd3e3;
+  box-shadow: 0 5px 13px rgba(255, 36, 120, .09);
 }
 
-.noteButton strong { font-size: 22px; }
-.noteButton small { color: #9b7ea6; font-weight: 700; }
+.noteButton[data-playing='true'] .noteAudioIcon {
+  color: #fff;
+  background: linear-gradient(105deg, #ff2a75, #ff6848);
+  border-color: transparent;
+}
+
+.noteButton strong {
+  font-size: 23px;
+  line-height: 1.05;
+  font-weight: 800;
+}
+
+.noteButton small {
+  padding: 5px 10px;
+  border-radius: 999px;
+  color: #7e6d83;
+  background: #f6eff5;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 800;
+}
 
 .noteSequence {
-  margin: 30px auto 0;
+  margin: 22px auto 0;
   width: fit-content;
-  padding: 12px 24px;
+  padding: 10px 22px;
+  border: 1px solid #ffd6e7;
   border-radius: 999px;
   color: #b41f55;
-  background: #fff0f4;
-  border: 1px solid #ffd6e7;
-  font-size: 16px;
+  background: linear-gradient(105deg, #fff0f5, #fff7fa);
+  box-shadow: 0 5px 14px rgba(255, 30, 112, .05);
+  font-size: 15px;
   font-weight: 800;
 }
 
@@ -474,11 +503,12 @@
   .screenHeading { margin-bottom: 20px; }
   .screenHeading p,
   .octaveCopy p { margin-top: 8px; font-size: 15px; line-height: 1.45; }
-  .noteListenGrid { gap: 9px; }
-  .noteButton { min-height: 126px; padding: 12px 8px; border-radius: 20px; }
-  .noteButton span { width: 38px; height: 38px; font-size: 18px; }
+  .noteListenGrid { gap: 8px; }
+  .noteButton { min-height: 122px; padding: 11px 8px 10px; border-radius: 18px; gap: 7px; }
+  .noteAudioIcon { width: 36px; height: 36px; }
   .noteButton strong { font-size: 18px; }
-  .noteSequence { margin-top: 18px; padding: 9px 18px; font-size: 14px; }
+  .noteButton small { padding: 4px 8px; font-size: 9.5px; }
+  .noteSequence { margin-top: 16px; padding: 8px 17px; font-size: 13px; }
   .octaveScreen { gap: 36px; }
   .listenRow { margin-top: 16px; gap: 9px; }
   .listenButton { min-height: 40px; padding: 8px 14px; font-size: 13px; }
@@ -515,7 +545,7 @@
   .keyboard { height: 250px; border-radius: 16px; }
   .rememberBar { margin-top: 20px; padding: 12px 14px; align-items: flex-start; }
   .noteListenGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .noteButton { min-height: 130px; }
+  .noteButton { min-height: 126px; border-radius: 18px; }
   .octaveGrid { grid-template-columns: 1fr; }
   .quizScreen { padding: 24px 16px; border-radius: 24px; }
   .screenHeading { margin-bottom: 24px; }
