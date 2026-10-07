@@ -299,6 +299,8 @@ function QuizScreen({ quiz, index }: { quiz: (typeof QUIZZES)[number]; index: nu
 export default function LessonThreePage() {
   const [step, setStep] = useState(0);
   const [activeOctave, setActiveOctave] = useState<number | null>(null);
+  const [hoveredOctave, setHoveredOctave] = useState<number | null>(null);
+  const visibleOctave = hoveredOctave ?? activeOctave;
 
   const goBack = () => setStep((current) => Math.max(0, current - 1));
   const goNext = () => setStep((current) => Math.min(TOTAL_STEPS - 1, current + 1));
@@ -404,7 +406,7 @@ export default function LessonThreePage() {
                     const octaveIndex = Math.floor(index / 7);
                     return (
                       <span
-                        data-active={activeOctave === octaveIndex ? 'true' : 'false'}
+                        data-active={visibleOctave === octaveIndex ? 'true' : 'false'}
                         data-range={octaveIndex + 1}
                         key={index}
                       />
@@ -430,10 +432,10 @@ export default function LessonThreePage() {
                     type="button"
                     aria-pressed={activeOctave === index}
                     onClick={() => setActiveOctave((current) => current === index ? null : index)}
-                    onPointerEnter={() => setActiveOctave(index)}
-                    onPointerLeave={() => setActiveOctave((current) => current === index ? null : current)}
-                    onFocus={() => setActiveOctave(index)}
-                    onBlur={() => setActiveOctave((current) => current === index ? null : current)}
+                    onPointerEnter={() => setHoveredOctave(index)}
+                    onPointerLeave={() => setHoveredOctave(null)}
+                    onFocus={() => setHoveredOctave(index)}
+                    onBlur={() => setHoveredOctave(null)}
                   >
                     <span aria-hidden="true" />
                     <small>{octave}</small>
@@ -442,7 +444,7 @@ export default function LessonThreePage() {
               </div>
               <div className={styles.octaveKeyboardHint}>
                 <AppIcon name="bulb" size={14} />
-                <span>{activeOctave === null ? 'Oktava nomini bosing — shu qism klaviaturada ajralib ko‘rinadi.' : `${OCTAVES[activeOctave]} tanlandi`}</span>
+                <span>{visibleOctave === null ? 'Oktava nomini bosing — shu qism klaviaturada ajralib ko‘rinadi.' : `${OCTAVES[visibleOctave]} klaviaturada ajratildi`}</span>
               </div>
             </section>
 
