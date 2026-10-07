@@ -366,13 +366,30 @@ export default function LessonThreePage() {
                   key={source}
                   source={source}
                 >
-                  <span className={styles.audioSampleIcon} aria-hidden="true"><AppIcon name="speaker" size={22} /></span>
+                  <span className={styles.audioSampleIcon} aria-hidden="true">
+                    <span className={styles.audioPulseRing} />
+                    <AppIcon name="speaker" size={22} />
+                  </span>
                   <span className={styles.audioSampleBody}>
                     <strong>{index + 1}-namuna</strong>
-                    <span className={styles.waveform} aria-hidden="true">
-                      {WAVEFORM.map((height, barIndex) => <i key={barIndex} style={{ height: `${height}px` }} />)}
+                    <span className={styles.waveformWrap} aria-hidden="true">
+                      <span className={styles.waveform}>
+                        {WAVEFORM.map((height, barIndex) => (
+                          <i
+                            key={barIndex}
+                            style={{
+                              height: `${height}px`,
+                              animationDelay: `${(barIndex % 7) * 55}ms`,
+                            }}
+                          />
+                        ))}
+                      </span>
+                      <span className={styles.waveformPlayhead} />
                     </span>
-                    <small>Tinglash</small>
+                    <span className={styles.audioSampleStatus} aria-hidden="true">
+                      <small className={styles.audioIdleLabel}>Tinglash</small>
+                      <small className={styles.audioPlayingLabel}>Chalinyapti</small>
+                    </span>
                   </span>
                 </SourceAudioButton>
               ))}
