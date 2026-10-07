@@ -417,15 +417,18 @@ export default function LessonThreePage() {
                     <strong>{index + 1}-namuna</strong>
                     <span className={styles.waveformWrap} aria-hidden="true">
                       <span className={styles.waveform}>
-                        {WAVEFORM.map((height, barIndex) => (
-                          <i
-                            key={barIndex}
-                            style={{
-                              height: `${height}px`,
-                              animationDelay: `${(barIndex % 7) * 55}ms`,
-                            }}
-                          />
-                        ))}
+                        {Array.from({ length: 48 }, (_, barIndex) => {
+                          const height = WAVEFORM[barIndex % WAVEFORM.length];
+                          return (
+                            <i
+                              key={barIndex}
+                              style={{
+                                height: `${height}px`,
+                                animationDelay: `${(barIndex % 7) * 55}ms`,
+                              }}
+                            />
+                          );
+                        })}
                       </span>
                       <span className={styles.waveformPlayhead} />
                     </span>
