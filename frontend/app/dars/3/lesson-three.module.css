@@ -1005,76 +1005,138 @@
 }
 
 .pitchScale {
-  min-height: 34px;
+  min-height: 54px;
+  padding: 9px 12px;
+  border: 1px solid #f0e6ed;
+  border-radius: 16px;
   display: grid;
-  grid-template-columns: auto minmax(80px, 1fr) auto;
+  grid-template-columns: auto minmax(120px, 1fr) auto;
   align-items: center;
   gap: 14px;
+  background: rgba(255, 255, 255, .72);
+  box-shadow: 0 6px 15px rgba(36, 19, 47, .035);
 }
 
-.pitchScale strong {
-  font-size: 13px;
+.pitchLabel {
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  box-shadow: 0 3px 8px rgba(36, 19, 47, .04);
+}
+
+.pitchLabel strong {
+  font-size: 12.5px;
   line-height: 1;
   font-weight: 800;
   white-space: nowrap;
 }
 
-.pitchScale strong:first-child { color: #a545c7; }
-.pitchScale strong:last-child { color: #ff1e70; }
+.pitchLow {
+  color: #9b3fd4;
+}
+
+.pitchHigh {
+  color: #ff1e70;
+}
 
 .pitchLine {
   position: relative;
-  height: 2px;
+  height: 8px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #a545c7 0%, #ef3b98 55%, #ff1e70 100%);
+  background: linear-gradient(90deg, #a545c7 0%, #7c78df 24%, #21a98d 47%, #f2a316 72%, #ff1e70 100%);
+  box-shadow: inset 0 1px 2px rgba(36, 19, 47, .08);
 }
 
-.pitchLine::before,
-.pitchLine::after {
-  content: '';
+.pitchGlow {
+  position: absolute;
+  inset: -5px 0;
+  border-radius: 999px;
+  opacity: .18;
+  filter: blur(7px);
+  background: inherit;
+  pointer-events: none;
+}
+
+.pitchMarker {
   position: absolute;
   top: 50%;
-  width: 7px;
-  height: 7px;
-  border-top: 2px solid currentColor;
-  border-right: 2px solid currentColor;
+  left: var(--pitch-position, 50%);
+  width: 30px;
+  height: 30px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(135deg, #a545c7, #ff1e70);
+  box-shadow: 0 6px 14px rgba(213, 45, 130, .22);
+  transform: translate(-50%, -50%);
+  transition: left .28s ease, transform .18s ease, box-shadow .18s ease;
 }
 
-.pitchLine::before {
-  left: -1px;
-  color: #a545c7;
-  transform: translateY(-50%) rotate(-135deg);
+.pitchScale[data-selected='true'] .pitchMarker {
+  transform: translate(-50%, -50%) scale(1.08);
+  box-shadow: 0 8px 18px rgba(213, 45, 130, .3);
 }
 
-.pitchLine::after {
-  right: -1px;
-  color: #ff1e70;
-  transform: translateY(-50%) rotate(45deg);
+.pitchScale[data-selected='false'] .pitchMarker {
+  animation: pitchExplore 4.8s ease-in-out infinite;
+}
+
+@keyframes pitchExplore {
+  0%, 100% { left: 4%; }
+  50% { left: 96%; }
 }
 
 .octaveFact {
-  padding: 22px 28px;
+  padding: 18px 22px;
+  border: 1px solid #f4e6bd;
   border-radius: 18px;
-  background: #fff8ea;
-  box-shadow: 0 7px 16px rgba(111, 82, 36, .04);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background:
+    radial-gradient(circle at 92% 18%, rgba(255, 202, 72, .12), transparent 30%),
+    linear-gradient(105deg, #fff9eb 0%, #fffdf5 100%);
+  box-shadow: 0 7px 16px rgba(111, 82, 36, .05);
 }
 
-.octaveFact strong {
+.octaveFactIcon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border: 1px solid #f0d993;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #b7791f;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(183, 121, 31, .08);
+}
+
+.octaveFactCopy {
+  min-width: 0;
+}
+
+.octaveFactCopy strong {
   display: block;
-  margin-bottom: 9px;
+  margin-bottom: 6px;
   color: #24132f;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.2;
   font-weight: 800;
 }
 
-.octaveFact p {
+.octaveFactCopy p {
   margin: 0;
-  color: #3c3040;
-  font-size: 14px;
-  line-height: 1.55;
+  color: #4b3b4d;
+  font-size: 13.5px;
+  line-height: 1.5;
 }
-
 
 .quizScreen {
   max-width: 900px;
@@ -1254,11 +1316,14 @@
   .octaveRange { padding-bottom: 3px; }
   .octaveRange small { margin-top: 5px; font-size: 7.5px; }
   .octaveKeyboardHint { min-height: 22px; margin-top: 5px; font-size: 8.5px; }
-  .pitchScale { min-height: 26px; gap: 10px; }
-  .pitchScale strong { font-size: 10.5px; }
-  .octaveFact { padding: 15px 20px; border-radius: 15px; }
-  .octaveFact strong { margin-bottom: 6px; font-size: 15px; }
-  .octaveFact p { font-size: 11.5px; line-height: 1.4; }
+  .pitchScale { min-height: 44px; padding: 7px 9px; gap: 8px; border-radius: 14px; }
+  .pitchLabel { min-height: 26px; padding: 0 7px; gap: 4px; }
+  .pitchLabel strong { font-size: 9.5px; }
+  .pitchMarker { width: 24px; height: 24px; }
+  .octaveFact { padding: 13px 16px; border-radius: 15px; gap: 10px; }
+  .octaveFactIcon { width: 34px; height: 34px; flex-basis: 34px; }
+  .octaveFactCopy strong { margin-bottom: 4px; font-size: 13px; }
+  .octaveFactCopy p { font-size: 10.8px; line-height: 1.4; }
   .quizScreen { max-width: 820px; padding: 28px; border-radius: 24px; }
   .answerGrid { gap: 8px; }
   .answerOption { min-height: 46px; padding: 9px 14px; font-size: 14px; border-radius: 13px; }
@@ -1308,9 +1373,11 @@
   .octaveCopy p { font-size: 15px; }
   .audioSamples { grid-template-columns: 1fr; }
   .octaveKeyboardPanel { padding: 12px; }
-  .pitchScale { grid-template-columns: 1fr; gap: 8px; text-align: center; }
-  .pitchLine { width: 100%; }
-  .octaveFact { padding: 18px 16px; }
+  .pitchScale { grid-template-columns: 1fr; gap: 10px; padding: 12px; text-align: center; }
+  .pitchLabel { width: fit-content; margin: 0 auto; }
+  .pitchLine { width: 100%; min-height: 8px; }
+  .octaveFact { padding: 16px; gap: 11px; }
+  .octaveFactIcon { width: 36px; height: 36px; flex-basis: 36px; }
   .quizScreen { padding: 24px 16px; border-radius: 24px; }
   .screenHeading { margin-bottom: 24px; }
   .answerOption { min-height: 52px; font-size: 14px; }
@@ -1326,13 +1393,15 @@
   .octaveWhiteKeys span,
   .octaveBlackKey,
   .octaveRange,
+  .pitchMarker,
   .answerOption { transition: none; }
 
   .notePianoKey[data-active='true'] .floatingNote,
   .audioSampleCard[data-playing='true'] .waveform i,
   .audioSampleCard[data-playing='true'] .waveformPlayhead,
   .audioSampleCard[data-playing='true'] .audioPulseRing,
-  .audioSampleCard[data-playing='true']::after {
+  .audioSampleCard[data-playing='true']::after,
+  .pitchScale[data-selected='false'] .pitchMarker {
     animation: none;
   }
 }
