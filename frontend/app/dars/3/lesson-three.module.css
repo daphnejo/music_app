@@ -741,6 +741,7 @@
   height: 24px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 2px;
   overflow: hidden;
 }
@@ -786,8 +787,8 @@
 }
 
 @keyframes waveformScan {
-  from { transform: translateX(0); }
-  to { transform: translateX(118px); }
+  from { left: 0; }
+  to { left: calc(100% - 2px); }
 }
 
 @keyframes audioPulse {
@@ -970,6 +971,44 @@
   border-color: currentColor;
   background: #fff;
   font-weight: 850;
+}
+
+.octaveRangeAudio {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: currentColor;
+  background: color-mix(in srgb, currentColor 10%, white);
+  opacity: .42;
+  transform: scale(.92);
+  transition: opacity .16s ease, transform .16s ease, box-shadow .16s ease;
+}
+
+.octaveRange:hover .octaveRangeAudio,
+.octaveRange:focus-visible .octaveRangeAudio,
+.octaveRange[data-active='true'] .octaveRangeAudio {
+  opacity: .78;
+  transform: scale(1);
+}
+
+.octaveRange[data-playing='true'] {
+  background: #fff;
+  box-shadow: 0 7px 16px rgba(36, 19, 47, .1);
+}
+
+.octaveRange[data-playing='true'] .octaveRangeAudio {
+  opacity: 1;
+  transform: scale(1.06);
+  box-shadow: 0 0 0 5px color-mix(in srgb, currentColor 12%, transparent);
+  animation: octaveSpeakerPulse .8s ease-in-out infinite alternate;
+}
+
+@keyframes octaveSpeakerPulse {
+  from { transform: scale(.96); }
+  to { transform: scale(1.12); }
 }
 
 .octaveRange[data-range='1'] { color: #9b3fd4; }
@@ -1315,6 +1354,7 @@
   .octaveKeyboard { height: 96px; }
   .octaveRange { padding-bottom: 3px; }
   .octaveRange small { margin-top: 5px; font-size: 7.5px; }
+  .octaveRangeAudio { width: 17px; height: 17px; }
   .octaveKeyboardHint { min-height: 22px; margin-top: 5px; font-size: 8.5px; }
   .pitchScale { min-height: 44px; padding: 7px 9px; gap: 8px; border-radius: 14px; }
   .pitchLabel { min-height: 26px; padding: 0 7px; gap: 4px; }
@@ -1401,6 +1441,7 @@
   .audioSampleCard[data-playing='true'] .waveformPlayhead,
   .audioSampleCard[data-playing='true'] .audioPulseRing,
   .audioSampleCard[data-playing='true']::after,
+  .octaveRange[data-playing='true'] .octaveRangeAudio,
   .pitchScale[data-selected='false'] .pitchMarker {
     animation: none;
   }
