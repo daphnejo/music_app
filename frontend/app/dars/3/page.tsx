@@ -413,14 +413,18 @@ export default function LessonThreePage() {
                     );
                   })}
                 </div>
-                {OCTAVE_BLACK_KEYS.map((keyIndex) => (
-                  <span
-                    className={styles.octaveBlackKey}
-                    key={keyIndex}
-                    style={{ left: `${((keyIndex + 1) / 56) * 100}%` }}
-                    aria-hidden="true"
-                  />
-                ))}
+                {OCTAVE_BLACK_KEYS.map((keyIndex) => {
+                  const octaveIndex = Math.floor(keyIndex / 7);
+                  return (
+                    <span
+                      className={styles.octaveBlackKey}
+                      data-active={visibleOctave === octaveIndex ? 'true' : 'false'}
+                      key={keyIndex}
+                      style={{ left: `${((keyIndex + 1) / 56) * 100}%` }}
+                      aria-hidden="true"
+                    />
+                  );
+                })}
               </div>
               <div className={styles.octaveRanges}>
                 {OCTAVES.map((octave, index) => (
