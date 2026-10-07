@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { AppIcon } from '@/components/app-icon';
 import { SiteHeader } from '@/components/site-header';
 import { SourceAudioButton } from '@/components/source-audio-button';
@@ -452,15 +452,31 @@ export default function LessonThreePage() {
               </div>
             </section>
 
-            <div className={styles.pitchScale}>
-              <strong>Past tovushlar</strong>
-              <span className={styles.pitchLine} aria-hidden="true" />
-              <strong>Baland tovushlar</strong>
+            <div
+              className={styles.pitchScale}
+              data-selected={visibleOctave === null ? 'false' : 'true'}
+              style={{ '--pitch-position': `${visibleOctave === null ? 50 : ((visibleOctave + 0.5) / OCTAVES.length) * 100}%` } as CSSProperties}
+            >
+              <span className={`${styles.pitchLabel} ${styles.pitchLow}`}>
+                <AppIcon name="note" size={15} />
+                <strong>Past tovushlar</strong>
+              </span>
+              <span className={styles.pitchLine} aria-hidden="true">
+                <span className={styles.pitchGlow} />
+                <span className={styles.pitchMarker}><AppIcon name="music" size={13} /></span>
+              </span>
+              <span className={`${styles.pitchLabel} ${styles.pitchHigh}`}>
+                <strong>Baland tovushlar</strong>
+                <AppIcon name="note" size={15} />
+              </span>
             </div>
 
             <aside className={styles.octaveFact}>
-              <strong>Qiziqarli fakt</strong>
-              <p>Bilasizmi? Fil ham musiqa tinglashni yaxshi ko&apos;radi! Fillar past tovushlarni oyoqlari orqali his qiladi. Pianinodagi eng past tovush ham xuddi shunday — uni quloq bilan eshitish qiyin, lekin his qilsa bo&apos;ladi!</p>
+              <span className={styles.octaveFactIcon} aria-hidden="true"><AppIcon name="bulb" size={22} /></span>
+              <div className={styles.octaveFactCopy}>
+                <strong>Qiziqarli fakt</strong>
+                <p>Bilasizmi? Fil ham musiqa tinglashni yaxshi ko&apos;radi! Fillar past tovushlarni oyoqlari orqali his qiladi. Pianinodagi eng past tovush ham xuddi shunday — uni quloq bilan eshitish qiyin, lekin his qilsa bo&apos;ladi!</p>
+              </div>
             </aside>
           </section>
         ) : null}
