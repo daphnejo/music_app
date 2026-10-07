@@ -298,6 +298,7 @@ function QuizScreen({ quiz, index }: { quiz: (typeof QUIZZES)[number]; index: nu
 
 export default function LessonThreePage() {
   const [step, setStep] = useState(0);
+  const [activeOctave, setActiveOctave] = useState<number | null>(null);
 
   const goBack = () => setStep((current) => Math.max(0, current - 1));
   const goNext = () => setStep((current) => Math.min(TOTAL_STEPS - 1, current + 1));
@@ -399,7 +400,16 @@ export default function LessonThreePage() {
               <h2>Oktavalar</h2>
               <div className={styles.octaveKeyboard}>
                 <div className={styles.octaveWhiteKeys}>
-                  {Array.from({ length: 56 }, (_, index) => <span key={index} />)}
+                  {Array.from({ length: 56 }, (_, index) => {
+                    const octaveIndex = Math.floor(index / 7);
+                    return (
+                      <span
+                        data-active={activeOctave === octaveIndex ? 'true' : 'false'}
+                        data-range={octaveIndex + 1}
+                        key={index}
+                      />
+                    );
+                  })}
                 </div>
                 {OCTAVE_BLACK_KEYS.map((keyIndex) => (
                   <span
@@ -412,11 +422,27 @@ export default function LessonThreePage() {
               </div>
               <div className={styles.octaveRanges}>
                 {OCTAVES.map((octave, index) => (
-                  <div className={styles.octaveRange} data-range={index + 1} key={octave}>
+                  <button
+                    className={styles.octaveRange}
+                    data-active={activeOctave === index ? 'true' : 'false'}
+                    data-range={index + 1}
+                    key={octave}
+                    type="button"
+                    aria-pressed={activeOctave === index}
+                    onClick={() => setActiveOctave((current) => current === index ? null : index)}
+                    onPointerEnter={() => setActiveOctave(index)}
+                    onPointerLeave={() => setActiveOctave((current) => current === index ? null : current)}
+                    onFocus={() => setActiveOctave(index)}
+                    onBlur={() => setActiveOctave((current) => current === index ? null : current)}
+                  >
                     <span aria-hidden="true" />
                     <small>{octave}</small>
-                  </div>
+                  </button>
                 ))}
+              </div>
+              <div className={styles.octaveKeyboardHint}>
+                <AppIcon name="bulb" size={14} />
+                <span>{activeOctave === null ? 'Oktava nomini bosing — shu qism klaviaturada ajralib ko‘rinadi.' : `${OCTAVES[activeOctave]} tanlandi`}</span>
               </div>
             </section>
 
