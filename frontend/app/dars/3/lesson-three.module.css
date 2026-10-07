@@ -590,8 +590,10 @@
 .audioSampleCard {
   min-width: 0;
   min-height: 94px;
+  position: relative;
+  overflow: hidden;
   padding: 14px 18px 14px 14px;
-  border: 0;
+  border: 1px solid transparent;
   border-radius: 18px;
   display: flex;
   align-items: center;
@@ -599,12 +601,44 @@
   text-align: left;
   font: inherit;
   cursor: pointer;
-  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+  isolation: isolate;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, filter .16s ease;
+}
+
+.audioSampleCard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  background: linear-gradient(110deg, transparent 14%, rgba(255, 255, 255, .5) 48%, transparent 82%);
+  transform: translateX(-82%);
 }
 
 .audioSampleCard:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 18px rgba(36, 19, 47, .08);
+}
+
+.audioSampleCard:focus-visible {
+  outline: 3px solid rgba(255, 36, 120, .2);
+  outline-offset: 3px;
+}
+
+.audioSampleCard[data-playing='true'] {
+  transform: translateY(-3px);
+  border-color: currentColor;
+  box-shadow: 0 13px 24px rgba(36, 19, 47, .12);
+  filter: saturate(1.04);
+}
+
+.audioSampleCard[data-playing='true']::after {
+  opacity: .42;
+  animation: sampleSweep 2.1s ease-in-out infinite;
+}
+
+.audioSampleCard[data-loading='true'] {
+  cursor: progress;
 }
 
 .audioSamplePurple {
@@ -626,18 +660,40 @@
   width: 46px;
   height: 46px;
   flex: 0 0 46px;
+  position: relative;
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #fff;
+  box-shadow: 0 6px 12px rgba(36, 19, 47, .12);
+  transition: transform .16s ease, box-shadow .16s ease;
 }
 
 .audioSamplePurple .audioSampleIcon { background: #7c3aed; }
 .audioSampleBlue .audioSampleIcon { background: #0284c7; }
 .audioSampleGreen .audioSampleIcon { background: #16a34a; }
 
+.audioPulseRing {
+  position: absolute;
+  inset: -5px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.audioSampleCard[data-playing='true'] .audioSampleIcon {
+  transform: scale(1.05);
+  box-shadow: 0 8px 18px rgba(36, 19, 47, .18);
+}
+
+.audioSampleCard[data-playing='true'] .audioPulseRing {
+  animation: audioPulse 1.35s ease-out infinite;
+}
+
 .audioSampleBody {
   min-width: 0;
+  flex: 1;
   display: grid;
   gap: 4px;
 }
@@ -648,13 +704,40 @@
   font-weight: 800;
 }
 
+.audioSampleStatus {
+  min-height: 12px;
+  position: relative;
+  display: block;
+}
+
 .audioSampleBody small {
   font-size: 11px;
   line-height: 1;
   font-weight: 700;
 }
 
+.audioPlayingLabel {
+  display: none;
+}
+
+.audioSampleCard[data-playing='true'] .audioIdleLabel {
+  display: none;
+}
+
+.audioSampleCard[data-playing='true'] .audioPlayingLabel {
+  display: inline;
+}
+
+.waveformWrap {
+  min-width: 0;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
 .waveform {
+  width: 100%;
   height: 24px;
   display: flex;
   align-items: center;
@@ -667,19 +750,54 @@
   flex: 0 0 2px;
   border-radius: 2px;
   background: currentColor;
-  opacity: .95;
+  opacity: .78;
+  transform-origin: center;
+}
+
+.waveformPlayhead {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: 0;
+  width: 2px;
+  border-radius: 999px;
+  opacity: 0;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+  pointer-events: none;
 }
 
 .audioSampleCard[data-playing='true'] .waveform i {
-  animation: sampleWave .55s ease-in-out infinite alternate;
+  animation: sampleWave .48s ease-in-out infinite alternate;
 }
 
-.audioSampleCard[data-playing='true'] .waveform i:nth-child(3n) { animation-delay: .12s; }
-.audioSampleCard[data-playing='true'] .waveform i:nth-child(4n) { animation-delay: .22s; }
+.audioSampleCard[data-playing='true'] .waveformPlayhead {
+  opacity: .55;
+  animation: waveformScan 1.8s linear infinite;
+}
+
+.audioSampleCard[data-loading='true'] .waveform {
+  opacity: .45;
+}
 
 @keyframes sampleWave {
-  from { transform: scaleY(.62); opacity: .65; }
-  to { transform: scaleY(1.08); opacity: 1; }
+  from { transform: scaleY(.5); opacity: .52; }
+  to { transform: scaleY(1.12); opacity: 1; }
+}
+
+@keyframes waveformScan {
+  from { transform: translateX(0); }
+  to { transform: translateX(118px); }
+}
+
+@keyframes audioPulse {
+  0% { transform: scale(.88); opacity: .65; }
+  72%, 100% { transform: scale(1.32); opacity: 0; }
+}
+
+@keyframes sampleSweep {
+  0%, 18% { transform: translateX(-82%); }
+  72%, 100% { transform: translateX(82%); }
 }
 
 .octaveKeyboardPanel {
@@ -1024,6 +1142,7 @@
   .audioSampleIcon { width: 38px; height: 38px; flex-basis: 38px; }
   .audioSampleBody strong { font-size: 11px; }
   .audioSampleBody small { font-size: 9.5px; }
+  .waveformWrap,
   .waveform { height: 20px; }
   .octaveKeyboardPanel { padding: 12px 12px 15px; border-radius: 16px; }
   .octaveKeyboardPanel h2 { margin-bottom: 8px; font-size: 15px; }
@@ -1100,7 +1219,10 @@
   .answerOption { transition: none; }
 
   .notePianoKey[data-active='true'] .floatingNote,
-  .audioSampleCard[data-playing='true'] .waveform i {
+  .audioSampleCard[data-playing='true'] .waveform i,
+  .audioSampleCard[data-playing='true'] .waveformPlayhead,
+  .audioSampleCard[data-playing='true'] .audioPulseRing,
+  .audioSampleCard[data-playing='true']::after {
     animation: none;
   }
 }
