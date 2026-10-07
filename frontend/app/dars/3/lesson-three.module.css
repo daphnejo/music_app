@@ -804,7 +804,7 @@
   padding: 18px 18px 16px;
   border: 1px solid #eee5ec;
   border-radius: 20px;
-  background: #fff;
+  background: linear-gradient(180deg, #fff 0%, #fffdfd 100%);
   box-shadow: 0 12px 24px rgba(36, 19, 47, .07);
 }
 
@@ -818,12 +818,14 @@
 
 .octaveKeyboard {
   position: relative;
-  height: 122px;
+  height: 118px;
   overflow: hidden;
-  border: 1px solid #cfd1d6;
-  border-radius: 4px;
+  border: 1px solid #c9cbd0;
+  border-radius: 8px;
   background: #fff;
-  box-shadow: inset 0 -7px 12px rgba(36, 19, 47, .025);
+  box-shadow:
+    inset 0 -8px 14px rgba(36, 19, 47, .035),
+    0 5px 12px rgba(36, 19, 47, .04);
 }
 
 .octaveWhiteKeys {
@@ -836,9 +838,10 @@
   min-width: 0;
   position: relative;
   border-right: 1px solid #cfd1d6;
-  background: linear-gradient(180deg, #fff 0%, #fdfcfa 100%);
-  box-shadow: inset 0 -8px 12px rgba(36, 19, 47, .018);
-  transition: background .16s ease, box-shadow .16s ease, transform .16s ease;
+  color: #b7aeb8;
+  background: linear-gradient(180deg, #fff 0%, #fdfcfb 100%);
+  box-shadow: inset 0 -3px 0 rgba(64, 48, 65, .035);
+  transition: background .18s ease, box-shadow .18s ease, transform .18s ease, opacity .18s ease;
 }
 
 .octaveWhiteKeys span:last-child {
@@ -846,26 +849,49 @@
 }
 
 .octaveWhiteKeys span[data-active='true'] {
-  background: linear-gradient(180deg, #fff 0%, #fff5f8 100%);
-  box-shadow: inset 0 -5px 0 rgba(255, 30, 112, .72), inset 0 -16px 24px rgba(255, 30, 112, .06);
+  z-index: 1;
+  background: linear-gradient(180deg, #fff 0%, #fff7fb 76%, #fff1f7 100%);
+  box-shadow: inset 0 -7px 0 currentColor, inset 0 0 14px rgba(255, 255, 255, .82);
+  transform: translateY(1px);
 }
+
+.octaveWhiteKeys span[data-range='1'],
+.octaveBlackKey[data-range='1'] { color: #9b3fd4; }
+.octaveWhiteKeys span[data-range='2'],
+.octaveBlackKey[data-range='2'] { color: #2f92db; }
+.octaveWhiteKeys span[data-range='3'],
+.octaveBlackKey[data-range='3'] { color: #20ad8b; }
+.octaveWhiteKeys span[data-range='4'],
+.octaveBlackKey[data-range='4'] { color: #1fae63; }
+.octaveWhiteKeys span[data-range='5'],
+.octaveBlackKey[data-range='5'] { color: #f59e0b; }
+.octaveWhiteKeys span[data-range='6'],
+.octaveBlackKey[data-range='6'] { color: #f47b20; }
+.octaveWhiteKeys span[data-range='7'],
+.octaveBlackKey[data-range='7'] { color: #f21b75; }
+.octaveWhiteKeys span[data-range='8'],
+.octaveBlackKey[data-range='8'] { color: #ff1e70; }
 
 .octaveBlackKey {
   position: absolute;
   top: 0;
-  z-index: 2;
-  width: 1.12%;
-  height: 64%;
+  z-index: 3;
+  width: 1.14%;
+  height: 63%;
   transform: translateX(-50%);
-  border-radius: 0 0 2px 2px;
-  background: linear-gradient(180deg, #2a1d30 0%, #170f1c 100%);
-  box-shadow: 0 5px 7px rgba(36, 19, 47, .2);
-  transition: box-shadow .16s ease, filter .16s ease;
+  border-radius: 0 0 3px 3px;
+  color: #24132f;
+  background: linear-gradient(180deg, #2b1d30 0%, #171019 100%);
+  box-shadow: 0 5px 8px rgba(36, 19, 47, .2);
+  transition: box-shadow .18s ease, transform .18s ease, filter .18s ease;
 }
 
 .octaveBlackKey[data-active='true'] {
-  filter: brightness(1.12);
-  box-shadow: 0 6px 10px rgba(36, 19, 47, .26), 0 0 0 2px rgba(255, 30, 112, .16);
+  transform: translateX(-50%) translateY(2px);
+  box-shadow:
+    0 5px 8px rgba(36, 19, 47, .18),
+    inset 0 -5px 0 currentColor;
+  filter: brightness(1.08);
 }
 
 .octaveRanges {
@@ -876,22 +902,21 @@
 
 .octaveRange {
   min-width: 0;
-  padding: 0 3px 5px;
+  padding: 0 3px 4px;
   border: 0;
-  border-radius: 10px;
-  color: inherit;
+  border-radius: 11px;
+  color: #765b79;
   background: transparent;
   text-align: center;
   font: inherit;
   cursor: pointer;
-  transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+  transition: transform .16s ease, background .16s ease, box-shadow .16s ease;
 }
 
 .octaveRange:hover,
-.octaveRange:focus-visible,
-.octaveRange[data-active='true'] {
+.octaveRange:focus-visible {
   transform: translateY(-2px);
-  background: color-mix(in srgb, currentColor 8%, transparent);
+  background: rgba(255, 255, 255, .82);
 }
 
 .octaveRange:focus-visible {
@@ -900,7 +925,9 @@
 }
 
 .octaveRange[data-active='true'] {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 24%, transparent);
+  transform: translateY(-2px);
+  background: #fff;
+  box-shadow: 0 5px 12px rgba(36, 19, 47, .07);
 }
 
 .octaveRange > span {
@@ -924,13 +951,25 @@
 .octaveRange > span::after { right: 0; }
 
 .octaveRange small {
-  max-width: 74px;
+  max-width: 82px;
+  min-height: 27px;
   margin: 7px auto 0;
-  display: block;
+  padding: 4px 5px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
   color: currentColor;
-  font-size: 9px;
-  line-height: 1.15;
-  font-weight: 800;
+  font-size: 9.5px;
+  line-height: 1.08;
+  font-weight: 750;
+  transition: border-color .16s ease, background .16s ease, font-weight .16s ease;
+}
+
+.octaveRange[data-active='true'] small {
+  border-color: currentColor;
+  background: #fff;
+  font-weight: 850;
 }
 
 .octaveRange[data-range='1'] { color: #9b3fd4; }
@@ -943,17 +982,26 @@
 .octaveRange[data-range='8'] { color: #ff1e70; }
 
 .octaveKeyboardHint {
-  min-height: 28px;
-  margin-top: 8px;
-  display: flex;
+  min-height: 34px;
+  margin: 10px auto 0;
+  padding: 7px 12px;
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid #f0e3eb;
+  border-radius: 999px;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  color: #837187;
-  font-size: 10px;
-  line-height: 1.25;
+  gap: 7px;
+  color: #765f78;
+  background: #fff9fc;
+  font-size: 11.5px;
+  line-height: 1.2;
   font-weight: 700;
-  text-align: center;
+}
+
+.octaveKeyboardHint svg {
+  flex: 0 0 auto;
+  color: #ff2478;
 }
 
 .pitchScale {
@@ -1236,6 +1284,7 @@
   .octaveKeyboardPanel { overflow-x: auto; }
   .octaveKeyboard,
   .octaveRanges { min-width: 820px; }
+  .octaveKeyboardHint { white-space: nowrap; }
 }
 
 @media (max-width: 760px) {
