@@ -324,9 +324,13 @@ export default function LessonThreePage() {
     setActiveOctave(index);
     setPlayingOctave(index);
 
-    await playOctaveScale(index, () => {
-      setPlayingOctave((current) => current === index ? null : current);
-    });
+    try {
+      await playOctaveScale(index, () => {
+        setPlayingOctave((current) => current === index ? null : current);
+      });
+    } catch {
+      setPlayingOctave(null);
+    }
   };
 
   const goBack = () => {
@@ -450,6 +454,7 @@ export default function LessonThreePage() {
                     return (
                       <span
                         data-active={visibleOctave === octaveIndex ? 'true' : 'false'}
+                        data-playing={playingOctave === octaveIndex ? 'true' : 'false'}
                         data-range={octaveIndex + 1}
                         key={index}
                       />
@@ -462,6 +467,8 @@ export default function LessonThreePage() {
                     <span
                       className={styles.octaveBlackKey}
                       data-active={visibleOctave === octaveIndex ? 'true' : 'false'}
+                      data-playing={playingOctave === octaveIndex ? 'true' : 'false'}
+                      data-range={octaveIndex + 1}
                       key={keyIndex}
                       style={{ left: `${((keyIndex + 1) / 56) * 100}%` }}
                       aria-hidden="true"
