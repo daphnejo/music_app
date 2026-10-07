@@ -6,6 +6,7 @@ import { AppIcon } from '@/components/app-icon';
 import { SiteHeader } from '@/components/site-header';
 import { SourceAudioButton } from '@/components/source-audio-button';
 import { sourceMediaUrl } from '@/lib/source-media';
+import { playOctaveScale, stopOctaveScale } from '@/lib/octave-piano';
 import styles from './lesson-three.module.css';
 
 const NOTES = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'Lya', 'Si'] as const;
@@ -300,10 +301,49 @@ export default function LessonThreePage() {
   const [step, setStep] = useState(0);
   const [activeOctave, setActiveOctave] = useState<number | null>(null);
   const [hoveredOctave, setHoveredOctave] = useState<number | null>(null);
+  const [playingOctave, setPlayingOctave] = useState<number | null>(null);
   const visibleOctave = hoveredOctave ?? activeOctave;
 
-  const goBack = () => setStep((current) => Math.max(0, current - 1));
-  const goNext = () => setStep((current) => Math.min(TOTAL_STEPS - 1, current + 1));
+  useEffect(() => {
+    const stopForOtherAudio = (event: Event) => {
+      const custom = event as CustomEvent<{ id?: string }>;
+      if (custom.detail?.id === 'lesson-three-octave') return;
+      stopOctaveScale();
+      setPlayingOctave(null);
+    };
+
+    window.addEventListener('solfedjio:audio-play', stopForOtherAudio);
+    return () => {
+      window.removeEventListener('solfedjio:audio-play', stopForOtherAudio);
+      stopOctaveScale();
+    };
+  }, []);
+
+  const playSelectedOctave = async (index: number) => {
+    window.dispatchEvent(new CustomEvent('solfedjio:audio-play', { detail: { id: 'lesson-three-octave' } }));
+    setActiveOctave(index);
+    setPlayingOctave(index);
+
+    await playOctaveScale(index, () => {
+      setPlayingOctave((current) => current === index ? null : current);
+    });
+  };
+
+  const goBack = () => {
+    if (step === 2) {
+      stopOctaveScale();
+      setPlayingOctave(null);
+    }
+    setStep((current) => Math.max(0, current - 1));
+  };
+
+  const goNext = () => {
+    if (step === 2) {
+      stopOctaveScale();
+      setPlayingOctave(null);
+    }
+    setStep((current) => Math.min(TOTAL_STEPS - 1, current + 1));
+  };
 
   return (
     <main className={styles.page}>
@@ -431,24 +471,37 @@ export default function LessonThreePage() {
                   <button
                     className={styles.octaveRange}
                     data-active={activeOctave === index ? 'true' : 'false'}
+                    data-playing={playingOctave === index ? 'true' : 'false'}
                     data-range={index + 1}
                     key={octave}
                     type="button"
                     aria-pressed={activeOctave === index}
-                    onClick={() => setActiveOctave((current) => current === index ? null : index)}
+                    aria-label={`${octave}ni tinglash`}
+                    onClick={() => void playSelectedOctave(index)}
                     onPointerEnter={() => setHoveredOctave(index)}
                     onPointerLeave={() => setHoveredOctave(null)}
                     onFocus={() => setHoveredOctave(index)}
                     onBlur={() => setHoveredOctave(null)}
                   >
                     <span aria-hidden="true" />
-                    <small>{octave}</small>
+                    <small>
+                      <span>{octave}</span>
+                      <span className={styles.octaveRangeAudio} aria-hidden="true">
+                        <AppIcon name="speaker" size={12} />
+                      </span>
+                    </small>
                   </button>
                 ))}
               </div>
               <div className={styles.octaveKeyboardHint}>
                 <AppIcon name="bulb" size={14} />
-                <span>{visibleOctave === null ? 'Oktava nomini bosing — shu qism klaviaturada ajralib ko‘rinadi.' : `${OCTAVES[visibleOctave]} klaviaturada ajratildi`}</span>
+                <span>
+                  {playingOctave !== null
+                    ? `${OCTAVES[playingOctave]} yangramoqda — Do dan keyingi Do gacha`
+                    : visibleOctave === null
+                      ? 'Oktava nomini bosing — shu qism ajraladi va ovozi yangraydi.'
+                      : `${OCTAVES[visibleOctave]} klaviaturada ajratildi`}
+                </span>
               </div>
             </section>
 
